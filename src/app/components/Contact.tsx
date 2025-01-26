@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Facebook, Twitter, Instagram, PhoneCall, Mail } from "lucide-react";
+import { Facebook, Instagram, PhoneCall, Mail } from "lucide-react";
 
 export function Contact() {
   return (
@@ -117,14 +117,6 @@ export function Contact() {
                   className="hover:text-green-700 transition-colors"
                 >
                   <Facebook size={24} />
-                </a>
-                <a
-                  href="https://twitter.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:text-green-700 transition-colors"
-                >
-                  <Twitter size={24} />
                 </a>
                 <a
                   href="https://instagram.com"
