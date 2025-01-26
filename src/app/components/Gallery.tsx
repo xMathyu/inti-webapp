@@ -7,7 +7,7 @@ import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 
 export function Gallery() {
-  const images = ["/mariposas.jpg", "/eventos.jpg", "/eventos2.jpg"];
+  const images = ["/mariposas.jpg", "/scouts.jpg", "/scouts2.jpg"];
   const [open, setOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
