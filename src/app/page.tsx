@@ -1,21 +1,19 @@
-"use client";
+// app/page.tsx
 
-import { Hero } from './components/Hero';
-import { Testimonials } from './components/Testimonials';
-import { CTA } from './components/CTA';
-import { Footer } from './components/Footer';
-import { Features } from './components/Feature';
+import { Contact } from "./components/Contact";
+import { Footer } from "./components/Footer";
+import { Gallery } from "./components/Gallery";
+import { Guides } from "./components/Guides";
+import { Hero } from "./components/Hero";
 
-const HomePage = () => {
+export default function HomePage() {
   return (
-    <main>
+    <>
       <Hero />
-      <Features />
-      <Testimonials />
-      <CTA />
+      <Gallery />
+      <Guides />
+      <Contact />
       <Footer />
-    </main>
+    </>
   );
-};
-
-export default HomePage;
+}

@@ -1,33 +1,21 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { poppins } from "./fonts";
 import "./globals.css";
-import { Navbar } from "./components/Navbar"; // Asegúrate de que la ruta sea correcta
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { Navbar } from "./components/Navbar";
 
 export const metadata: Metadata = {
-  title: "Inti",
-  description: "Organización",
+  title: "INTI - Visitas Guiadas",
+  description: "Asociación Inti: Visitas guiadas y mucho más.",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="es">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${poppins.variable} bg-gray-50`}>
         <Navbar />
         <main>{children}</main>
       </body>
