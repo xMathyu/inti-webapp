@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
 /**
- * Función de ayuda que hace scroll suave hasta una sección dada su id.
+ * Funzione di aiuto per effettuare uno scroll fluido verso una sezione dato il suo id.
  */
 function scrollToSection(id: string) {
   const element = document.getElementById(id);
@@ -25,59 +25,77 @@ export function Navbar() {
       transition={{ duration: 0.8, ease: "easeOut" }}
       className="relative flex items-center justify-between px-6 py-4 shadow-md bg-gradient-to-r from-green-700 to-green-600"
     >
-      {/* Logo Texto */}
+      {/* Logo */}
       <button
         onClick={() => scrollToSection("hero")}
         className="flex items-center focus:outline-none"
       >
         <span className="text-2xl md:text-3xl font-bold text-white tracking-wide">
-          INTI
+          Parco dei Colori
         </span>
       </button>
 
-      {/* Menú Desktop */}
+      {/* Menu Desktop */}
       <div className="hidden md:flex space-x-4">
         <Button
           variant="ghost"
           className="text-white hover:bg-green-500/20"
           onClick={() => scrollToSection("hero")}
         >
-          Inicio
+          Inizio
+        </Button>
+        <Button
+          variant="ghost"
+          className="text-white hover:bg-green-500/20"
+          onClick={() => scrollToSection("about")}
+        >
+          Chi siamo
         </Button>
         <Button
           variant="ghost"
           className="text-white hover:bg-green-500/20"
           onClick={() => scrollToSection("gallery")}
         >
-          Galería
+          Galleria
         </Button>
         <Button
           variant="ghost"
           className="text-white hover:bg-green-500/20"
           onClick={() => scrollToSection("guides")}
         >
-          Guías
+          Guide
+        </Button>
+        <Button
+          variant="ghost"
+          className="text-white hover:bg-green-500/20"
+          onClick={() => scrollToSection("tariffe")}
+        >
+          Tariffe
         </Button>
         <Button
           variant="ghost"
           className="text-white hover:bg-green-500/20"
           onClick={() => scrollToSection("contact")}
         >
-          Contacto
+          Contatti
         </Button>
       </div>
 
-      {/* Botón Hamburguesa */}
+      {/* Bottone Hamburger */}
       <button
         className="md:hidden focus:outline-none text-white"
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         aria-label="Toggle Menu"
         aria-expanded={isMobileMenuOpen}
       >
-        {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        {isMobileMenuOpen ? (
+          <X className="h-6 w-6" />
+        ) : (
+          <Menu className="h-6 w-6" />
+        )}
       </button>
 
-      {/* Menú Móvil */}
+      {/* Menu Mobile */}
       {isMobileMenuOpen && (
         <motion.div
           initial={{ y: -20, opacity: 0 }}
@@ -93,7 +111,17 @@ export function Navbar() {
               setIsMobileMenuOpen(false);
             }}
           >
-            Inicio
+            Inizio
+          </Button>
+          <Button
+            variant="ghost"
+            className="text-green-700 hover:bg-green-50"
+            onClick={() => {
+              scrollToSection("about");
+              setIsMobileMenuOpen(false);
+            }}
+          >
+            Chi siamo
           </Button>
           <Button
             variant="ghost"
@@ -103,7 +131,7 @@ export function Navbar() {
               setIsMobileMenuOpen(false);
             }}
           >
-            Galería
+            Galleria
           </Button>
           <Button
             variant="ghost"
@@ -113,7 +141,17 @@ export function Navbar() {
               setIsMobileMenuOpen(false);
             }}
           >
-            Guías
+            Guide
+          </Button>
+          <Button
+            variant="ghost"
+            className="text-green-700 hover:bg-green-50"
+            onClick={() => {
+              scrollToSection("tariffe");
+              setIsMobileMenuOpen(false);
+            }}
+          >
+            Tariffe
           </Button>
           <Button
             variant="ghost"
@@ -123,7 +161,7 @@ export function Navbar() {
               setIsMobileMenuOpen(false);
             }}
           >
-            Contacto
+            Contatti
           </Button>
         </motion.div>
       )}

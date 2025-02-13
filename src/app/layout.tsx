@@ -4,8 +4,8 @@ import "./globals.css";
 import { Navbar } from "./components/Navbar";
 
 export const metadata: Metadata = {
-  title: "INTI - Visitas Guiadas",
-  description: "Asociación Inti: Visitas guiadas y mucho más.",
+  title: "Parco dei Colori",
+  description: "Associazione di Giardini e Farfalle",
 };
 
 export default function RootLayout({

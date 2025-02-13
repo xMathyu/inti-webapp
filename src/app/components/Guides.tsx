@@ -9,20 +9,23 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
+import { AiOutlineCheck } from "react-icons/ai";
 
 // Datos de los guías
 const guides = [
   {
-    name: "Valentina",
-    specialty: "Arqueología",
+    name: "Valentina Di Carlo",
+    specialty:
+      "Documentarista, giardiniere d'arte, educatrice, allevatrice di bruchi e farfalle – Racconti e curiosità sul mondo delle piante e delle farfalle",
     image: "/valentina.jpg",
-    bio: "Apasionada de la historia y la arqueología. Ha liderado expediciones únicas, compartiendo descubrimientos inolvidables.",
+    bio: "Appassionata del mondo naturale, capace di accompagnare i visitatori in un viaggio alla scoperta dei tesori nascosti della flora e della fauna. La sua missione è sensibilizzare ed educare il pubblico alla bellezza e importanza dell'ambiente naturale.",
   },
   {
     name: "Lorenzo",
-    specialty: "Fauna y Flora",
+    specialty:
+      "Cuoco, giardiniere d'arte, agricoltore, allevatore di bruchi e farfalle – Una ricetta perfetta per scoprire curiosità su piante e piatti",
     image: "/lorenzo.jpg",
-    bio: "Especialista en botánica y observación de mariposas. Comparte curiosidades y consejos de conservación en cada ruta.",
+    bio: "Passione per la cucina e profondo rispetto per la terra, una figura capace di raccontarvi e preparare piatti che testimoniano un legame profondo con la natura e il ciclo delle stagioni.",
   },
 ];
 
@@ -72,7 +75,7 @@ export function Guides() {
           viewport={{ once: true }}
           className="text-3xl md:text-4xl font-semibold text-center text-green-800 mb-12"
         >
-          Nuestros Guías
+          Accompagnatori
         </motion.h2>
 
         {/* Grid de Guías */}
@@ -86,26 +89,13 @@ export function Guides() {
               viewport={{ once: true }}
               className="transform transition-transform hover:-translate-y-2"
             >
-              <Card className="shadow-md border border-gray-200 rounded-lg overflow-hidden bg-white">
-                {/* Imagen del guía (más grande y redonda) */}
+              <Card className="shadow-md border border-gray-200 rounded-lg overflow-hidden bg-white hover:shadow-xl">
+                {/* Imagen del guía */}
                 <div className="flex justify-center mt-6">
                   <img
                     src={guide.image}
                     alt={guide.name}
-                    className="
-                      w-32 
-                      h-32 
-                      sm:w-36 
-                      sm:h-36 
-                      rounded-full 
-                      object-cover 
-                      ring-4 
-                      ring-white 
-                      ring-offset-4 
-                      ring-offset-green-100
-                      transition-transform
-                      hover:scale-105
-                    "
+                    className="w-32 h-32 sm:w-36 sm:h-36 rounded-full object-cover ring-4 ring-white ring-offset-4 ring-offset-green-100 transition-transform hover:scale-105"
                   />
                 </div>
 
@@ -119,30 +109,34 @@ export function Guides() {
                   </CardDescription>
                 </CardHeader>
 
-                {/* Contenido: bio */}
-                <CardContent className="px-6 pb-6 text-center">
-                  <p className="text-gray-700 text-sm leading-relaxed">
-                    {guide.bio}
-                  </p>
+                {/* Contenido: Biografía en bullet points */}
+                <CardContent className="px-6 pb-6">
+                  <ul className="list-none space-y-2">
+                    {guide.bio
+                      .split(". ")
+                      .filter((sentence) => sentence.trim().length > 0)
+                      .map((sentence, i) => (
+                        <li key={i} className="flex items-start">
+                          <AiOutlineCheck className="text-green-600 mt-1 mr-2 flex-shrink-0" />
+                          <span
+                            className="text-gray-700 text-sm md:text-base"
+                            style={{ textAlign: "justify" }}
+                          >
+                            {sentence.trim()}
+                            {!sentence.trim().endsWith(".") && "."}
+                          </span>
+                        </li>
+                      ))}
+                  </ul>
                 </CardContent>
 
-                {/* Footer (Opcional): botón o links */}
+                {/* Footer: Botón */}
                 <CardFooter className="flex justify-center pb-6">
                   <button
-                    className="
-                      bg-green-600 
-                      hover:bg-green-700
-                      text-white
-                      font-semibold
-                      py-2 
-                      px-6 
-                      rounded
-                      shadow
-                      transition-colors
-                    "
-                    onClick={() => alert(`Conoce más sobre ${guide.name}`)}
+                    className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded shadow transition-colors"
+                    onClick={() => alert(`Scopri di più su ${guide.name}`)}
                   >
-                    Conoce Más
+                    Scopri di più
                   </button>
                 </CardFooter>
               </Card>

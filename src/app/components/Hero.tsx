@@ -30,13 +30,12 @@ export function Hero() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1 }}
           style={{
-            background:
-              "linear-gradient(to right, #ffffff, #b2f5ea)",
+            background: "linear-gradient(to right, #ffffff, #b2f5ea)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
           }}
         >
-          Asociación Inti
+          Parco dei Colori
         </motion.h1>
         <motion.p
           className="text-xl md:text-2xl mt-4 drop-shadow"
@@ -44,7 +43,16 @@ export function Hero() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1, delay: 0.3 }}
         >
-          Explora jardines, mariposas y plantas con nuestras visitas guiadas.
+          alla riscoperta del ciclo della natura, tra flora resiliente e fauna
+          curiosa!
+        </motion.p>
+        <motion.p
+          className="text-lg md:text-xl mt-2 italic drop-shadow"
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 1, delay: 0.5 }}
+        >
+          # immergiti nei ritmi della natura
         </motion.p>
         <motion.div
           className="mt-8 flex space-x-4"
@@ -52,8 +60,16 @@ export function Hero() {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.7, delay: 0.6 }}
         >
-          <Button className="px-6 py-3 text-lg font-semibold bg-green-600 hover:bg-green-700 border-none">
-            Reservar Ahora
+          <Button
+            className="px-6 py-3 text-lg font-semibold bg-green-600 hover:bg-green-700 border-none"
+            onClick={() => {
+              const aboutSection = document.getElementById("about");
+              if (aboutSection) {
+                aboutSection.scrollIntoView({ behavior: "smooth" });
+              }
+            }}
+          >
+            Conosciamoci meglio
           </Button>
           <Button
             variant="outline"
@@ -67,8 +83,15 @@ export function Hero() {
             bg-transparent 
             hover:bg-white 
             hover:text-green-700
-          "          >
-            Comprar Entradas
+            "
+            onClick={() => {
+              const tariffeSection = document.getElementById("tariffe");
+              if (tariffeSection) {
+                tariffeSection.scrollIntoView({ behavior: "smooth" });
+              }
+            }}
+          >
+            Prenota ora
           </Button>
         </motion.div>
       </div>
