@@ -26,20 +26,19 @@ export function Navbar() {
       transition={{ duration: 0.8, ease: "easeOut" }}
       className="h-16 shadow-md bg-gradient-to-r from-green-700 to-green-600 relative"
     >
-      {/* Contenedor para agregar espacios a los lados */}
-      <div className="max-w-7xl mx-auto px-4 md:px-8 h-full flex items-center justify-between">
-        {/* Logo */}
+      {/* Contenedor para el contenido con padding solo a la derecha en móvil */}
+      <div className="max-w-7xl mx-auto h-full flex items-center justify-between pl-0 pr-4 md:px-8">
+        {/* Logo: En móvil estará pegado a la izquierda */}
         <button
           onClick={() => scrollToSection("hero")}
           className="h-full flex items-center focus:outline-none"
         >
-          {/* Contenedor relativo para que Next.js Image con "fill" se posicione correctamente */}
           <div className="relative h-full w-32">
             <Image
               src="/logos/logos_pequeno.svg"
               alt="Logo Parco dei Colori"
               fill
-              style={{ objectFit: "contain", padding: "0.3rem" }}
+              style={{ objectFit: "contain", padding: "0.2rem" }}
             />
           </div>
         </button>
@@ -90,7 +89,7 @@ export function Navbar() {
           </Button>
         </div>
 
-        {/* Botón Hamburger */}
+        {/* Botón Hamburger (visible en móvil) */}
         <button
           className="md:hidden focus:outline-none text-white"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
