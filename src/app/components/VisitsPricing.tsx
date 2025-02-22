@@ -13,6 +13,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Check, ChevronLeft, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 // Hook para obtener dimensiones de la ventana
 function useWindowSize() {
@@ -116,6 +117,7 @@ const visits = [
 
 export function VisitsPricing() {
   const { width } = useWindowSize();
+  const router = useRouter();
 
   // Estados para adaptar el diseño según el ancho de la ventana
   const [visibleCards, setVisibleCards] = useState(3);
@@ -152,7 +154,6 @@ export function VisitsPricing() {
     setCurrentSlide((prev) => Math.min(prev + 1, maxSlide));
   };
 
-  // Configuramos el swipe para permitir deslizar
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => handleNext(),
     onSwipedRight: () => handlePrev(),
@@ -179,7 +180,6 @@ export function VisitsPricing() {
           >
             <ChevronLeft size={arrowSize} className="text-green-600" />
           </button>
-          {/* Aplicamos los handlers de swipe al contenedor */}
           <div
             className="overflow-hidden"
             style={{ width: visibleWidth }}
@@ -238,7 +238,15 @@ export function VisitsPricing() {
                       </ul>
                     </CardContent>
                     <CardFooter className="p-6 pt-0">
-                      <Button className="bg-green-600 hover:bg-green-700 w-full text-white text-lg">
+                      <Button
+                        className="bg-green-600 hover:bg-green-700 w-full text-white text-lg"
+                        onClick={() =>
+                          // Redirige a la página de reserva, pasando el nombre del tipo de visita
+                          router.push(
+                            `/reservations/${encodeURIComponent(visit.name)}`
+                          )
+                        }
+                      >
                         Prenota
                       </Button>
                     </CardFooter>

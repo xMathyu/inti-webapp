@@ -1,10 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { onAuthStateChanged, User } from "firebase/auth";
+import { auth } from "../lib/firebase";
 
 /**
  * Función de ayuda para efectuar un scroll suave hacia una sección dado su id.
@@ -18,6 +21,14 @@ function scrollToSection(id: string) {
 
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return unsubscribe;
+  }, []);
 
   return (
     <motion.nav
@@ -44,7 +55,7 @@ export function Navbar() {
         </button>
 
         {/* Menú Desktop */}
-        <div className="hidden md:flex space-x-4">
+        <div className="hidden md:flex space-x-4 items-center">
           <Button
             variant="ghost"
             className="text-white hover:bg-green-500/20"
@@ -87,6 +98,29 @@ export function Navbar() {
           >
             Contatti
           </Button>
+          {user ? (
+            // Si el usuario está autenticado, muestra su nombre y un enlace a "Account"
+            <Button
+              variant="outline"
+              className="bg-transparent text-white border-white hover:bg-green-500/20"
+              asChild
+            >
+              <Link href="/account">
+                {user.displayName
+                  ? `Ciao, ${user.displayName}`
+                  : "Il tuo account"}
+              </Link>
+            </Button>
+          ) : (
+            // Si no está autenticado, muestra el botón para Accedi / Registrati
+            <Button
+              variant="outline"
+              className="bg-transparent text-white border-white hover:bg-green-500/20"
+              asChild
+            >
+              <Link href="/auth">Accedi / Registrati</Link>
+            </Button>
+          )}
         </div>
 
         {/* Botón Hamburger (visible en móvil) */}
@@ -172,6 +206,29 @@ export function Navbar() {
           >
             Contatti
           </Button>
+          {user ? (
+            <Button
+              variant="outline"
+              className="bg-transparent text-green-700 border-green-700 hover:bg-green-50"
+              onClick={() => setIsMobileMenuOpen(false)}
+              asChild
+            >
+              <Link href="/account">
+                {user.displayName
+                  ? `Ciao, ${user.displayName}`
+                  : "Il tuo account"}
+              </Link>
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              className="bg-transparent text-green-700 border-green-700 hover:bg-green-50"
+              onClick={() => setIsMobileMenuOpen(false)}
+              asChild
+            >
+              <Link href="/auth">Accedi / Registrati</Link>
+            </Button>
+          )}
         </motion.div>
       )}
     </motion.nav>
