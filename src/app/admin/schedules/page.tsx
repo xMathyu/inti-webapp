@@ -11,59 +11,59 @@ import {
 } from "firebase/firestore";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import VisitTypeCard, { VisitType } from "@/app/components/admin/VisitTypeCard";
-import VisitTypeForm, {
-  VisitTypeFormData,
-} from "@/app/components/admin/VisitTypeForm";
+import ScheduleCard, { Schedule } from "@/app/components/admin/ScheduleCard";
+import ScheduleForm, {
+  ScheduleFormData,
+} from "@/app/components/admin/ScheduleForm";
 import { toast } from "sonner";
 
 const db = getFirestore();
 
-export default function AdminVisitTypesPanel() {
-  const [visitTypes, setVisitTypes] = useState<VisitType[]>([]);
+export default function AdminSchedulesPanel() {
+  const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedVisit, setSelectedVisit] = useState<VisitType | null>(null);
+  const [selectedSchedule, setSelectedSchedule] = useState<Schedule | null>(
+    null
+  );
 
-  // Carga inicial (solo una vez)
-  const fetchVisitTypes = useCallback(async () => {
+  const fetchSchedules = useCallback(async () => {
     setLoading(true);
     try {
-      const querySnapshot = await getDocs(collection(db, "visitTypes"));
-      const types: VisitType[] = [];
+      const querySnapshot = await getDocs(collection(db, "schedules"));
+      const data: Schedule[] = [];
       querySnapshot.forEach((docSnap) => {
-        types.push({
+        data.push({
           id: docSnap.id,
-          ...(docSnap.data() as Omit<VisitType, "id">),
+          ...(docSnap.data() as Omit<Schedule, "id">),
         });
       });
-      setVisitTypes(types);
+      setSchedules(data);
     } catch {
-      toast.error("Error al cargar los tipos de visita.");
+      toast.error("Error al cargar los horarios de reserva.");
     }
     setLoading(false);
   }, []);
 
   useEffect(() => {
-    fetchVisitTypes();
-  }, [fetchVisitTypes]);
+    fetchSchedules();
+  }, [fetchSchedules]);
 
-  const handleSave = async (data: VisitTypeFormData) => {
+  const handleSave = async (data: ScheduleFormData) => {
     try {
-      const docId = selectedVisit ? selectedVisit.id : data.name;
-      await setDoc(doc(db, "visitTypes", docId), { ...data }, { merge: true });
-      toast.success("Tipo de visita guardado con éxito.");
+      const docId = selectedSchedule
+        ? selectedSchedule.id
+        : `${data.visitType}_${data.date}_${data.time}`;
+      await setDoc(doc(db, "schedules", docId), { ...data }, { merge: true });
+      toast.success("Horario guardado con éxito.");
       setModalOpen(false);
-      // Actualiza el estado local sin recargar todos los datos:
-      setVisitTypes((prev) => {
+      setSchedules((prev) => {
         const newItem = { id: docId, ...data };
-        if (selectedVisit) {
-          // Actualizar el elemento existente
+        if (selectedSchedule) {
           return prev.map((item) =>
-            item.id === selectedVisit.id ? newItem : item
+            item.id === selectedSchedule.id ? newItem : item
           );
         } else {
-          // Agregar el nuevo elemento (al inicio)
           return [newItem, ...prev];
         }
       });
@@ -76,12 +76,11 @@ export default function AdminVisitTypesPanel() {
     }
   };
 
-  const handleDelete = async (visit: VisitType) => {
+  const handleDelete = async (schedule: Schedule) => {
     try {
-      await deleteDoc(doc(db, "visitTypes", visit.id));
-      toast.success("Tipo de visita eliminado.");
-      // Eliminar el elemento del estado local
-      setVisitTypes((prev) => prev.filter((item) => item.id !== visit.id));
+      await deleteDoc(doc(db, "schedules", schedule.id));
+      toast.success("Horario eliminado.");
+      setSchedules((prev) => prev.filter((item) => item.id !== schedule.id));
     } catch (err: unknown) {
       const errorMessage =
         err instanceof Error ? err.message : "Error inesperado.";
@@ -89,18 +88,17 @@ export default function AdminVisitTypesPanel() {
     }
   };
 
-  const handleToggleActive = async (visit: VisitType) => {
+  const handleToggleActive = async (schedule: Schedule) => {
     try {
-      const newStatus = !visit.active;
+      const newStatus = !schedule.active;
       await setDoc(
-        doc(db, "visitTypes", visit.id),
+        doc(db, "schedules", schedule.id),
         { active: newStatus },
         { merge: true }
       );
-      // Actualiza el estado local para ese elemento sin mostrar toast
-      setVisitTypes((prev) =>
+      setSchedules((prev) =>
         prev.map((item) =>
-          item.id === visit.id ? { ...item, active: newStatus } : item
+          item.id === schedule.id ? { ...item, active: newStatus } : item
         )
       );
     } catch (err: unknown) {
@@ -111,12 +109,12 @@ export default function AdminVisitTypesPanel() {
   };
 
   const openModalForNew = () => {
-    setSelectedVisit(null);
+    setSelectedSchedule(null);
     setModalOpen(true);
   };
 
-  const openModalForEdit = (visit: VisitType) => {
-    setSelectedVisit(visit);
+  const openModalForEdit = (schedule: Schedule) => {
+    setSelectedSchedule(schedule);
     setModalOpen(true);
   };
 
@@ -125,7 +123,7 @@ export default function AdminVisitTypesPanel() {
       {/* Cabecera con título único y botón a la derecha */}
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold text-green-800">
-          Panel de Administración de Tipos de Visita
+          Panel de Administración de Horarios de Reserva
         </h1>
         <Button
           onClick={openModalForNew}
@@ -135,16 +133,15 @@ export default function AdminVisitTypesPanel() {
         </Button>
       </div>
 
-      <VisitTypeForm
+      <ScheduleForm
         initialData={
-          selectedVisit
+          selectedSchedule
             ? {
-                name: selectedVisit.name,
-                price: selectedVisit.price,
-                frequency: selectedVisit.frequency,
-                shortDescription: selectedVisit.shortDescription,
-                features: selectedVisit.features,
-                active: selectedVisit.active,
+                visitType: selectedSchedule.visitType,
+                date: selectedSchedule.date,
+                time: selectedSchedule.time,
+                availableSlots: selectedSchedule.availableSlots,
+                active: selectedSchedule.active,
               }
             : undefined
         }
@@ -159,10 +156,10 @@ export default function AdminVisitTypesPanel() {
         <p>Cargando...</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {visitTypes.map((visit) => (
-            <VisitTypeCard
-              key={visit.id}
-              visit={visit}
+          {schedules.map((schedule) => (
+            <ScheduleCard
+              key={schedule.id}
+              schedule={schedule}
               onEdit={openModalForEdit}
               onDelete={handleDelete}
               onToggleActive={handleToggleActive}

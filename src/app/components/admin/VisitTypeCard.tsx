@@ -1,7 +1,17 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export interface VisitType {
   id: string;
@@ -26,8 +36,10 @@ export default function VisitTypeCard({
   onDelete,
   onToggleActive,
 }: VisitTypeCardProps) {
+  const [confirmOpen, setConfirmOpen] = useState(false);
+
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 transition-transform transform hover:-translate-y-1 hover:shadow-2xl">
+    <div className="bg-white rounded-lg shadow-lg p-6 transition-transform transform hover:-translate-y-1 hover:shadow-2xl flex flex-col h-full">
       <div className="mb-3">
         <h3 className="text-2xl font-bold text-green-800">{visit.name}</h3>
         <p className="text-green-700 font-medium">
@@ -41,7 +53,7 @@ export default function VisitTypeCard({
           <li key={idx}>{feat}</li>
         ))}
       </ul>
-      <div className="flex items-center justify-between">
+      <div className="mt-auto flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <Switch
             id={`switch-${visit.id}`}
@@ -56,9 +68,33 @@ export default function VisitTypeCard({
           <Button variant="ghost" onClick={() => onEdit(visit)}>
             Editar
           </Button>
-          <Button variant="destructive" onClick={() => onDelete(visit)}>
-            Eliminar
-          </Button>
+          <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+            <DialogTrigger asChild>
+              <Button variant="destructive">Eliminar</Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Confirmar Eliminación</DialogTitle>
+                <DialogDescription>
+                  ¿Estás seguro de que deseas eliminar este tipo de visita?
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <Button variant="ghost" onClick={() => setConfirmOpen(false)}>
+                  Cancelar
+                </Button>
+                <Button
+                  variant="destructive"
+                  onClick={() => {
+                    onDelete(visit);
+                    setConfirmOpen(false);
+                  }}
+                >
+                  Eliminar
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </div>

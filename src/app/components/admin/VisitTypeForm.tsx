@@ -52,6 +52,7 @@ export default function VisitTypeForm({
   const [loading, setLoading] = useState(false);
   const [localError, setLocalError] = useState("");
 
+  // Si cambia initialData, actualizamos los campos
   useEffect(() => {
     if (initialData) {
       setName(initialData.name);
@@ -60,7 +61,12 @@ export default function VisitTypeForm({
       setShortDescription(initialData.shortDescription);
       setFeatures(initialData.features.join("\n"));
       setActive(initialData.active);
-    } else {
+    }
+  }, [initialData]);
+
+  // Si se abre el modal en modo "Agregar" (sin initialData), reiniciamos el formulario
+  useEffect(() => {
+    if (isOpen && !initialData) {
       setName("");
       setPrice("");
       setFrequency("");
@@ -68,7 +74,7 @@ export default function VisitTypeForm({
       setFeatures("");
       setActive(true);
     }
-  }, [initialData]);
+  }, [isOpen, initialData]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
