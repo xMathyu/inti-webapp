@@ -6,8 +6,13 @@ import { Switch } from "@/components/ui/switch";
 export interface Schedule {
   id: string;
   visitType: string;
-  date: string;
-  time: string;
+  mode: "individual" | "bulk";
+  // Para individual:
+  date?: string; // YYYY-MM-DD
+  time?: string; // HH:MM
+  // Para bulk (cada documento representa un día):
+  startTime?: string;
+  endTime?: string;
   availableSlots: number;
   active: boolean;
 }
@@ -31,9 +36,22 @@ export default function ScheduleCard({
         <h3 className="text-2xl font-bold text-green-800">
           {schedule.visitType}
         </h3>
-        <p className="text-green-700">
-          {schedule.date} - {schedule.time}
-        </p>
+        {schedule.mode === "bulk" ? (
+          <>
+            {/* En bulk, cada documento tiene una fecha específica (guardada en "date") */}
+            <p className="text-green-700">Fecha: {schedule.date}</p>
+            <p className="text-green-700">
+              De {schedule.startTime} a {schedule.endTime}
+            </p>
+            <span className="inline-block mt-2 px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">
+              Bulk
+            </span>
+          </>
+        ) : (
+          <p className="text-green-700">
+            {schedule.date} - {schedule.time}
+          </p>
+        )}
         <p className="text-gray-600 mt-2">Cupos: {schedule.availableSlots}</p>
       </div>
       <div className="mt-auto flex items-center justify-between">

@@ -7,7 +7,6 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-  DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,10 +15,19 @@ import { getFirestore, collection, getDocs } from "firebase/firestore";
 
 const db = getFirestore();
 
+export type ScheduleMode = "individual" | "bulk";
+
 export interface ScheduleFormData {
+  mode: ScheduleMode;
   visitType: string;
-  date: string; // "YYYY-MM-DD"
-  time: string; // "HH:MM"
+  // Para individual:
+  date?: string; // YYYY-MM-DD
+  time?: string; // HH:MM
+  // Para bulk:
+  startDate?: string;
+  endDate?: string;
+  startTime?: string;
+  endTime?: string;
   availableSlots: number;
   active: boolean;
 }
@@ -42,10 +50,17 @@ export default function ScheduleForm({
   onOpenChange,
   onSave,
 }: ScheduleFormProps) {
-  // Campos del formulario
+  // Si se edita un horario bulk, queremos mostrarlo en modo individual
+  const [mode, setMode] = useState<ScheduleMode>(
+    initialData?.mode || "individual"
+  );
   const [visitType, setVisitType] = useState(initialData?.visitType || "");
   const [date, setDate] = useState(initialData?.date || "");
   const [time, setTime] = useState(initialData?.time || "");
+  const [startDate, setStartDate] = useState(initialData?.startDate || "");
+  const [endDate, setEndDate] = useState(initialData?.endDate || "");
+  const [startTime, setStartTime] = useState(initialData?.startTime || "");
+  const [endTime, setEndTime] = useState(initialData?.endTime || "");
   const [availableSlots, setAvailableSlots] = useState(
     initialData ? initialData.availableSlots.toString() : ""
   );
@@ -59,18 +74,13 @@ export default function ScheduleForm({
   );
 
   useEffect(() => {
-    // Consulta a Firestore para obtener las opciones de tipos de visita
     const fetchVisitTypesOptions = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "visitTypes"));
         const options: VisitTypeOption[] = [];
         querySnapshot.forEach((docSnap) => {
           const data = docSnap.data();
-          // Asumimos que cada documento tiene un campo "name"
-          options.push({
-            id: docSnap.id,
-            name: data.name,
-          });
+          options.push({ id: docSnap.id, name: data.name });
         });
         setVisitTypesOptions(options);
       } catch (error) {
@@ -80,20 +90,45 @@ export default function ScheduleForm({
     fetchVisitTypesOptions();
   }, []);
 
-  // Reinicia o actualiza el formulario cuando se abra el modal
   useEffect(() => {
     if (isOpen && !initialData) {
+      setMode("individual");
       setVisitType("");
       setDate("");
       setTime("");
+      setStartDate("");
+      setEndDate("");
+      setStartTime("");
+      setEndTime("");
       setAvailableSlots("");
       setActive(true);
+      setLocalError("");
     } else if (initialData) {
-      setVisitType(initialData.visitType);
-      setDate(initialData.date);
-      setTime(initialData.time);
-      setAvailableSlots(initialData.availableSlots.toString());
-      setActive(initialData.active);
+      // Si el horario fue creado en bulk, lo convertimos a individual para edición
+      if (initialData.mode === "bulk") {
+        setMode("individual");
+        setVisitType(initialData.visitType);
+        setDate(initialData.date || "");
+        setTime(initialData.startTime || ""); // Usamos startTime como la hora de reserva
+        setAvailableSlots(initialData.availableSlots.toString());
+        setActive(initialData.active);
+        // Limpia los campos bulk
+        setStartDate("");
+        setEndDate("");
+        setStartTime("");
+        setEndTime("");
+      } else {
+        setMode(initialData.mode);
+        setVisitType(initialData.visitType);
+        setDate(initialData.date || "");
+        setTime(initialData.time || "");
+        setAvailableSlots(initialData.availableSlots.toString());
+        setActive(initialData.active);
+        setStartDate(initialData.startDate || "");
+        setEndDate(initialData.endDate || "");
+        setStartTime(initialData.startTime || "");
+        setEndTime(initialData.endTime || "");
+      }
     }
   }, [initialData, isOpen]);
 
@@ -107,12 +142,32 @@ export default function ScheduleForm({
       setLoading(false);
       return;
     }
+    if (!visitType) {
+      setLocalError("Seleccione un tipo de visita.");
+      setLoading(false);
+      return;
+    }
+    if (mode === "individual") {
+      if (!date || !time) {
+        setLocalError("Complete la fecha y la hora.");
+        setLoading(false);
+        return;
+      }
+    } else {
+      if (!startDate || !endDate || !startTime || !endTime) {
+        setLocalError("Complete el rango de fechas y horas.");
+        setLoading(false);
+        return;
+      }
+    }
     const formData: ScheduleFormData = {
+      mode,
       visitType,
-      date,
-      time,
       availableSlots: slots,
       active,
+      ...(mode === "individual"
+        ? { date, time }
+        : { startDate, endDate, startTime, endTime }),
     };
     try {
       await onSave(formData);
@@ -137,9 +192,26 @@ export default function ScheduleForm({
               : "Agregar Horario de Reserva"}
           </DialogTitle>
           <DialogDescription>
-            Ingresa el tipo de visita, día, hora y cupos disponibles.
+            Ingresa la información del horario.
           </DialogDescription>
         </DialogHeader>
+        {/* Selector de modo */}
+        <div className="mb-4">
+          <Label htmlFor="mode" className="block text-green-800 mb-1">
+            Modo:
+          </Label>
+          <select
+            id="mode"
+            value={mode}
+            onChange={(e) =>
+              setMode(e.target.value as ScheduleFormData["mode"])
+            }
+            className="border rounded p-2 w-full"
+          >
+            <option value="individual">Individual</option>
+            <option value="bulk">En Bloque</option>
+          </select>
+        </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <Label htmlFor="visitType" className="block text-green-800">
@@ -160,30 +232,87 @@ export default function ScheduleForm({
               ))}
             </select>
           </div>
-          <div>
-            <Label htmlFor="date" className="block text-green-800">
-              Fecha:
-            </Label>
-            <Input
-              id="date"
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <Label htmlFor="time" className="block text-green-800">
-              Hora:
-            </Label>
-            <Input
-              id="time"
-              type="time"
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
-              required
-            />
-          </div>
+          {mode === "individual" ? (
+            <>
+              <div>
+                <Label htmlFor="date" className="block text-green-800">
+                  Fecha:
+                </Label>
+                <Input
+                  id="date"
+                  type="date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <Label htmlFor="time" className="block text-green-800">
+                  Hora:
+                </Label>
+                <Input
+                  id="time"
+                  type="time"
+                  value={time}
+                  onChange={(e) => setTime(e.target.value)}
+                  required
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <div>
+                <Label htmlFor="startDate" className="block text-green-800">
+                  Fecha de Inicio:
+                </Label>
+                <Input
+                  id="startDate"
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <Label htmlFor="endDate" className="block text-green-800">
+                  Fecha de Fin:
+                </Label>
+                <Input
+                  id="endDate"
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="startTime" className="block text-green-800">
+                    Hora de Inicio:
+                  </Label>
+                  <Input
+                    id="startTime"
+                    type="time"
+                    value={startTime}
+                    onChange={(e) => setStartTime(e.target.value)}
+                    required
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="endTime" className="block text-green-800">
+                    Hora de Fin:
+                  </Label>
+                  <Input
+                    id="endTime"
+                    type="time"
+                    value={endTime}
+                    onChange={(e) => setEndTime(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+            </>
+          )}
           <div>
             <Label htmlFor="availableSlots" className="block text-green-800">
               Cupos Disponibles:
@@ -210,15 +339,15 @@ export default function ScheduleForm({
             />
           </div>
           {localError && <p className="text-red-500">{localError}</p>}
-          <DialogFooter>
+          <div className="flex justify-end">
             <Button
               type="submit"
               disabled={loading}
               className="bg-green-600 hover:bg-green-700 text-white"
             >
-              {initialData ? "Actualizar" : "Crear"}
+              {loading ? "Creando..." : "Guardar Horario"}
             </Button>
-          </DialogFooter>
+          </div>
         </form>
       </DialogContent>
     </Dialog>

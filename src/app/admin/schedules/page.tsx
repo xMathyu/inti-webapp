@@ -51,22 +51,58 @@ export default function AdminSchedulesPanel() {
 
   const handleSave = async (data: ScheduleFormData) => {
     try {
-      const docId = selectedSchedule
-        ? selectedSchedule.id
-        : `${data.visitType}_${data.date}_${data.time}`;
-      await setDoc(doc(db, "schedules", docId), { ...data }, { merge: true });
-      toast.success("Horario guardado con éxito.");
-      setModalOpen(false);
-      setSchedules((prev) => {
-        const newItem = { id: docId, ...data };
-        if (selectedSchedule) {
-          return prev.map((item) =>
-            item.id === selectedSchedule.id ? newItem : item
+      if (data.mode === "individual") {
+        const docId = selectedSchedule
+          ? selectedSchedule.id
+          : `${data.visitType}_${data.date}_${data.time}`;
+        await setDoc(doc(db, "schedules", docId), { ...data }, { merge: true });
+        toast.success("Horario guardado con éxito.");
+        setModalOpen(false);
+        setSchedules((prev) => {
+          const newItem = { id: docId, ...data } as Schedule;
+          if (selectedSchedule) {
+            return prev.map((item) =>
+              item.id === selectedSchedule.id ? newItem : item
+            );
+          } else {
+            return [newItem, ...prev];
+          }
+        });
+      } else {
+        // Bulk mode: Generar un horario por cada día del rango
+        const start = new Date(data.startDate!);
+        const end = new Date(data.endDate!);
+        if (start > end) {
+          throw new Error(
+            "La fecha de inicio debe ser anterior a la fecha de fin."
           );
-        } else {
-          return [newItem, ...prev];
         }
-      });
+        const dates: string[] = [];
+        const current = new Date(start);
+        while (current <= end) {
+          dates.push(current.toISOString().split("T")[0]);
+          current.setDate(current.getDate() + 1);
+        }
+        for (const dateStr of dates) {
+          const docId = `${data.visitType}_${dateStr}_${data.startTime}-${data.endTime}`;
+          await setDoc(
+            doc(db, "schedules", docId),
+            {
+              visitType: data.visitType,
+              mode: "bulk",
+              date: dateStr,
+              startTime: data.startTime,
+              endTime: data.endTime,
+              availableSlots: data.availableSlots,
+              active: data.active,
+            },
+            { merge: true }
+          );
+        }
+        toast.success("Horarios creados con éxito.");
+        setModalOpen(false);
+        fetchSchedules();
+      }
     } catch (err: unknown) {
       if (err instanceof Error) {
         toast.error(err.message || "Error inesperado.");
@@ -137,9 +173,12 @@ export default function AdminSchedulesPanel() {
         initialData={
           selectedSchedule
             ? {
+                mode: selectedSchedule.mode,
                 visitType: selectedSchedule.visitType,
                 date: selectedSchedule.date,
                 time: selectedSchedule.time,
+                startTime: selectedSchedule.startTime,
+                endTime: selectedSchedule.endTime,
                 availableSlots: selectedSchedule.availableSlots,
                 active: selectedSchedule.active,
               }

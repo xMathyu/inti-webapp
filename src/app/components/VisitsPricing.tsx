@@ -16,7 +16,6 @@ import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 
-// Hook para obtener dimensiones de la ventana
 function useWindowSize() {
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
   useEffect(() => {
@@ -36,14 +35,12 @@ export function VisitsPricing() {
   const { width } = useWindowSize();
   const router = useRouter();
 
-  // Estados para el slider
   const [visibleCards, setVisibleCards] = useState(3);
   const [cardWidth, setCardWidth] = useState(314);
   const [arrowSize, setArrowSize] = useState(24);
   const [gap, setGap] = useState(32);
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Estado para los datos obtenidos de Firestore
   interface Visit {
     id: string;
     name: string;
@@ -70,7 +67,6 @@ export function VisitsPricing() {
     }
   }, [width]);
 
-  // Consulta a Firestore para obtener los tipos de visita
   useEffect(() => {
     const fetchVisits = async () => {
       setLoading(true);
@@ -93,7 +89,6 @@ export function VisitsPricing() {
     fetchVisits();
   }, []);
 
-  // Filtra solo los tipos de visita activos
   const activeVisits = visits.filter((visit) => visit.active);
 
   const totalCards = activeVisits.length;
@@ -195,8 +190,9 @@ export function VisitsPricing() {
                       <Button
                         className="bg-green-600 hover:bg-green-700 w-full text-white text-lg"
                         onClick={() =>
+                          // Redirige a /reservations con el query param ?type=...
                           router.push(
-                            `/reservations/${encodeURIComponent(visit.name)}`
+                            `/reservations?type=${encodeURIComponent(visit.id)}`
                           )
                         }
                       >
