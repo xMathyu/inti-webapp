@@ -1,23 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-
-/**
- * Función de ayuda para efectuar un scroll suave hacia una sección dado su id.
- */
-function scrollToSection(id: string) {
-  const element = document.getElementById(id);
-  if (element) {
-    element.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-}
+import { onAuthStateChanged, User } from "firebase/auth";
+import { auth } from "../lib/firebase";
 
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return unsubscribe;
+  }, []);
 
   return (
     <motion.nav
@@ -26,11 +27,10 @@ export function Navbar() {
       transition={{ duration: 0.8, ease: "easeOut" }}
       className="h-16 shadow-md bg-gradient-to-r from-green-700 to-green-600 relative"
     >
-      {/* Contenedor para el contenido con padding solo a la derecha en móvil */}
       <div className="max-w-7xl mx-auto h-full flex items-center justify-between pl-0 pr-4 md:px-8">
-        {/* Logo: En móvil estará pegado a la izquierda */}
-        <button
-          onClick={() => scrollToSection("hero")}
+        {/* Logo: Siempre redirige al Home con ancla "#hero" */}
+        <Link
+          href="/#hero"
           className="h-full flex items-center focus:outline-none"
         >
           <div className="relative h-full w-32">
@@ -41,55 +41,52 @@ export function Navbar() {
               style={{ objectFit: "contain", padding: "0.2rem" }}
             />
           </div>
-        </button>
+        </Link>
 
         {/* Menú Desktop */}
-        <div className="hidden md:flex space-x-4">
-          <Button
-            variant="ghost"
-            className="text-white hover:bg-green-500/20"
-            onClick={() => scrollToSection("hero")}
-          >
+        <div className="hidden md:flex space-x-4 items-center">
+          <Link href="/#hero" className="text-white hover:bg-green-500/20">
             Inizio
-          </Button>
-          <Button
-            variant="ghost"
-            className="text-white hover:bg-green-500/20"
-            onClick={() => scrollToSection("about")}
-          >
+          </Link>
+          <Link href="/#about" className="text-white hover:bg-green-500/20">
             Chi siamo
-          </Button>
-          <Button
-            variant="ghost"
-            className="text-white hover:bg-green-500/20"
-            onClick={() => scrollToSection("gallery")}
-          >
+          </Link>
+          <Link href="/#gallery" className="text-white hover:bg-green-500/20">
             Galleria
-          </Button>
-          <Button
-            variant="ghost"
-            className="text-white hover:bg-green-500/20"
-            onClick={() => scrollToSection("guides")}
-          >
+          </Link>
+          <Link href="/#guides" className="text-white hover:bg-green-500/20">
             Guide
-          </Button>
-          <Button
-            variant="ghost"
-            className="text-white hover:bg-green-500/20"
-            onClick={() => scrollToSection("tariffe")}
-          >
+          </Link>
+          <Link href="/#tariffe" className="text-white hover:bg-green-500/20">
             Tariffe
-          </Button>
-          <Button
-            variant="ghost"
-            className="text-white hover:bg-green-500/20"
-            onClick={() => scrollToSection("contact")}
-          >
+          </Link>
+          <Link href="/#contact" className="text-white hover:bg-green-500/20">
             Contatti
-          </Button>
+          </Link>
+          {user ? (
+            <Button
+              variant="outline"
+              className="bg-transparent text-white border-white hover:bg-green-500/20"
+              asChild
+            >
+              <Link href="/account">
+                {user.displayName
+                  ? `Ciao, ${user.displayName}`
+                  : "Il tuo account"}
+              </Link>
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              className="bg-transparent text-white border-white hover:bg-green-500/20"
+              asChild
+            >
+              <Link href="/auth">Accedi / Registrati</Link>
+            </Button>
+          )}
         </div>
 
-        {/* Botón Hamburger (visible en móvil) */}
+        {/* Botón Hamburger (Mobile) */}
         <button
           className="md:hidden focus:outline-none text-white"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -112,66 +109,71 @@ export function Navbar() {
           transition={{ duration: 0.3 }}
           className="md:hidden absolute top-16 left-0 w-full bg-white shadow-md flex flex-col items-center space-y-4 py-4 z-50"
         >
-          <Button
-            variant="ghost"
+          <Link
+            href="/#hero"
             className="text-green-700 hover:bg-green-50"
-            onClick={() => {
-              scrollToSection("hero");
-              setIsMobileMenuOpen(false);
-            }}
+            onClick={() => setIsMobileMenuOpen(false)}
           >
             Inizio
-          </Button>
-          <Button
-            variant="ghost"
+          </Link>
+          <Link
+            href="/#about"
             className="text-green-700 hover:bg-green-50"
-            onClick={() => {
-              scrollToSection("about");
-              setIsMobileMenuOpen(false);
-            }}
+            onClick={() => setIsMobileMenuOpen(false)}
           >
             Chi siamo
-          </Button>
-          <Button
-            variant="ghost"
+          </Link>
+          <Link
+            href="/#gallery"
             className="text-green-700 hover:bg-green-50"
-            onClick={() => {
-              scrollToSection("gallery");
-              setIsMobileMenuOpen(false);
-            }}
+            onClick={() => setIsMobileMenuOpen(false)}
           >
             Galleria
-          </Button>
-          <Button
-            variant="ghost"
+          </Link>
+          <Link
+            href="/#guides"
             className="text-green-700 hover:bg-green-50"
-            onClick={() => {
-              scrollToSection("guides");
-              setIsMobileMenuOpen(false);
-            }}
+            onClick={() => setIsMobileMenuOpen(false)}
           >
             Guide
-          </Button>
-          <Button
-            variant="ghost"
+          </Link>
+          <Link
+            href="/#tariffe"
             className="text-green-700 hover:bg-green-50"
-            onClick={() => {
-              scrollToSection("tariffe");
-              setIsMobileMenuOpen(false);
-            }}
+            onClick={() => setIsMobileMenuOpen(false)}
           >
             Tariffe
-          </Button>
-          <Button
-            variant="ghost"
+          </Link>
+          <Link
+            href="/#contact"
             className="text-green-700 hover:bg-green-50"
-            onClick={() => {
-              scrollToSection("contact");
-              setIsMobileMenuOpen(false);
-            }}
+            onClick={() => setIsMobileMenuOpen(false)}
           >
             Contatti
-          </Button>
+          </Link>
+          {user ? (
+            <Button
+              variant="outline"
+              className="bg-transparent text-green-700 border-green-700 hover:bg-green-50"
+              onClick={() => setIsMobileMenuOpen(false)}
+              asChild
+            >
+              <Link href="/account">
+                {user.displayName
+                  ? `Ciao, ${user.displayName}`
+                  : "Il tuo account"}
+              </Link>
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              className="bg-transparent text-green-700 border-green-700 hover:bg-green-50"
+              onClick={() => setIsMobileMenuOpen(false)}
+              asChild
+            >
+              <Link href="/auth">Accedi / Registrati</Link>
+            </Button>
+          )}
         </motion.div>
       )}
     </motion.nav>

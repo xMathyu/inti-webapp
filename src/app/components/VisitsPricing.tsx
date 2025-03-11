@@ -13,8 +13,9 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Check, ChevronLeft, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
 
-// Hook para obtener dimensiones de la ventana
 function useWindowSize() {
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
   useEffect(() => {
@@ -28,108 +29,35 @@ function useWindowSize() {
   return windowSize;
 }
 
-// Datos de visitas y tarifas
-const visits = [
-  {
-    name: "Visita guidata",
-    price: 10,
-    frequency: "per visita",
-    shortDescription: "Esperienza completa con video e degustazione di tè.",
-    features: [
-      "Introduzione con video proiezione del ciclo vitale delle farfalle",
-      "Visita del parco",
-      "Visita dell'allevamento di bruchi e di farfalle",
-      "Inclusa una tazza di tè caldo/freddo",
-      "Tempo: 2 ore",
-    ],
-  },
-  {
-    name: "Visita guidata con laboratorio",
-    price: 20,
-    frequency: "per visita",
-    shortDescription: "Visita con laboratorio creativo e educativo.",
-    features: [
-      "Introduzione con video proiezione del ciclo vitale delle farfalle",
-      "Visita del parco",
-      "Visita dell'allevamento di bruchi e di farfalle",
-      "Laboratorio di tessitura e creazione di mandala",
-      "Laboratorio di cucina",
-      "Laboratorio di tisaneria",
-      "Laboratorio piante tintorie",
-      "Laboratorio di semina",
-      "Tempo: 4 ore",
-      "Per info sulle dinamiche dei laboratori: ass.inticastelgrande@gmail.com",
-    ],
-  },
-  {
-    name: "Visita guidata + colazione",
-    price: 15,
-    frequency: "per visita",
-    shortDescription: "Visita completa con colazione a scelta.",
-    features: [
-      "Introduzione con video proiezione del ciclo vitale delle farfalle",
-      "Visita del parco",
-      "Visita dell'allevamento di bruchi e di farfalle",
-      "Colazione: opzione 1: pancake + caffè/succo/acqua; opzione 2: club sandwich/pizza + caffè/succo/acqua",
-    ],
-  },
-  {
-    name: "Visita guidata + pranzo",
-    price: 25,
-    frequency: "per visita",
-    shortDescription: "Visita completa con pranzo a base di prodotti locali.",
-    features: [
-      "Introduzione con video proiezione del ciclo vitale delle farfalle",
-      "Visita del parco",
-      "Visita dell'allevamento di bruchi e di farfalle",
-      "Pranzo con alimenti stagionali dell'orto, prodotti da aziende agricole lucane",
-      "Contattare: ass.inticastelgrande@gmail.com per definire il menù",
-    ],
-  },
-  {
-    name: "Visita guidata + laboratorio + pranzo",
-    price: 30,
-    frequency: "per visita",
-    shortDescription:
-      "Visita completa con laboratorio a scelta e pranzo locale.",
-    features: [
-      "Introduzione con video proiezione del ciclo vitale delle farfalle",
-      "Visita del parco",
-      "Visita dell'allevamento di bruchi e di farfalle",
-      "Laboratorio a scelta",
-      "Pranzo con alimenti stagionali dell'orto, prodotti da aziende agricole lucane",
-      "Contattare: ass.inticastelgrande@gmail.com per definire il menù",
-    ],
-  },
-  {
-    name: "Visita guidata + degustazione tè e tisane",
-    price: 12,
-    frequency: "per visita",
-    shortDescription: "Visita completa con degustazione di tè e tisane.",
-    features: [
-      "Introduzione con video proiezione del ciclo vitale delle farfalle",
-      "Visita del parco",
-      "Visita dell'allevamento di bruchi e di farfalle",
-    ],
-  },
-];
+const db = getFirestore();
 
 export function VisitsPricing() {
   const { width } = useWindowSize();
+  const router = useRouter();
 
-  // Estados para adaptar el diseño según el ancho de la ventana
   const [visibleCards, setVisibleCards] = useState(3);
   const [cardWidth, setCardWidth] = useState(314);
   const [arrowSize, setArrowSize] = useState(24);
   const [gap, setGap] = useState(32);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  interface Visit {
+    id: string;
+    name: string;
+    shortDescription: string;
+    price: number;
+    frequency: string;
+    features: string[];
+    active: boolean;
+  }
+  const [visits, setVisits] = useState<Visit[]>([]);
+  const [, setLoading] = useState(true);
 
   useEffect(() => {
     if (width < 768) {
       setVisibleCards(1);
       setArrowSize(16);
       setGap(16);
-      // Ajusta el ancho de la tarjeta para que se muestre completa en mobile,
-      // restando el espacio necesario para las flechas (por ejemplo, 120px)
       setCardWidth(width - 120);
     } else {
       setVisibleCards(3);
@@ -139,10 +67,33 @@ export function VisitsPricing() {
     }
   }, [width]);
 
-  const totalCards = visits.length;
+  useEffect(() => {
+    const fetchVisits = async () => {
+      setLoading(true);
+      try {
+        const querySnapshot = await getDocs(collection(db, "visitTypes"));
+        const data: Visit[] = [];
+        querySnapshot.forEach((docSnap) => {
+          const visit = docSnap.data() as Omit<Visit, "id">;
+          data.push({
+            id: docSnap.id,
+            ...visit,
+          });
+        });
+        setVisits(data);
+      } catch (error) {
+        console.error("Error al cargar los tipos de visita:", error);
+      }
+      setLoading(false);
+    };
+    fetchVisits();
+  }, []);
+
+  const activeVisits = visits.filter((visit) => visit.active);
+
+  const totalCards = activeVisits.length;
   const visibleWidth = visibleCards * cardWidth + (visibleCards - 1) * gap;
   const maxSlide = totalCards - visibleCards;
-  const [currentSlide, setCurrentSlide] = useState(0);
 
   const handlePrev = () => {
     setCurrentSlide((prev) => Math.max(prev - 1, 0));
@@ -152,7 +103,6 @@ export function VisitsPricing() {
     setCurrentSlide((prev) => Math.min(prev + 1, maxSlide));
   };
 
-  // Configuramos el swipe para permitir deslizar
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => handleNext(),
     onSwipedRight: () => handlePrev(),
@@ -179,7 +129,6 @@ export function VisitsPricing() {
           >
             <ChevronLeft size={arrowSize} className="text-green-600" />
           </button>
-          {/* Aplicamos los handlers de swipe al contenedor */}
           <div
             className="overflow-hidden"
             style={{ width: visibleWidth }}
@@ -192,13 +141,16 @@ export function VisitsPricing() {
               }}
               className="flex"
             >
-              {visits.map((visit, idx) => (
+              {activeVisits.map((visit) => (
                 <div
-                  key={idx}
+                  key={visit.id}
                   className="flex-shrink-0"
                   style={{
                     width: cardWidth,
-                    marginRight: idx === totalCards - 1 ? 0 : gap,
+                    marginRight:
+                      visit.id === activeVisits[activeVisits.length - 1].id
+                        ? 0
+                        : gap,
                   }}
                 >
                   <Card className="bg-white shadow-lg border border-gray-200 flex flex-col rounded-lg overflow-hidden">
@@ -218,19 +170,16 @@ export function VisitsPricing() {
                         </span>
                       </div>
                       <ul className="space-y-2 mt-4">
-                        {visit.features.map((feature, fidx) => (
+                        {visit.features.map((feature: string, idx: number) => (
                           <li
-                            key={fidx}
+                            key={idx}
                             className="flex items-start text-gray-600 leading-relaxed"
                           >
                             <Check
                               className="text-green-500 mr-2 mt-1"
                               size={18}
                             />
-                            <span
-                              className="text-sm md:text-base"
-                              style={{ textAlign: "justify" }}
-                            >
+                            <span className="text-sm md:text-base">
                               {feature}
                             </span>
                           </li>
@@ -238,7 +187,15 @@ export function VisitsPricing() {
                       </ul>
                     </CardContent>
                     <CardFooter className="p-6 pt-0">
-                      <Button className="bg-green-600 hover:bg-green-700 w-full text-white text-lg">
+                      <Button
+                        className="bg-green-600 hover:bg-green-700 w-full text-white text-lg"
+                        onClick={() =>
+                          // Redirige a /reservations con el query param ?type=...
+                          router.push(
+                            `/reservations?type=${encodeURIComponent(visit.id)}`
+                          )
+                        }
+                      >
                         Prenota
                       </Button>
                     </CardFooter>
