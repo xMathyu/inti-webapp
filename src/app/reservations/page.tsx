@@ -1,7 +1,6 @@
-// /app/reservations/page.tsx
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { Suspense, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
@@ -29,7 +28,7 @@ interface Schedule {
   active: boolean;
 }
 
-export default function Page() {
+const ReservationsPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -37,9 +36,7 @@ export default function Page() {
   const [date, setDate] = useState("");
   const [numPeople, setNumPeople] = useState(1);
 
-  const [visitTypesOptions, setVisitTypesOptions] = useState<VisitTypeOption[]>(
-    []
-  );
+  const [visitTypesOptions, setVisitTypesOptions] = useState<VisitTypeOption[]>([]);
   const [availableSchedules, setAvailableSchedules] = useState<Schedule[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -228,4 +225,12 @@ export default function Page() {
       )}
     </div>
   );
-}
+};
+
+const ReservationsPageWrapper = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <ReservationsPage />
+  </Suspense>
+);
+
+export default ReservationsPageWrapper;
