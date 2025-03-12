@@ -46,7 +46,6 @@ export default function AuthPage() {
           await updateProfile(auth.currentUser, {
             displayName: `${firstName} ${lastName}`,
           });
-          // Aquí podrías guardar el teléfono en Firestore u otra base de datos.
         }
         router.push("/");
       } catch (err: unknown) {
