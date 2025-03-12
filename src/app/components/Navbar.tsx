@@ -1,17 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { onAuthStateChanged, User } from "firebase/auth";
+import { onAuthStateChanged, signOut, User } from "firebase/auth";
 import { auth } from "../lib/firebase";
 
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const dropdownContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -19,6 +21,31 @@ export function Navbar() {
     });
     return unsubscribe;
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownContainerRef.current &&
+        !dropdownContainerRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      setIsDropdownOpen(false);
+    } catch (error) {
+      console.error("Error al cerrar sesión", error);
+    }
+  };
 
   return (
     <motion.nav
@@ -64,17 +91,41 @@ export function Navbar() {
             Contatti
           </Link>
           {user ? (
-            <Button
-              variant="outline"
-              className="bg-transparent text-white border-white hover:bg-green-500/20"
-              asChild
-            >
-              <Link href="/account">
+            <div ref={dropdownContainerRef} className="relative">
+              <Button
+                variant="outline"
+                className="bg-transparent text-white border-white hover:bg-green-500/20"
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              >
                 {user.displayName
                   ? `Ciao, ${user.displayName}`
                   : "Il tuo account"}
-              </Link>
-            </Button>
+              </Button>
+              {isDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md py-2 z-50">
+                  <Link
+                    href="/account"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    onClick={() => setIsDropdownOpen(false)}
+                  >
+                    Il mio account
+                  </Link>
+                  <Link
+                    href="/my-entries"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    onClick={() => setIsDropdownOpen(false)}
+                  >
+                    Le mie voci
+                  </Link>
+                  <button
+                    onClick={handleSignOut}
+                    className="w-full text-left px-4 py-2 text-white bg-red-500 hover:bg-red-600"
+                  >
+                    Esci
+                  </button>
+                </div>
+              )}
+            </div>
           ) : (
             <Button
               variant="outline"
@@ -152,18 +203,53 @@ export function Navbar() {
             Contatti
           </Link>
           {user ? (
-            <Button
-              variant="outline"
-              className="bg-transparent text-green-700 border-green-700 hover:bg-green-50"
-              onClick={() => setIsMobileMenuOpen(false)}
-              asChild
+            <div
+              ref={dropdownContainerRef}
+              className="w-full flex flex-col items-center"
             >
-              <Link href="/account">
+              <Button
+                variant="outline"
+                className="bg-transparent text-green-700 border-green-700 hover:bg-green-50 w-full"
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              >
                 {user.displayName
                   ? `Ciao, ${user.displayName}`
                   : "Il tuo account"}
-              </Link>
-            </Button>
+              </Button>
+              {isDropdownOpen && (
+                <div className="w-full bg-white shadow-lg rounded-md py-2 z-50">
+                  <Link
+                    href="/account"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    onClick={() => {
+                      setIsDropdownOpen(false);
+                      setIsMobileMenuOpen(false);
+                    }}
+                  >
+                    Il mio account
+                  </Link>
+                  <Link
+                    href="/my-entries"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    onClick={() => {
+                      setIsDropdownOpen(false);
+                      setIsMobileMenuOpen(false);
+                    }}
+                  >
+                    Le mie voci
+                  </Link>
+                  <button
+                    onClick={() => {
+                      handleSignOut();
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="w-full text-left px-4 py-2 text-white bg-red-500 hover:bg-red-600"
+                  >
+                    Esci
+                  </button>
+                </div>
+              )}
+            </div>
           ) : (
             <Button
               variant="outline"
