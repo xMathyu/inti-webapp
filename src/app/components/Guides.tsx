@@ -10,6 +10,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { AiOutlineCheck } from "react-icons/ai";
+import Image from "next/image";
 
 // Datos de los guías
 const guides = [
@@ -92,9 +93,11 @@ export function Guides() {
               <Card className="shadow-md border border-gray-200 rounded-lg overflow-hidden bg-white hover:shadow-xl">
                 {/* Imagen del guía */}
                 <div className="flex justify-center mt-6">
-                  <img
+                  <Image
                     src={guide.image}
                     alt={guide.name}
+                    width={144}
+                    height={144}
                     className="w-32 h-32 sm:w-36 sm:h-36 rounded-full object-cover ring-4 ring-white ring-offset-4 ring-offset-green-100 transition-transform hover:scale-105"
                   />
                 </div>
