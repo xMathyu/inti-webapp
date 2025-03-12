@@ -5,9 +5,14 @@
 import { useState } from "react";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
+import Image from "next/image";
 
 export function Gallery() {
-  const images = ["/mariposa.jpg", "/scouts.jpg", "/scouts2.jpg"];
+  const images = [
+    { src: "/mariposa.jpg", width: 800, height: 600 },
+    { src: "/scouts.jpg", width: 800, height: 600 },
+    { src: "/scouts2.jpg", width: 800, height: 600 },
+  ];
   const [open, setOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -18,7 +23,7 @@ export function Gallery() {
           La nostra galleria
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {images.map((src, idx) => (
+          {images.map((image, idx) => (
             <div
               key={idx}
               className="w-full h-64 overflow-hidden rounded shadow cursor-pointer group"
@@ -27,9 +32,11 @@ export function Gallery() {
                 setCurrentIndex(idx);
               }}
             >
-              <img
-                src={src}
+              <Image
+                src={image.src}
                 alt={`Galería ${idx + 1}`}
+                width={image.width}
+                height={image.height}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform"
               />
             </div>
@@ -40,7 +47,7 @@ export function Gallery() {
       <Lightbox
         open={open}
         close={() => setOpen(false)}
-        slides={images.map((src) => ({ src }))}
+        slides={images.map((image) => ({ src: image.src }))}
         index={currentIndex}
         on={{
           click: () => {}, // manejar clicks dentro del lightbox si quieres
