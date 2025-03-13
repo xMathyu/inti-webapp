@@ -14,7 +14,7 @@ import { Separator } from "@/components/ui/separator";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import { auth } from "../lib/firebase";
-import { signInWithGoogle } from "../lib/auth";
+import { signInWithGoogle, saveUserToFirestore } from "../lib/auth";
 
 export default function AuthPage() {
   // Controla si el usuario está en modo registro o login
@@ -39,14 +39,21 @@ export default function AuthPage() {
     if (isRegister) {
       try {
         // Crea la cuenta con email y password
-        await createUserWithEmailAndPassword(auth, email, password);
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const user = userCredential.user;
 
         // Actualiza el perfil con nombre y apellido
-        if (auth.currentUser) {
-          await updateProfile(auth.currentUser, {
-            displayName: `${firstName} ${lastName}`,
-          });
-        }
+        await updateProfile(user, {
+          displayName: `${firstName} ${lastName}`,
+        });
+
+        // Guarda el usuario en Firestore utilizando la función común
+        await saveUserToFirestore(user, { phone });
+
         router.push("/");
       } catch (err: unknown) {
         setError((err as Error).message);
