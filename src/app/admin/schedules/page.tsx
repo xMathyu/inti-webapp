@@ -16,6 +16,9 @@ import ScheduleForm, {
   ScheduleFormData,
 } from "@/app/components/admin/ScheduleForm";
 import { toast } from "sonner";
+import { addDays } from "date-fns";
+import { DateRange } from "react-day-picker";
+import { DatePickerWithRange } from "@/app/shared/DateRangePicker";
 
 const db = getFirestore();
 
@@ -26,6 +29,9 @@ export default function AdminSchedulesPanel() {
   const [selectedSchedule, setSelectedSchedule] = useState<Schedule | null>(
     null
   );
+
+  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [endDate, setEndDate] = useState<Date>(addDays(new Date(), 7));
 
   const fetchSchedules = useCallback(async () => {
     setLoading(true);
@@ -40,7 +46,7 @@ export default function AdminSchedulesPanel() {
       });
       setSchedules(data);
     } catch {
-      toast.error("Error al cargar los horarios de reserva.");
+      toast.error("Errore durante il caricamento degli orari di prenotazione.");
     }
     setLoading(false);
   }, []);
@@ -56,7 +62,7 @@ export default function AdminSchedulesPanel() {
           ? selectedSchedule.id
           : `${data.visitType}_${data.date}_${data.time}`;
         await setDoc(doc(db, "schedules", docId), { ...data }, { merge: true });
-        toast.success("Horario guardado con éxito.");
+        toast.success("Orario salvato con successo.");
         setModalOpen(false);
         setSchedules((prev) => {
           const newItem = { id: docId, ...data } as Schedule;
@@ -74,13 +80,13 @@ export default function AdminSchedulesPanel() {
         const end = new Date(data.endDate!);
         if (start > end) {
           throw new Error(
-            "La fecha de inicio debe ser anterior a la fecha de fin."
+            "La data di inizio deve essere precedente alla data di fine."
           );
         }
         const dates: string[] = [];
         const current = new Date(start);
         while (current <= end) {
-          dates.push(current.toISOString().split("T")[0]);
+          dates.push(current.toLocaleDateString("it-IT", { timeZone: "UTC" }));
           current.setDate(current.getDate() + 1);
         }
         for (const dateStr of dates) {
@@ -99,15 +105,15 @@ export default function AdminSchedulesPanel() {
             { merge: true }
           );
         }
-        toast.success("Horarios creados con éxito.");
+        toast.success("Orari creati con successo.");
         setModalOpen(false);
         fetchSchedules();
       }
     } catch (err: unknown) {
       if (err instanceof Error) {
-        toast.error(err.message || "Error inesperado.");
+        toast.error(err.message || "Errore inaspettato.");
       } else {
-        toast.error("Error inesperado.");
+        toast.error("Errore inaspettato.");
       }
     }
   };
@@ -115,11 +121,11 @@ export default function AdminSchedulesPanel() {
   const handleDelete = async (schedule: Schedule) => {
     try {
       await deleteDoc(doc(db, "schedules", schedule.id));
-      toast.success("Horario eliminado.");
+      toast.success("Orario eliminato.");
       setSchedules((prev) => prev.filter((item) => item.id !== schedule.id));
     } catch (err: unknown) {
       const errorMessage =
-        err instanceof Error ? err.message : "Error inesperado.";
+        err instanceof Error ? err.message : "Errore inaspettato.";
       toast.error(errorMessage);
     }
   };
@@ -139,7 +145,7 @@ export default function AdminSchedulesPanel() {
       );
     } catch (err: unknown) {
       const errorMessage =
-        err instanceof Error ? err.message : "Error inesperado.";
+        err instanceof Error ? err.message : "Errore inaspettato.";
       toast.error(errorMessage);
     }
   };
@@ -154,12 +160,22 @@ export default function AdminSchedulesPanel() {
     setModalOpen(true);
   };
 
+  const handleDateChange = (range: DateRange | undefined) => {
+    if (range?.from) setStartDate(range.from);
+    if (range?.to) setEndDate(range.to);
+  };
+
+  const filteredSchedules = schedules.filter((schedule) => {
+    const scheduleDate = schedule.date ? new Date(schedule.date) : new Date();
+    return scheduleDate >= startDate && scheduleDate <= endDate;
+  });
+
   return (
     <div className="max-w-4xl mx-auto p-4 bg-green-50 rounded shadow relative">
       {/* Cabecera con título único y botón a la derecha */}
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold text-green-800">
-          Panel de Administración de Horarios de Reserva
+          Pannello di amministrazione del programma di prenotazione
         </h1>
         <Button
           onClick={openModalForNew}
@@ -167,6 +183,13 @@ export default function AdminSchedulesPanel() {
         >
           <Plus size={20} />
         </Button>
+      </div>
+
+      <div className="mb-4">
+        <label className="block text-green-800 font-bold mb-2">
+          Seleziona data di inizio e fine:
+        </label>
+        <DatePickerWithRange onDateChange={handleDateChange} />
       </div>
 
       <ScheduleForm
@@ -192,10 +215,10 @@ export default function AdminSchedulesPanel() {
       <hr className="my-4" />
 
       {loading ? (
-        <p>Cargando...</p>
-      ) : (
+        <p>Caricamento...</p>
+      ) : filteredSchedules.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {schedules.map((schedule) => (
+          {filteredSchedules.map((schedule) => (
             <ScheduleCard
               key={schedule.id}
               schedule={schedule}
@@ -205,6 +228,8 @@ export default function AdminSchedulesPanel() {
             />
           ))}
         </div>
+      ) : (
+        <p>Non è previsto un programma di prenotazione per questo periodo.</p>
       )}
     </div>
   );
