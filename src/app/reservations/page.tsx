@@ -127,9 +127,9 @@ const ReservationsPage = () => {
 
   const handleSelectSchedule = (schedule: Schedule) => {
     router.push(
-      `/reservations/confirm?scheduleId=${encodeURIComponent(schedule.id)}`
+      `/reservations/confirm?scheduleId=${encodeURIComponent(schedule.id)}&numPeople=${numPeople}`
     );
-  };
+  };  
 
   return (
     <div className="max-w-md mx-auto p-4 bg-green-50 rounded shadow">
