@@ -17,12 +17,8 @@ const firebaseConfig = {
 
 // Inicializa la app solo si no se ha inicializado previamente
 let app: FirebaseApp;
-if (typeof window !== "undefined" && !getApps().length) {
+if (!getApps().length) {
   app = initializeApp(firebaseConfig);
-  // Inicializa Analytics (opcional, solo si se usa)
-  if (typeof window !== "undefined") {
-    getAnalytics(app);
-  }
 } else {
   app = getApps()[0];
 }
