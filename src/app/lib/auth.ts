@@ -1,10 +1,10 @@
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup, User } from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 import { auth } from "./firebase";
 
 const db = getFirestore();
 
-export async function signInWithGoogle() {
+export async function signInWithGoogle(): Promise<User> {
   const provider = new GoogleAuthProvider();
   try {
     const result = await signInWithPopup(auth, provider);
@@ -24,8 +24,24 @@ export async function signInWithGoogle() {
     }
 
     return user;
-  } catch (error: unknown) {
+  } catch (error) {
     console.error("Error al iniciar sesión con Google:", error);
     throw error;
+  }
+}
+
+export async function saveUserToFirestore(
+  user: User,
+  additionalData?: Record<string, unknown>
+) {
+  const userRef = doc(db, "users", user.uid);
+  const userDoc = await getDoc(userRef);
+  if (!userDoc.exists()) {
+    await setDoc(userRef, {
+      email: user.email,
+      name: user.displayName || "",
+      role: "user",
+      ...additionalData,
+    });
   }
 }
