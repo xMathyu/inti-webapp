@@ -11,9 +11,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
-
-const db = getFirestore();
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/app/lib/firebase";
 
 export type ScheduleMode = "individual" | "bulk";
 
