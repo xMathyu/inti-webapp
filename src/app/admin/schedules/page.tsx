@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from "react";
 import {
-  getFirestore,
   collection,
   getDocs,
   doc,
@@ -19,8 +18,7 @@ import { toast } from "sonner";
 import { addDays } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { DatePickerWithRange } from "@/app/shared/DateRangePicker";
-
-const db = getFirestore();
+import { db } from "@/app/lib/firebase";
 
 export default function AdminSchedulesPanel() {
   const [schedules, setSchedules] = useState<Schedule[]>([]);
