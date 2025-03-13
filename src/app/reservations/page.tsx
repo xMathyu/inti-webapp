@@ -3,13 +3,11 @@
 import React, { Suspense, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { getFirestore } from "firebase/firestore";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-
-const db = getFirestore();
+import { db } from "@/app/lib/firebase";
 
 interface VisitTypeOption {
   id: string;
@@ -36,7 +34,9 @@ const ReservationsPage = () => {
   const [date, setDate] = useState("");
   const [numPeople, setNumPeople] = useState(1);
 
-  const [visitTypesOptions, setVisitTypesOptions] = useState<VisitTypeOption[]>([]);
+  const [visitTypesOptions, setVisitTypesOptions] = useState<VisitTypeOption[]>(
+    []
+  );
   const [availableSchedules, setAvailableSchedules] = useState<Schedule[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
