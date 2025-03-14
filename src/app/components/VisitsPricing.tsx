@@ -152,7 +152,7 @@ export function VisitsPricing() {
                         : gap,
                   }}
                 >
-                  <Card className="bg-white shadow-lg border border-gray-200 flex flex-col rounded-lg overflow-hidden">
+                  <Card className="bg-white shadow-lg border border-gray-200 flex flex-col h-full rounded-lg overflow-hidden">
                     <CardHeader className="p-6 pb-3">
                       <CardTitle className="text-2xl font-bold text-gray-800">
                         {visit.name}

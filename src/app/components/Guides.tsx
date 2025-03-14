@@ -90,7 +90,7 @@ export function Guides() {
               viewport={{ once: true }}
               className="transform transition-transform hover:-translate-y-2"
             >
-              <Card className="shadow-md border border-gray-200 rounded-lg overflow-hidden bg-white hover:shadow-xl">
+              <Card className="shadow-md border border-gray-200 rounded-lg overflow-hidden bg-white hover:shadow-xl h-full flex flex-col">
                 {/* Imagen del guía */}
                 <div className="flex justify-center mt-6">
                   <Image
@@ -113,7 +113,7 @@ export function Guides() {
                 </CardHeader>
 
                 {/* Contenido: Biografía en bullet points */}
-                <CardContent className="px-6 pb-6">
+                <CardContent className="px-6 pb-6 flex-1">
                   <ul className="list-none space-y-2">
                     {guide.bio
                       .split(". ")
