@@ -168,10 +168,10 @@ export default function AuthPage() {
           <Button
             variant="outline"
             onClick={handleGoogleSignIn}
-            className="w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white border-transparent"
+            className="w-full flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 rounded-lg py-2.5 px-4 mt-2"
           >
-            <FcGoogle size={20} />
-            {isRegister ? "Registrati con Google" : "Accedi con Google"}
+            <FcGoogle className="w-5 h-5" />
+            <span>Continue with Google</span>
           </Button>
           <div className="mt-4 text-center">
             <button
