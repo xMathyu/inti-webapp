@@ -1,13 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-// import { auth } from "../lib/firebase";
-
-const db = getFirestore();
+import { db } from "@/app/lib/firebase";
 
 export default function AdminPanel() {
   const [visitType, setVisitType] = useState("");
