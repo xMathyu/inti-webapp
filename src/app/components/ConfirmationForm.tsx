@@ -45,7 +45,7 @@ const ConfirmationForm = () => {
         setUserId(user.uid);
       } else {
         toast.error("Devi accedere per confermare la prenotazione.");
-        router.push("/login");
+        router.push("/auth");
       }
     });
 
