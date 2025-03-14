@@ -1,8 +1,7 @@
 import { GoogleAuthProvider, signInWithPopup, User } from "firebase/auth";
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth } from "./firebase";
-
-const db = getFirestore();
+import { db } from "@/app/lib/firebase";
 
 export async function signInWithGoogle(): Promise<User> {
   const provider = new GoogleAuthProvider();
