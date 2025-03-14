@@ -142,9 +142,9 @@ const ReservationsPage = () => {
 
   const handleSelectSchedule = (schedule: Schedule) => {
     router.push(
-      `/reservations/confirm?scheduleId=${encodeURIComponent(schedule.id)}`
+      `/reservations/confirm?scheduleId=${encodeURIComponent(schedule.id)}&numPeople=${numPeople}`
     );
-  };
+  };  
 
   return (
     <FormProvider {...methods}>
