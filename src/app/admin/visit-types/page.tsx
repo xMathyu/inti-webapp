@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from "react";
 import {
-  getFirestore,
   collection,
   getDocs,
   doc,
@@ -16,8 +15,7 @@ import VisitTypeForm, {
   VisitTypeFormData,
 } from "@/app/components/admin/VisitTypeForm";
 import { toast } from "sonner";
-
-const db = getFirestore();
+import { db } from "@/app/lib/firebase";
 
 export default function AdminVisitTypesPanel() {
   const [visitTypes, setVisitTypes] = useState<VisitType[]>([]);
