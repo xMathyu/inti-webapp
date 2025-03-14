@@ -38,6 +38,7 @@ interface FormsReservationProps {
   visitTypesOptions: { id: string; name: string }[];
   loading: boolean;
   handleSearch: SubmitHandler<FormData>;
+  visitId?: string;
 }
 
 interface FormData {
@@ -56,11 +57,18 @@ const FormsReservation: React.FC<FormsReservationProps> = ({
   visitTypesOptions,
   loading,
   handleSearch,
+  visitId,
 }) => {
   const form = useForm<FormData>();
   const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(
     date ? new Date(date) : undefined
   );
+  console.log(visitId);
+  React.useEffect(() => {
+    if (visitId) {
+      setVisitType(visitId);
+    }
+  }, [visitId, setVisitType]);
 
   return (
     <FormProvider {...form}>
@@ -80,11 +88,13 @@ const FormsReservation: React.FC<FormsReservationProps> = ({
                   onValueChange={(value) => setVisitType(value)}
                 >
                   <SelectTrigger className="w-full bg-white border">
-                    <SelectValue placeholder="Seleziona una tipologia di visita" />
+                    <SelectValue placeholder="Seleziona una tipologia di visita">
+                      {visitType || "Seleziona una tipologia di visita"}
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     {visitTypesOptions.map((option) => (
-                      <SelectItem key={option.id} value={option.name}>
+                      <SelectItem key={option.id} value={option.id}>
                         {option.name}
                       </SelectItem>
                     ))}
