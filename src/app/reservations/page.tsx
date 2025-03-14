@@ -23,6 +23,7 @@ const ReservationsPage = () => {
   const [visitType, setVisitType] = useState("");
   const [date, setDate] = useState("");
   const [numPeople, setNumPeople] = useState(1);
+  const [visitId, setVisitId] = useState("");
 
   const [visitTypesOptions, setVisitTypesOptions] = useState<VisitTypeOption[]>(
     []
@@ -53,6 +54,7 @@ const ReservationsPage = () => {
     const preselectedType = searchParams.get("type");
     if (preselectedType) {
       setVisitType(preselectedType);
+      setVisitId(preselectedType);
     }
   }, [searchParams]);
 
@@ -161,6 +163,7 @@ const ReservationsPage = () => {
           visitTypesOptions={visitTypesOptions}
           loading={loading}
           handleSearch={handleSearch}
+          visitId={visitId}
         />
 
         {error && <p className="text-red-500 mt-2">{error}</p>}
