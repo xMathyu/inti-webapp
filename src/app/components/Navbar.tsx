@@ -20,18 +20,17 @@ export function Navbar() {
   const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
-
       if (currentUser) {
-        // Consultar Firestore para obtener el rol del usuario
         const db = getFirestore();
         const userDoc = await getDoc(doc(db, "users", currentUser.uid));
         if (userDoc.exists()) {
           const userData = userDoc.data();
-          setIsAdmin(userData.role === "admin"); // Solo será true si el usuario es admin
+          setIsAdmin(userData.role === "admin");
         }
       } else {
         setIsAdmin(false);
@@ -41,9 +40,28 @@ export function Navbar() {
     return unsubscribe;
   }, []);
 
+  // 🔹 CIERRA EL DROPDOWN AL CAMBIAR A MOBILE 🔹
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setIsDropdownOpen(false); // Cierra el dropdown de Desktop
+        setIsMobileMenuOpen(false); // Asegura que el menú Mobile también se cierre
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+
+
   const handleSignOut = async () => {
     try {
       await signOut(auth);
+      setIsDropdownOpen(false);
+      setIsMobileMenuOpen(false); // Cerrar menú tras logout
     } catch (error) {
       console.error("Error al cerrar sesión", error);
     }
@@ -56,43 +74,52 @@ export function Navbar() {
       transition={{ duration: 0.8, ease: "easeOut" }}
       className="h-16 shadow-md bg-gradient-to-r from-green-700 to-green-600 relative"
     >
-      <div className="max-w-7xl mx-auto h-full flex items-center justify-between px-4">
+      <div className="max-w-7xl mx-auto h-full flex items-center justify-between pl-0 pr-4 md:px-8">
+
         {/* Logo */}
-        <Link href="/#hero" className="flex items-center">
-          <Image
-            src="/logos/logos_pequeno.svg"
-            alt="Logo Parco dei Colori"
-            width={120}
-            height={50}
-            className="object-contain"
-          />
+        <Link href="/#hero" className="h-full flex items-center focus:outline-none">
+          <div className="relative h-full w-32">
+            <Image
+              src="/logos/logos_pequeno.svg"
+              alt="Logo Parco dei Colori"
+              fill
+              style={{ objectFit: "contain", padding: "0.2rem" }}
+            />
+          </div>
         </Link>
 
+
         {/* Menú Desktop */}
-        <div className="hidden md:flex space-x-6 text-white">
-          <Link href="/#hero" className="hover:text-gray-300">Inizio</Link>
-          <Link href="/#about" className="hover:text-gray-300">Chi siamo</Link>
-          <Link href="/#gallery" className="hover:text-gray-300">Galleria</Link>
-          <Link href="/#guides" className="hover:text-gray-300">Guide</Link>
-          <Link href="/#tariffe" className="hover:text-gray-300">Tariffe</Link>
-          <Link href="/#contact" className="hover:text-gray-300">Contatti</Link>
+        <div className="hidden md:flex items-center space-x-4 text-white">
+          <Link href="/#hero" className="hover:bg-green-500/20">Inizio</Link>
+          <Link href="/#about" className="hover:bg-green-500/20">Chi siamo</Link>
+          <Link href="/#gallery" className="hover:bg-green-500/20">Galleria</Link>
+          <Link href="/#guides" className="hover:bg-green-500/20">Guide</Link>
+          <Link href="/#tariffe" className="hover:bg-green-500/20">Tariffe</Link>
+          <Link href="/#contact" className="hover:bg-green-500/20">Contatti</Link>
 
           {/* Menú de usuario */}
           {user ? (
-            <DropdownMenu>
+            <DropdownMenu modal={false} open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="bg-transparent text-white border-white hover:bg-green-500/20">
+                <Button
+                  variant="outline"
+                  className="bg-transparent text-white border-white hover:bg-green-500/20 cursor-pointer"
+                >
                   {user.displayName ? `Ciao, ${user.displayName}` : "Il tuo account"}
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-white shadow-lg rounded-md py-2 w-48">
+              <DropdownMenuContent
+                className="bg-white shadow-lg rounded-md py-2 w-48 data-[state=open]:animate-none"
+                onClick={() => setIsDropdownOpen(false)}
+              >
                 <DropdownMenuItem asChild>
-                  <Link href="/account" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                  <Link href="/account" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer">
                     Il mio account
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="/my-entries" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                  <Link href="/my-entries" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer">
                     Le mie voci
                   </Link>
                 </DropdownMenuItem>
@@ -101,12 +128,12 @@ export function Navbar() {
                 {isAdmin && (
                   <>
                     <DropdownMenuItem asChild>
-                      <Link href="/admin/schedules" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                      <Link href="/admin/schedules" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer">
                         Admin - Schedules
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href="/admin/visit-types" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                      <Link href="/admin/visit-types" className="block px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer">
                         Admin - Visit Types
                       </Link>
                     </DropdownMenuItem>
@@ -114,12 +141,19 @@ export function Navbar() {
                 )}
 
                 <DropdownMenuItem asChild>
-                  <button onClick={handleSignOut} className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-100">
+                  <button
+                    onClick={() => {
+                      handleSignOut();
+                      setIsDropdownOpen(false); // 🔹 Cierra el menú al cerrar sesión
+                    }}
+                    className="w-full text-left px-4 py-2 !text-white !bg-red-500 data-[highlighted]:!bg-red-600 cursor-pointer"
+                  >
                     Esci
                   </button>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+
           ) : (
             <Button variant="outline" className="bg-transparent text-white border-white hover:bg-green-500/20">
               <Link href="/auth">Accedi / Registrati</Link>
@@ -151,19 +185,39 @@ export function Navbar() {
           <Link href="/#tariffe" className="text-green-700 hover:bg-green-50">Tariffe</Link>
           <Link href="/#contact" className="text-green-700 hover:bg-green-50">Contatti</Link>
 
-          {/* Opciones para usuarios autenticados */}
+          {/* Menú desplegable de usuario en móvil */}
           {user ? (
             <>
-              <Link href="/account" className="text-green-700 hover:bg-green-50">Il mio account</Link>
-              {isAdmin && (
-                <>
-                  <Link href="/admin/schedules" className="text-green-700 hover:bg-green-50">Admin - Schedules</Link>
-                  <Link href="/admin/visit-types" className="text-green-700 hover:bg-green-50">Admin - Visit Types</Link>
-                </>
+              <Button
+                variant="outline"
+                className="bg-transparent text-green-700 border-green-700 hover:bg-green-50 w-full cursor-pointer"
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              >
+                {user.displayName ? `Ciao, ${user.displayName}` : "Il tuo account"}
+              </Button>
+              {isDropdownOpen && (
+                <div className="w-full bg-white shadow-lg rounded-md py-2">
+                  <Link href="/account" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                    Il mio account
+                  </Link>
+                  {isAdmin && (
+                    <>
+                      <Link href="/admin/schedules" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                        Admin - Schedules
+                      </Link>
+                      <Link href="/admin/visit-types" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                        Admin - Visit Types
+                      </Link>
+                    </>
+                  )}
+                  <button
+                    onClick={handleSignOut}
+                    className="block px-4 py-2 text-white bg-red-500 hover:bg-red-700 w-full text-center cursor-pointer"
+                  >
+                    Esci
+                  </button>
+                </div>
               )}
-              <button onClick={handleSignOut} className="text-red-600 hover:bg-red-100 px-4 py-2">
-                Esci
-              </button>
             </>
           ) : (
             <Link href="/auth" className="text-green-700 hover:bg-green-50">Accedi / Registrati</Link>
