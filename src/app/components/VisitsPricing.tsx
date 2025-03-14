@@ -14,7 +14,8 @@ import {
 } from "@/components/ui/card";
 import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/app/lib/firebase";
 
 function useWindowSize() {
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
@@ -28,8 +29,6 @@ function useWindowSize() {
   }, []);
   return windowSize;
 }
-
-const db = getFirestore();
 
 export function VisitsPricing() {
   const { width } = useWindowSize();
