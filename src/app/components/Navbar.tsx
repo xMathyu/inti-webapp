@@ -21,8 +21,12 @@ export function Navbar() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
+  const [isDesktop, setIsDesktop] = useState(false);
 
+  useEffect(() => {
+    setIsDesktop(window.innerWidth >= 768);
+  }, []);
+  
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
@@ -51,6 +55,9 @@ export function Navbar() {
         setIsMobileMenuOpen(false);
       }
     };
+
+    // Ejecutar handleResize una vez para establecer el estado inicial
+    handleResize();
 
     window.addEventListener("resize", handleResize);
     return () => {
