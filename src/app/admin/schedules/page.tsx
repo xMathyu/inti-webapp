@@ -19,6 +19,14 @@ import { addDays } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { DatePickerWithRange } from "@/app/shared/DateRangePicker";
 import { db } from "@/app/lib/firebase";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 export default function AdminSchedulesPanel() {
   const [schedules, setSchedules] = useState<Schedule[]>([]);
@@ -30,6 +38,9 @@ export default function AdminSchedulesPanel() {
 
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(addDays(new Date(), 7));
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
   const fetchSchedules = useCallback(async () => {
     setLoading(true);
@@ -168,9 +179,19 @@ export default function AdminSchedulesPanel() {
     return scheduleDate >= startDate && scheduleDate <= endDate;
   });
 
+  const sortedSchedules = filteredSchedules.sort(
+    (a, b) => new Date(b.date!).getTime() - new Date(a.date!).getTime()
+  );
+
+  const paginatedSchedules = sortedSchedules.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const totalPages = Math.ceil(sortedSchedules.length / itemsPerPage);
+
   return (
     <div className="max-w-4xl mx-auto p-4 bg-green-50 rounded shadow relative">
-      {/* Cabecera con título único y botón a la derecha */}
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold text-green-800">
           Pannello di amministrazione del programma di prenotazione
@@ -214,18 +235,52 @@ export default function AdminSchedulesPanel() {
 
       {loading ? (
         <p>Caricamento...</p>
-      ) : filteredSchedules.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {filteredSchedules.map((schedule) => (
-            <ScheduleCard
-              key={schedule.id}
-              schedule={schedule}
-              onEdit={openModalForEdit}
-              onDelete={handleDelete}
-              onToggleActive={handleToggleActive}
-            />
-          ))}
-        </div>
+      ) : paginatedSchedules.length > 0 ? (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {paginatedSchedules.map((schedule) => (
+              <ScheduleCard
+                key={schedule.id}
+                schedule={schedule}
+                onEdit={openModalForEdit}
+                onDelete={handleDelete}
+                onToggleActive={handleToggleActive}
+              />
+            ))}
+          </div>
+          {totalPages > 1 && (
+            <Pagination className="mt-8">
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    href="#"
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.max(prev - 1, 1))
+                    }
+                  ></PaginationPrevious>
+                </PaginationItem>
+                {Array.from({ length: totalPages }, (_, index) => (
+                  <PaginationItem key={index}>
+                    <PaginationLink
+                      href="#"
+                      onClick={() => setCurrentPage(index + 1)}
+                    >
+                      {index + 1}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))}
+                <PaginationItem>
+                  <PaginationNext
+                    href="#"
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                    }
+                  ></PaginationNext>
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          )}
+        </>
       ) : (
         <p>Non è previsto un programma di prenotazione per questo periodo.</p>
       )}

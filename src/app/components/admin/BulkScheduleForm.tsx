@@ -11,6 +11,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { db } from "@/app/lib/firebase";
+import { collection, getDocs } from "firebase/firestore";
 
 export interface BulkScheduleFormData {
   visitType: string;
@@ -32,9 +34,6 @@ interface VisitTypeOption {
   id: string;
   name: string;
 }
-
-import { getFirestore, collection, getDocs } from "firebase/firestore";
-const db = getFirestore();
 
 export default function BulkScheduleForm({
   isOpen,

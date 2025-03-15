@@ -2,6 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { Calendar, ClockCircle, User } from "@mynaui/icons-react";
+import { Badge } from "@/components/ui/badge";
 
 export interface Schedule {
   id: string;
@@ -19,9 +21,10 @@ export interface Schedule {
 
 interface ScheduleCardProps {
   schedule: Schedule;
-  onEdit: (schedule: Schedule) => void;
-  onDelete: (schedule: Schedule) => void;
-  onToggleActive: (schedule: Schedule) => void;
+  onEdit?: (schedule: Schedule) => void;
+  onDelete?: (schedule: Schedule) => void;
+  onToggleActive?: (schedule: Schedule) => void;
+  hideBulkAndActions?: boolean;
 }
 
 export default function ScheduleCard({
@@ -29,51 +32,93 @@ export default function ScheduleCard({
   onEdit,
   onDelete,
   onToggleActive,
+  hideBulkAndActions = false,
 }: ScheduleCardProps) {
+  const formatTime = (time: string | undefined) => {
+    if (!time) return "";
+    const [hours, minutes] = time.split(":").map(Number);
+    const date = new Date();
+    date.setHours(hours);
+    date.setMinutes(minutes);
+    return date
+      .toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      })
+      .toLowerCase();
+  };
+
+  const formatDate = (dateString: string | undefined) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    const localDate = new Date(
+      date.getTime() + date.getTimezoneOffset() * 60000
+    );
+    return localDate.toLocaleDateString("it-IT");
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col h-full transition-transform transform hover:-translate-y-1 hover:shadow-2xl">
       <div className="mb-3">
-        <h3 className="text-2xl font-bold text-green-800">
+        {!hideBulkAndActions && schedule.mode === "bulk" && (
+          <Badge className="mb-2 text-white">Bulk</Badge>
+        )}
+        <h3 className="text-2xl font-bold text-green-800 mt-4">
           {schedule.visitType}
         </h3>
+        <p className="text-black text-sm flex items-center mt-2">
+          <Calendar className="mr-2 w-4 h-4" /> Data:{" "}
+          {formatDate(schedule.date)}
+        </p>
         {schedule.mode === "bulk" ? (
-          <>
-            {/* En bulk, cada documento tiene una fecha específica (guardada en "date") */}
-            <p className="text-green-700">Fecha: {schedule.date}</p>
-            <p className="text-green-700">
-              De {schedule.startTime} a {schedule.endTime}
-            </p>
-            <span className="inline-block mt-2 px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">
-              Bulk
-            </span>
-          </>
+          <p className="text-black text-sm flex items-center mt-2">
+            <ClockCircle className="mr-2 w-4 h-4" />{" "}
+            {formatTime(schedule.startTime)} - {formatTime(schedule.endTime)}
+          </p>
         ) : (
-          <p className="text-green-700">
-            {schedule.date} - {schedule.time}
+          <p className="text-black text-sm flex items-center mt-2">
+            <ClockCircle className="mr-2 w-4 h-4" /> {formatTime(schedule.time)}
           </p>
         )}
-        <p className="text-gray-600 mt-2">Cupos: {schedule.availableSlots}</p>
+        <p className="text-black text-sm flex items-center mt-2">
+          <User className="mr-2 w-4 h-4" /> Posti: {schedule.availableSlots}
+        </p>
       </div>
-      <div className="mt-auto flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <Switch
-            id={`switch-${schedule.id}`}
-            checked={schedule.active}
-            onCheckedChange={() => onToggleActive(schedule)}
-          />
-          <span className="text-sm font-medium text-green-800">
-            {schedule.active ? "Activo" : "Inactivo"}
-          </span>
-        </div>
-        <div className="flex items-center space-x-2">
-          <Button variant="ghost" onClick={() => onEdit(schedule)}>
-            Editar
-          </Button>
-          <Button variant="destructive" onClick={() => onDelete(schedule)}>
-            Eliminar
-          </Button>
-        </div>
-      </div>
+      {!hideBulkAndActions && (
+        <>
+          <hr className="w-full my-4 border-t border-gray-300" />
+          <div className="mt-auto flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <Switch
+                id={`switch-${schedule.id}`}
+                checked={schedule.active}
+                onCheckedChange={() =>
+                  onToggleActive && onToggleActive(schedule)
+                }
+                className={schedule.active ? "bg-[#2563EF]" : "bg-gray-200"}
+              />
+              <span className="text-sm font-medium text-green-800">
+                {schedule.active ? "Risorsa" : "Oziare"}
+              </span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Button
+                variant="ghost"
+                onClick={() => onEdit && onEdit(schedule)}
+              >
+                Modificare
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={() => onDelete && onDelete(schedule)}
+              >
+                Eliminare
+              </Button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

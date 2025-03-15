@@ -14,7 +14,8 @@ import {
 } from "@/components/ui/card";
 import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/app/lib/firebase";
 
 function useWindowSize() {
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
@@ -28,8 +29,6 @@ function useWindowSize() {
   }, []);
   return windowSize;
 }
-
-const db = getFirestore();
 
 export function VisitsPricing() {
   const { width } = useWindowSize();
@@ -153,7 +152,7 @@ export function VisitsPricing() {
                         : gap,
                   }}
                 >
-                  <Card className="bg-white shadow-lg border border-gray-200 flex flex-col rounded-lg overflow-hidden">
+                  <Card className="bg-white shadow-lg border border-gray-200 flex flex-col h-full rounded-lg overflow-hidden">
                     <CardHeader className="p-6 pb-3">
                       <CardTitle className="text-2xl font-bold text-gray-800">
                         {visit.name}
