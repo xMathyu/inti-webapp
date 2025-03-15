@@ -1,15 +1,14 @@
 "use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { toast } from "sonner";
 import { collection, addDoc, doc, updateDoc, getDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { db, auth } from "@/app/lib/firebase";
 import ConfirmationForm, { FormData } from "@/app/components/ConfirmationForm";
-import { Suspense } from "react";
 
-export default function ConfirmPage() {
+function ConfirmPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -69,11 +68,17 @@ export default function ConfirmPage() {
   };
 
   return (
+    <ConfirmationForm
+      numPeople={numPeople}
+      onSubmit={handleReservationSubmit}
+    />
+  );
+}
+
+export default function ConfirmPage() {
+  return (
     <Suspense fallback={<div>Loading...</div>}>
-      <ConfirmationForm
-        numPeople={numPeople}
-        onSubmit={handleReservationSubmit}
-      />
+      <ConfirmPageContent />
     </Suspense>
   );
 }
