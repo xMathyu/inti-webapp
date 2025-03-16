@@ -21,12 +21,22 @@ const AvailableSchedules: React.FC<AvailableSchedulesProps> = ({
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
-  const paginatedSchedules = schedules.slice(
+  const currentDate = new Date().toLocaleString("en-US", {
+    timeZone: "Europe/Rome",
+  });
+  const currentDateObj = new Date(currentDate);
+
+  const filteredSchedules = schedules.filter((schedule) => {
+    const scheduleDate = new Date(schedule.date || "");
+    return scheduleDate >= currentDateObj;
+  });
+
+  const paginatedSchedules = filteredSchedules.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
-  const totalPages = Math.ceil(schedules.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredSchedules.length / itemsPerPage);
 
   return (
     <div>

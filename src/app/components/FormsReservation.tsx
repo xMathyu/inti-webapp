@@ -63,7 +63,6 @@ const FormsReservation: React.FC<FormsReservationProps> = ({
   const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(
     date ? new Date(date) : undefined
   );
-  console.log(visitId);
   React.useEffect(() => {
     if (visitId) {
       setVisitType(visitId);
@@ -164,9 +163,11 @@ const FormsReservation: React.FC<FormsReservationProps> = ({
                 <Input
                   {...field}
                   type="number"
-                  value={numPeople}
+                  value={numPeople || ""}
                   min="1"
-                  onChange={(e) => setNumPeople(parseInt(e.target.value))}
+                  onChange={(e) =>
+                    setNumPeople(e.target.value ? parseInt(e.target.value) : 0)
+                  }
                   required
                   className="bg-white border"
                 />
