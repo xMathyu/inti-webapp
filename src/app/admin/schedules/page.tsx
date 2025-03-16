@@ -27,6 +27,19 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+
+interface VisitTypeOption {
+  id: string;
+  name: string;
+}
 
 export default function AdminSchedulesPanel() {
   const [schedules, setSchedules] = useState<Schedule[]>([]);
@@ -38,9 +51,33 @@ export default function AdminSchedulesPanel() {
 
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(addDays(new Date(), 7));
+  const [selectedType, setSelectedType] = useState<string>("");
 
+  const [visitTypesOptions, setVisitTypesOptions] = useState<VisitTypeOption[]>(
+    []
+  );
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
+
+  const [filterByDate, setFilterByDate] = useState(true);
+
+  const fetchVisitTypes = useCallback(async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "visitTypes"));
+      const options: VisitTypeOption[] = [];
+      querySnapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        options.push({ id: docSnap.id, name: data.name });
+      });
+      setVisitTypesOptions(options);
+    } catch (err) {
+      console.error("Errore durante il caricamento dei tipi di visita:", err);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchVisitTypes();
+  }, [fetchVisitTypes]);
 
   const fetchSchedules = useCallback(async () => {
     setLoading(true);
@@ -174,9 +211,25 @@ export default function AdminSchedulesPanel() {
     if (range?.to) setEndDate(range.to);
   };
 
+  const handleFilterChange = (checked: boolean) => {
+    setFilterByDate(checked);
+    if (checked) {
+      setSelectedType("");
+    } else {
+      setStartDate(new Date());
+      setEndDate(addDays(new Date(), 7));
+    }
+  };
+
   const filteredSchedules = schedules.filter((schedule) => {
     const scheduleDate = schedule.date ? new Date(schedule.date) : new Date();
-    return scheduleDate >= startDate && scheduleDate <= endDate;
+    const matchesDateRange =
+      filterByDate && scheduleDate >= startDate && scheduleDate <= endDate;
+    const matchesType =
+      !filterByDate && selectedType
+        ? schedule.visitType === selectedType
+        : false;
+    return matchesDateRange || matchesType;
   });
 
   const sortedSchedules = filteredSchedules.sort(
@@ -206,9 +259,42 @@ export default function AdminSchedulesPanel() {
 
       <div className="mb-4">
         <label className="block text-green-800 font-bold mb-2">
-          Seleziona data di inizio e fine:
+          Seleziona data di inizio e fine e tipologia di visita:
         </label>
-        <DatePickerWithRange onDateChange={handleDateChange} />
+        <div className="flex gap-4 items-center">
+          <Switch
+            id="filter-switch"
+            checked={filterByDate}
+            onCheckedChange={handleFilterChange}
+            className={filterByDate ? "bg-[#2563EF]" : "bg-gray-200"}
+          />
+          <span>{filterByDate ? "Per date" : "Per tipo di visita"}</span>
+        </div>
+        <div className="flex gap-4 mt-4">
+          {filterByDate ? (
+            <DatePickerWithRange onDateChange={handleDateChange} />
+          ) : (
+            <div className="max-w-xs">
+              <Select
+                value={selectedType}
+                onValueChange={(value) => setSelectedType(value)}
+              >
+                <SelectTrigger className="w-full bg-white border">
+                  <SelectValue placeholder="Seleziona una tipologia di visita">
+                    {selectedType || "Seleziona una tipologia di visita"}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  {visitTypesOptions.map((option) => (
+                    <SelectItem key={option.id} value={option.id}>
+                      {option.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+        </div>
       </div>
 
       <ScheduleForm
@@ -282,7 +368,11 @@ export default function AdminSchedulesPanel() {
           )}
         </>
       ) : (
-        <p>Non è previsto un programma di prenotazione per questo periodo.</p>
+        <p>
+          {filterByDate
+            ? "Non è previsto un programma di prenotazione per questo periodo."
+            : "Non è previsto un programma di prenotazione per questo tipo di visita."}
+        </p>
       )}
     </div>
   );
