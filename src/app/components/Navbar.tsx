@@ -10,6 +10,12 @@ import { auth } from "@/app/lib/firebase";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { Button } from "@/components/ui/button";
 import { UserMenu } from "./UserMenu";
+import {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuLink,
+} from "@/components/ui/navigation-menu";
 
 const navLinks = [
   { href: "/#hero", label: "Inizio" },
@@ -49,10 +55,15 @@ export function Navbar() {
     }
   };
 
-  // Renderiza los links de navegación
-  const renderNavLinks = (className = "") =>
+  // Para mobile se usa la función tradicional
+  const renderMobileNavLinks = (className = "") =>
     navLinks.map(({ href, label }) => (
-      <Link key={href} href={href} className={className}>
+      <Link
+        key={href}
+        href={href}
+        onClick={() => setMobileMenuOpen(false)}
+        className={className}
+      >
         {label}
       </Link>
     ));
@@ -78,9 +89,24 @@ export function Navbar() {
           </div>
         </Link>
 
-        {/* Menú Desktop */}
-        <div className="hidden md:flex items-center space-x-4 text-white">
-          {renderNavLinks("hover:bg-green-500/20 px-2 py-1 rounded")}
+        {/* Menú Desktop usando NavigationMenu */}
+        <div className="hidden md:flex items-center text-white space-x-4">
+          <NavigationMenu>
+            <NavigationMenuList className="flex space-x-4">
+              {navLinks.map(({ href, label }) => (
+                <NavigationMenuItem key={href}>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      href={href}
+                      className="hover:bg-green-500/20 px-2 py-1 rounded"
+                    >
+                      {label}
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              ))}
+            </NavigationMenuList>
+          </NavigationMenu>
           {user ? (
             <UserMenu
               userDisplayName={user.displayName || ""}
@@ -118,7 +144,7 @@ export function Navbar() {
           transition={{ duration: 0.3 }}
           className="md:hidden absolute top-16 left-0 w-full bg-white shadow-md flex flex-col items-center space-y-4 py-4 z-50"
         >
-          {renderNavLinks(
+          {renderMobileNavLinks(
             "text-green-700 hover:bg-green-50 w-full text-center py-2"
           )}
           {user ? (
