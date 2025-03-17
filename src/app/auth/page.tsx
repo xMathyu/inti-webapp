@@ -13,6 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
+import { Loader } from "lucide-react";
 import { auth } from "../lib/firebase";
 import { signInWithGoogle, saveUserToFirestore } from "../lib/auth";
 
@@ -30,11 +31,13 @@ export default function AuthPage() {
   const [phone, setPhone] = useState("");
 
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
+    setIsLoading(true);
 
     if (isRegister) {
       try {
@@ -57,6 +60,8 @@ export default function AuthPage() {
         router.push("/");
       } catch (err: unknown) {
         setError((err as Error).message);
+      } finally {
+        setIsLoading(false);
       }
     } else {
       try {
@@ -64,16 +69,21 @@ export default function AuthPage() {
         router.push("/");
       } catch (err: unknown) {
         setError((err as Error).message);
+      } finally {
+        setIsLoading(false);
       }
     }
   };
 
   const handleGoogleSignIn = async () => {
     try {
+      setIsLoading(true);
       await signInWithGoogle();
       router.push("/");
     } catch (err: unknown) {
       setError((err as Error).message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -101,6 +111,7 @@ export default function AuthPage() {
                     onChange={(e) => setFirstName(e.target.value)}
                     placeholder="Inserisci il tuo nome"
                     required
+                    disabled={isLoading}
                   />
                 </div>
                 <div>
@@ -114,6 +125,7 @@ export default function AuthPage() {
                     onChange={(e) => setLastName(e.target.value)}
                     placeholder="Inserisci il tuo cognome"
                     required
+                    disabled={isLoading}
                   />
                 </div>
                 <div>
@@ -127,6 +139,7 @@ export default function AuthPage() {
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="Inserisci il tuo numero di telefono"
                     required
+                    disabled={isLoading}
                   />
                 </div>
               </>
@@ -142,6 +155,7 @@ export default function AuthPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Inserisci la tua email"
                 required
+                disabled={isLoading}
               />
             </div>
             <div>
@@ -155,23 +169,38 @@ export default function AuthPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Inserisci la tua password"
                 required
+                disabled={isLoading}
               />
             </div>
             <Button
               type="submit"
-              className="w-full bg-green-600 hover:bg-green-700 text-white"
+              className="w-full bg-green-600 hover:bg-green-700 text-white relative"
+              disabled={isLoading}
             >
-              {isRegister ? "Registrati con Email" : "Accedi con Email"}
+              {isLoading ? (
+                <Loader className="h-5 w-5 animate-spin" />
+              ) : isRegister ? (
+                "Registrati con Email"
+              ) : (
+                "Accedi con Email"
+              )}
             </Button>
           </form>
           <Separator className="my-4" />
           <Button
             variant="outline"
             onClick={handleGoogleSignIn}
-            className="w-full flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 rounded-lg py-2.5 px-4 mt-2"
+            className="w-full flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 rounded-lg py-2.5 px-4 mt-2 relative"
+            disabled={isLoading}
           >
-            <FcGoogle className="w-5 h-5" />
-            <span>Continue with Google</span>
+            {isLoading ? (
+              <Loader className="h-5 w-5 animate-spin" />
+            ) : (
+              <>
+                <FcGoogle className="w-5 h-5" />
+                <span>Continue with Google</span>
+              </>
+            )}
           </Button>
           <div className="mt-4 text-center">
             <button
@@ -181,6 +210,7 @@ export default function AuthPage() {
                 setIsRegister(!isRegister);
                 setError("");
               }}
+              disabled={isLoading}
             >
               {isRegister
                 ? "Hai già un account? Accedi"
