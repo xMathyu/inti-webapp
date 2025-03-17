@@ -7,7 +7,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative flex items-center justify-center h-[90vh] overflow-hidden"
+      className="relative flex items-center justify-center min-h-[90vh] overflow-hidden"
     >
       {/* Imagen de fondo con Parallax */}
       <motion.div
@@ -23,9 +23,9 @@ export function Hero() {
       </motion.div>
 
       {/* Contenido */}
-      <div className="relative z-10 px-4 text-center text-white max-w-2xl flex flex-col items-center">
+      <div className="relative z-10 px-4 sm:px-6 text-center text-white max-w-2xl mx-auto flex flex-col items-center">
         <motion.h1
-          className="text-5xl md:text-7xl font-extrabold drop-shadow-lg"
+          className="text-4xl sm:text-5xl md:text-7xl font-extrabold drop-shadow-lg mb-2 sm:mb-4"
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1 }}
@@ -38,7 +38,7 @@ export function Hero() {
           Parco dei Colori
         </motion.h1>
         <motion.p
-          className="text-xl md:text-2xl mt-4 drop-shadow"
+          className="text-lg sm:text-xl md:text-2xl mt-2 sm:mt-4 drop-shadow"
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1, delay: 0.3 }}
@@ -47,21 +47,22 @@ export function Hero() {
           curiosa!
         </motion.p>
         <motion.p
-          className="text-lg md:text-xl mt-2 italic drop-shadow"
+          className="text-base sm:text-lg md:text-xl mt-2 italic drop-shadow"
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1, delay: 0.5 }}
         >
           # immergiti nei ritmi della natura
         </motion.p>
+
         <motion.div
-          className="mt-8 flex space-x-4"
+          className="mt-6 sm:mt-8 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 w-full sm:w-auto px-4 sm:px-0"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.7, delay: 0.6 }}
         >
           <Button
-            className="px-6 py-3 text-lg font-semibold bg-green-600 hover:bg-green-700 border-none"
+            className="w-full sm:w-auto px-6 py-3 text-base sm:text-lg font-semibold bg-green-600 hover:bg-green-700 border-none"
             onClick={() => {
               const aboutSection = document.getElementById("about");
               if (aboutSection) {
@@ -74,9 +75,12 @@ export function Hero() {
           <Button
             variant="outline"
             className="
+            w-full
+            sm:w-auto
             px-6 
             py-3 
-            text-lg 
+            text-base
+            sm:text-lg 
             font-semibold 
             text-white 
             border-white
