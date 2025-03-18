@@ -157,6 +157,7 @@ export function DateTimePicker({
   classNames,
   timePicker,
   modal = false,
+  className,
   ...props
 }: DateTimePickerProps & CalendarProps) {
   const [open, setOpen] = useState(false);
@@ -193,9 +194,12 @@ export function DateTimePicker({
         d.setHours(max.getHours(), max.getMinutes(), max.getSeconds());
       }
       setDate(d);
+      onChange(new Date(d));
+      setOpen(false);
     },
-    [setDate, setMonth]
+    [setDate, setMonth, onChange, min, max, date]
   );
+
   const onSubmit = useCallback(() => {
     onChange(new Date(date));
     setOpen(false);
@@ -238,7 +242,8 @@ export function DateTimePicker({
       displayValue,
       `${!hideTime ? "MMM" : "MMMM"} d, yyyy${
         !hideTime ? (use12HourFormat ? " hh:mm:ss a" : " HH:mm:ss") : ""
-      }`
+      }`,
+      { locale: it }
     );
   }, [displayValue, hideTime, use12HourFormat]);
 
@@ -261,7 +266,8 @@ export function DateTimePicker({
               !displayValue && "text-muted-foreground",
               (!clearable || !value) && "pe-3",
               disabled && "opacity-50 cursor-not-allowed",
-              classNames?.trigger
+              classNames?.trigger,
+              className
             )}
             tabIndex={0}
           >
@@ -415,17 +421,12 @@ export function DateTimePicker({
               max={maxDate}
             />
           )}
-          <div className="flex flex-row-reverse items-center justify-between">
-            <Button className="ms-2 h-7 px-2" onClick={onSubmit}>
-              Done
-            </Button>
-            {timezone && (
-              <div className="text-sm">
-                <span>Timezone:</span>
-                <span className="font-semibold ms-1">{timezone}</span>
-              </div>
-            )}
-          </div>
+          {timezone && (
+            <div className="text-sm">
+              <span>Timezone:</span>
+              <span className="font-semibold ms-1">{timezone}</span>
+            </div>
+          )}
         </div>
       </PopoverContent>
     </Popover>

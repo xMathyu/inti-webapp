@@ -110,7 +110,7 @@ const FormsReservation: React.FC<FormsReservationProps> = ({
           render={() => (
             <FormItem className="flex-1 min-w-[200px]">
               <FormLabel>Data</FormLabel>
-              <FormControl >
+              <FormControl>
                 <DateTimePicker
                   hideTime
                   onChange={(date) => {
@@ -118,6 +118,7 @@ const FormsReservation: React.FC<FormsReservationProps> = ({
                     setDate(date ? format(date, "yyyy-MM-dd") : "");
                   }}
                   value={selectedDate}
+                  className="bg-white"
                 />
               </FormControl>
               <FormDescription>
