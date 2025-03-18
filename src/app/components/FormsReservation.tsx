@@ -18,15 +18,11 @@ import {
 } from "@/components/ui/select";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { format } from "date-fns";
 import { it } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
+import { DateTimePicker } from "@/components/ui/datetime-picker";
 
 interface FormsReservationProps {
   visitType: string;
@@ -114,36 +110,15 @@ const FormsReservation: React.FC<FormsReservationProps> = ({
           render={() => (
             <FormItem className="flex-1 min-w-[200px]">
               <FormLabel>Data</FormLabel>
-              <FormControl>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-full justify-start text-left font-normal bg-white border",
-                        !selectedDate && "text-muted-foreground"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {selectedDate ? (
-                        format(selectedDate, "PPP", { locale: it })
-                      ) : (
-                        <span>Seleziona una data</span>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={selectedDate}
-                      onSelect={(date) => {
-                        setSelectedDate(date);
-                        setDate(date ? format(date, "yyyy-MM-dd") : "");
-                      }}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
+              <FormControl >
+                <DateTimePicker
+                  hideTime
+                  onChange={(date) => {
+                    setSelectedDate(date);
+                    setDate(date ? format(date, "yyyy-MM-dd") : "");
+                  }}
+                  value={selectedDate}
+                />
               </FormControl>
               <FormDescription>
                 Seleziona la data della tua visita.
