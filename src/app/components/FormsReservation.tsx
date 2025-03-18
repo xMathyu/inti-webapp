@@ -141,6 +141,7 @@ const FormsReservation: React.FC<FormsReservationProps> = ({
                         setDate(date ? format(date, "yyyy-MM-dd") : "");
                       }}
                       initialFocus
+                      locale={it}
                     />
                   </PopoverContent>
                 </Popover>
