@@ -8,6 +8,7 @@ import {
   FormDescription,
   FormMessage,
 } from "@/components/ui/form";
+import { format } from "date-fns";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import {
   Select,
@@ -16,11 +17,6 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { CalendarIcon } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
-import { format } from "date-fns";
-import { it } from "date-fns/locale";
-import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { DateTimePicker } from "@/components/ui/datetime-picker";
 
