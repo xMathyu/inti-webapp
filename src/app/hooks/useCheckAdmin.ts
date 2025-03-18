@@ -22,15 +22,12 @@ export function useCheckAdmin() {
             const userData = userDocSnap.data();
             const userRole = userData.role;
 
-            console.log("User role:", userRole);
-
             setRole(userRole);
 
             if (userRole !== "admin") {
               router.push("/");
             }
           } else {
-            console.log("The user does not exist");
             router.push("/");
           }
         } catch (error) {
@@ -38,7 +35,6 @@ export function useCheckAdmin() {
           router.push("/");
         }
       } else {
-        console.log("Error obtaining user data");
         router.push("/");
       }
       setLoading(false);
