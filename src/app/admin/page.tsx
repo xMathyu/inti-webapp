@@ -6,12 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { db } from "@/app/lib/firebase";
-import { useCheckAdmin } from "../hooks/useCheckAdmin";
-import CustomLoader from "@/components/CustomLoader";
 
 export default function AdminPanel() {
-  const { loading, role } = useCheckAdmin();
-
   const [visitType, setVisitType] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
@@ -37,18 +33,6 @@ export default function AdminPanel() {
       }
     }
   };
-
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-white">
-        <CustomLoader message="Verifica delle autorizzazioni..." />
-      </div>
-    );
-  }
-
-  if (role !== "admin") {
-    return null;
-  }
 
   return (
     <div className="max-w-md mx-auto p-4 bg-green-50 rounded shadow">
