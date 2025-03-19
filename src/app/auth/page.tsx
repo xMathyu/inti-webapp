@@ -16,6 +16,7 @@ import { FcGoogle } from "react-icons/fc";
 import { Loader } from "lucide-react";
 import { auth } from "../lib/firebase";
 import { signInWithGoogle, saveUserToFirestore } from "../lib/auth";
+import { useSearchParams } from "next/navigation";
 
 export default function AuthPage() {
   // Controla si el usuario está en modo registro o login
@@ -33,6 +34,8 @@ export default function AuthPage() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -57,7 +60,11 @@ export default function AuthPage() {
         // Guarda el usuario en Firestore utilizando la función común
         await saveUserToFirestore(user, { phone });
 
-        router.push("/");
+        await updateProfile(user, {
+          displayName: `${firstName} ${lastName}`,
+        });
+        await saveUserToFirestore(user, { phone });
+        router.push(redirect || "/");
       } catch (err: unknown) {
         setError((err as Error).message);
       } finally {
@@ -66,7 +73,7 @@ export default function AuthPage() {
     } else {
       try {
         await signInWithEmailAndPassword(auth, email, password);
-        router.push("/");
+        router.push(redirect || "/");
       } catch (err: unknown) {
         setError((err as Error).message);
       } finally {
@@ -79,7 +86,7 @@ export default function AuthPage() {
     try {
       setIsLoading(true);
       await signInWithGoogle();
-      router.push("/");
+      router.push(redirect || "/");
     } catch (err: unknown) {
       setError((err as Error).message);
     } finally {
