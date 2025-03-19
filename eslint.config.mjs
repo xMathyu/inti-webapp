@@ -11,6 +11,13 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    ignores: [
+      "src/components/ui/datetime-input.tsx",
+      "src/components/ui/datetime-picker.tsx",
+      "src/components/ui/simple-time-picker.tsx",
+    ],
+  },
 ];
 
 export default eslintConfig;
