@@ -21,8 +21,14 @@ function ConfirmPageContent() {
       if (user) {
         setUserId(user.uid);
       } else {
-        toast.error("Debes iniciar sesión para confirmar la reserva.");
-        router.push("/auth");
+        toast.error(
+          "Per confermare la prenotazione è necessario aver effettuato il login."
+        );
+        router.push(
+          `/auth?redirect=${encodeURIComponent(
+            window.location.pathname + window.location.search
+          )}`
+        );
       }
     });
     return () => unsubscribe();
@@ -30,19 +36,21 @@ function ConfirmPageContent() {
 
   const handleReservationSubmit = async (data: FormData) => {
     if (!userId || !scheduleId) {
-      toast.error("Error al recuperar los datos del usuario o de la reserva.");
+      toast.error(
+        "Errore nel recupero dei dati dell'utente o della prenotazione."
+      );
       return;
     }
     try {
       const scheduleRef = doc(db, "schedules", scheduleId);
       const scheduleSnap = await getDoc(scheduleRef);
       if (!scheduleSnap.exists()) {
-        toast.error("El horario seleccionado no existe.");
+        toast.error("L'orario selezionato non esiste.");
         return;
       }
       const scheduleData = scheduleSnap.data();
       if (scheduleData.availableSlots < numPeople) {
-        toast.error("No hay suficientes cupos disponibles.");
+        toast.error("Non ci sono abbastanza posti disponibili.");
         return;
       }
 
@@ -59,11 +67,13 @@ function ConfirmPageContent() {
         availableSlots: scheduleData.availableSlots - numPeople,
       });
 
-      toast.success("Reserva confirmada con éxito.");
+      toast.success("Prenotazione confermata con successo.");
       router.push("/reservations");
     } catch (error) {
-      console.error("Error al guardar la reserva:", error);
-      toast.error("Se produjo un error al confirmar la reserva.");
+      console.error("Error saving the reservation:", error);
+      toast.error(
+        "Si è verificato un errore durante la conferma della prenotazione."
+      );
     }
   };
 
@@ -77,7 +87,7 @@ function ConfirmPageContent() {
 
 export default function ConfirmPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div>Caricamento...</div>}>
       <ConfirmPageContent />
     </Suspense>
   );
