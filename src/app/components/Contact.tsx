@@ -34,10 +34,6 @@ export function Contact() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    console.log(process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID);
-    console.log(process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID);
-    console.log(process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
-
     try {
       await emailjs.send(
         process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
@@ -61,7 +57,6 @@ export function Contact() {
         message: ""
       });
     } catch (error) {
-      console.error(error);
       toast.error(
         "Errore nell'invio del messaggio. Per favore riprova più tardi."
       );
