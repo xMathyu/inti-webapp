@@ -1,14 +1,6 @@
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
-import { Check } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Card } from "@/components/ui/card";
+import CardContentComponent from "./card-content-component";
 
 interface Visit {
   id: string;
@@ -23,52 +15,63 @@ interface Visit {
 interface CardItemProps {
   visit: Visit;
   showButton?: boolean;
+  setIsModalOpen: (isOpen: boolean) => void;
 }
 
-export default function CardItem({ visit, showButton = true }: CardItemProps) {
-  const router = useRouter();
+export default function CardItem({
+  visit,
+  showButton = true,
+  setIsModalOpen,
+}: CardItemProps) {
+  const [showMore, setShowMore] = useState(false);
+
+  const handleClose = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      setShowMore(false);
+      setIsModalOpen(false);
+    }
+  };
+
+  const handleShowMore = () => {
+    setShowMore(true);
+    setIsModalOpen(true);
+  };
 
   return (
-    <Card className="bg-white shadow-lg border border-gray-200 flex flex-col h-full rounded-lg overflow-hidden">
-      <CardHeader className="p-6 pb-3">
-        <CardTitle className="text-2xl font-bold text-gray-800">
-          {visit.name}
-        </CardTitle>
-        <CardDescription className="text-lg text-gray-500 mt-2">
-          {visit.shortDescription}
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="px-6 flex-1">
-        <div className="text-3xl font-bold text-green-800 mb-2">
-          €{visit.price}
-          <span className="ml-1 text-base font-normal text-gray-400">
-            {visit.frequency}
-          </span>
-        </div>
-        <ul className="space-y-2 mt-4">
-          {visit.features.map((feature, idx) => (
-            <li
-              key={idx}
-              className="flex items-start text-gray-600 leading-relaxed"
-            >
-              <Check className="text-green-500 mr-2 mt-1" size={18} />
-              <span className="text-sm md:text-base">{feature}</span>
-            </li>
-          ))}
-        </ul>
-      </CardContent>
-      {showButton && (
-        <CardFooter className="p-6 pt-0">
-          <Button
-            className="bg-green-600 hover:bg-green-700 w-full text-white text-lg"
-            onClick={() =>
-              router.push(`/reservations?type=${encodeURIComponent(visit.id)}`)
-            }
+    <>
+      <Card
+        className="px-6 bg-white shadow-lg border border-gray-200 flex flex-col h-full rounded-lg max-w-sm w-full mx-auto"
+        style={{ cursor: "default", maxWidth: "384px" }}
+      >
+        <CardContentComponent
+          visit={visit}
+          showButton={showButton}
+          handleShowMore={handleShowMore}
+        />
+      </Card>
+
+      {showMore && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+          onClick={handleClose}
+        >
+          <div
+            className="bg-a p-6 rounded-lg max-w-3xl"
+            style={{ cursor: "default" }}
           >
-            Prenota
-          </Button>
-        </CardFooter>
+            <Card className="px-6 bg-white shadow-lg border border-gray-200 flex flex-col h-full rounded-lg">
+              <CardContentComponent
+                visit={visit}
+                showButton={showButton}
+                handleClose={() => {
+                  setShowMore(false);
+                  setIsModalOpen(false);
+                }}
+              />
+            </Card>
+          </div>
+        </div>
       )}
-    </Card>
+    </>
   );
 }

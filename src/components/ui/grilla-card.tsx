@@ -32,6 +32,7 @@ export default function GrillaCard({
   const [dragOverItemIndex, setDragOverItemIndex] = useState<number | null>(
     null
   );
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchVisits = async () => {
@@ -49,7 +50,10 @@ export default function GrillaCard({
           onVisitsChange(activeVisits);
         }
       } catch (error) {
-        console.error("Error al cargar los tipos de visita:", error);
+        console.error(
+          "Errore durante il caricamento dei tipi di visita:",
+          error
+        );
       }
     };
     fetchVisits();
@@ -85,11 +89,11 @@ export default function GrillaCard({
   };
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center max-w-screen-xl mx-auto">
       {visits.map((visit, index) => (
         <div
           key={visit.id}
-          draggable={isAdmin}
+          draggable={isAdmin && !isModalOpen}
           onDragStart={() => handleDragStart(index)}
           onDragOver={(e) => {
             e.preventDefault();
@@ -100,9 +104,17 @@ export default function GrillaCard({
           className={`cursor-move ${
             dragOverItemIndex === index ? "border-2 border-blue-500" : ""
           }`}
-          style={{ opacity: draggedItemIndex === index ? 0.5 : 1 }}
+          style={{
+            opacity: draggedItemIndex === index ? 0.5 : 1,
+            maxWidth: "384px",
+            width: "100%",
+          }}
         >
-          <CardItem visit={visit} showButton={showButton} />
+          <CardItem
+            visit={visit}
+            showButton={showButton}
+            setIsModalOpen={setIsModalOpen}
+          />
         </div>
       ))}
     </div>
