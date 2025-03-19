@@ -6,8 +6,66 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Facebook, Instagram, PhoneCall, Mail } from "lucide-react";
+import { useState } from "react";
+import emailjs from "@emailjs/browser";
+import { toast } from "sonner";
 
 export function Contact() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    phone: "",
+    message: ""
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      await emailjs.send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          subject: formData.subject,
+          phone: formData.phone,
+          message: formData.message
+        },
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+      );
+
+      toast.success("Messaggio inviato con successo!");
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        phone: "",
+        message: ""
+      });
+    } catch (error) {
+      toast.error(
+        "Errore nell'invio del messaggio. Per favore riprova più tardi."
+      );
+      console.error("EmailJS Error:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <section
       id="contact"
@@ -61,21 +119,7 @@ export function Contact() {
         </div>
 
         {/* Contenitore "Glass" in 2 colonne */}
-        <div
-          className="
-            backdrop-blur-md 
-            bg-white/60
-            shadow-lg 
-            rounded-xl 
-            border border-white/20
-            p-6
-            md:p-10
-            grid 
-            grid-cols-1 
-            md:grid-cols-2 
-            gap-8
-          "
-        >
+        <div className="backdrop-blur-md bg-white/60 shadow-lg rounded-xl border border-white/20 p-6 md:p-10 grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Colonna Sinistra: Informazioni di Contatto */}
           <div className="flex flex-col justify-center space-y-6">
             <div>
@@ -127,7 +171,7 @@ export function Contact() {
             <h3 className="text-xl font-semibold text-green-800 mb-4">
               Inviaci un Messaggio
             </h3>
-            <form className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
               {/* Nome ed Email in 2 colonne */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -136,7 +180,10 @@ export function Contact() {
                   </Label>
                   <Input
                     id="name"
+                    name="name"
                     type="text"
+                    value={formData.name}
+                    onChange={handleChange}
                     placeholder="Il tuo nome"
                     required
                     className="mt-1"
@@ -148,7 +195,10 @@ export function Contact() {
                   </Label>
                   <Input
                     id="email"
+                    name="email"
                     type="email"
+                    value={formData.email}
+                    onChange={handleChange}
                     placeholder="tuaemail@esempio.com"
                     required
                     className="mt-1"
@@ -163,7 +213,10 @@ export function Contact() {
                 </Label>
                 <Input
                   id="subject"
+                  name="subject"
                   type="text"
+                  value={formData.subject}
+                  onChange={handleChange}
                   placeholder="Motivo del tuo messaggio"
                   required
                   className="mt-1"
@@ -177,7 +230,10 @@ export function Contact() {
                 </Label>
                 <Input
                   id="phone"
+                  name="phone"
                   type="tel"
+                  value={formData.phone}
+                  onChange={handleChange}
                   placeholder="Es: 3477930530"
                   className="mt-1"
                 />
@@ -190,9 +246,13 @@ export function Contact() {
                 </Label>
                 <Textarea
                   id="message"
+                  name="message"
                   rows={5}
+                  value={formData.message}
+                  onChange={handleChange}
                   placeholder="Scrivi il tuo messaggio..."
                   className="mt-1"
+                  required
                 />
               </div>
 
@@ -200,8 +260,9 @@ export function Contact() {
               <Button
                 className="bg-green-600 hover:bg-green-700 w-full text-lg mt-2"
                 type="submit"
+                disabled={isSubmitting}
               >
-                Invia
+                {isSubmitting ? "Invio in corso..." : "Invia"}
               </Button>
             </form>
           </div>
