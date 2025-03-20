@@ -23,7 +23,7 @@ export default function AdminVisitTypesPanel() {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedVisit, setSelectedVisit] = useState<VisitType | null>(null);
 
-  // Carga inicial (solo una vez)
+  // Initial load (only once)
   const fetchVisitTypes = useCallback(async () => {
     setLoading(true);
     try {
@@ -37,7 +37,7 @@ export default function AdminVisitTypesPanel() {
       });
       setVisitTypes(types);
     } catch {
-      toast.error("Error al cargar los tipos de visita.");
+      toast.error("Error loading visit types.");
     }
     setLoading(false);
   }, []);
@@ -52,16 +52,16 @@ export default function AdminVisitTypesPanel() {
       await setDoc(doc(db, "visitTypes", docId), { ...data }, { merge: true });
       toast.success("Tipo de visita guardado con éxito.");
       setModalOpen(false);
-      // Actualiza el estado local sin recargar todos los datos:
+      // Update local state without reloading all data:
       setVisitTypes((prev) => {
         const newItem = { id: docId, ...data };
         if (selectedVisit) {
-          // Actualizar el elemento existente
+          // Update the existing item
           return prev.map((item) =>
             item.id === selectedVisit.id ? newItem : item
           );
         } else {
-          // Agregar el nuevo elemento (al inicio)
+          // Add the new item (at the beginning)
           return [newItem, ...prev];
         }
       });
@@ -78,7 +78,7 @@ export default function AdminVisitTypesPanel() {
     try {
       await deleteDoc(doc(db, "visitTypes", visit.id));
       toast.success("Tipo de visita eliminado.");
-      // Eliminar el elemento del estado local
+      // Remove the item from the local state
       setVisitTypes((prev) => prev.filter((item) => item.id !== visit.id));
     } catch (err: unknown) {
       const errorMessage =
@@ -95,7 +95,7 @@ export default function AdminVisitTypesPanel() {
         { active: newStatus },
         { merge: true }
       );
-      // Actualiza el estado local para ese elemento sin mostrar toast
+      // Update local state for that item without showing toast
       setVisitTypes((prev) =>
         prev.map((item) =>
           item.id === visit.id ? { ...item, active: newStatus } : item
@@ -120,7 +120,7 @@ export default function AdminVisitTypesPanel() {
 
   return (
     <div className="max-w-4xl mx-auto p-4 bg-green-50 rounded shadow relative">
-      {/* Cabecera con título único y botón a la derecha */}
+      {/* Header with unique title and button on the right */}
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold text-green-800">
           Panel de Administración de Tipos de Visita

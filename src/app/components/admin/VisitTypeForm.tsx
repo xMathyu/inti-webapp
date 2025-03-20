@@ -52,7 +52,7 @@ export default function VisitTypeForm({
   const [loading, setLoading] = useState(false);
   const [localError, setLocalError] = useState("");
 
-  // Si cambia initialData, actualizamos los campos
+  // If initialData changes, update the fields
   useEffect(() => {
     if (initialData) {
       setName(initialData.name);
@@ -64,7 +64,7 @@ export default function VisitTypeForm({
     }
   }, [initialData]);
 
-  // Si se abre el modal en modo "Agregar" (sin initialData), reiniciamos el formulario
+  // If the modal is opened in "Add" mode (without initialData), reset the form
   useEffect(() => {
     if (isOpen && !initialData) {
       setName("");

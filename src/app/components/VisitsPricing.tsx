@@ -189,7 +189,7 @@ export function VisitsPricing() {
                       <Button
                         className="bg-green-600 hover:bg-green-700 w-full text-white text-lg"
                         onClick={() =>
-                          // Redirige a /reservations con el query param ?type=...
+                          // Redirects to /reservations with the query param ?type=...
                           router.push(
                             `/reservations?type=${encodeURIComponent(visit.id)}`
                           )

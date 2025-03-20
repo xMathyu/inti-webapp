@@ -9,12 +9,12 @@ export async function signInWithGoogle(): Promise<User> {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
 
-    // Referencia al documento del usuario en Firestore
+    // Reference to the user's document in Firestore
     const userRef = doc(db, "users", user.uid);
     const userDoc = await getDoc(userRef);
 
     if (!userDoc.exists()) {
-      // Si el usuario no existe en Firestore, lo creamos con el rol "user" por defecto
+      // If the user does not exist in Firestore, create it with the default role "user"
       await setDoc(userRef, {
         email: user.email,
         name: user.displayName,

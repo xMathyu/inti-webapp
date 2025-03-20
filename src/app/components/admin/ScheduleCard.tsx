@@ -9,10 +9,10 @@ export interface Schedule {
   id: string;
   visitType: string;
   mode: "individual" | "bulk";
-  // Para individual:
+  // For individual:
   date?: string; // YYYY-MM-DD
   time?: string; // HH:MM
-  // Para bulk (cada documento representa un día):
+  // For bulk (each document represents a day):
   startTime?: string;
   endTime?: string;
   availableSlots: number;
