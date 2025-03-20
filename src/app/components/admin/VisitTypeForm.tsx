@@ -14,22 +14,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-
-export interface VisitTypeFormData {
-  name: string;
-  price: number;
-  frequency: string;
-  shortDescription: string;
-  features: string[];
-  active: boolean;
-}
-
-interface VisitTypeFormProps {
-  initialData?: VisitTypeFormData;
-  isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
-  onSave: (data: VisitTypeFormData) => Promise<void>;
-}
+import {
+  VisitTypeFormData,
+  VisitTypeFormProps,
+} from "@/app/interfaces/interfaces";
 
 export default function VisitTypeForm({
   initialData,

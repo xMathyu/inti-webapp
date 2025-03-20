@@ -4,28 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Calendar, ClockCircle, User } from "@mynaui/icons-react";
 import { Badge } from "@/components/ui/badge";
-
-export interface Schedule {
-  id: string;
-  visitType: string;
-  mode: "individual" | "bulk";
-  // For individual:
-  date?: string; // YYYY-MM-DD
-  time?: string; // HH:MM
-  // For bulk (each document represents a day):
-  startTime?: string;
-  endTime?: string;
-  availableSlots: number;
-  active: boolean;
-}
-
-interface ScheduleCardProps {
-  schedule: Schedule;
-  onEdit?: (schedule: Schedule) => void;
-  onDelete?: (schedule: Schedule) => void;
-  onToggleActive?: (schedule: Schedule) => void;
-  hideBulkAndActions?: boolean;
-}
+import { ScheduleCardProps } from "@/app/interfaces/interfaces";
 
 export default function ScheduleCard({
   schedule,

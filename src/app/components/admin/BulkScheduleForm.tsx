@@ -13,16 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { db } from "@/app/lib/firebase";
 import { collection, getDocs } from "firebase/firestore";
-
-export interface BulkScheduleFormData {
-  visitType: string;
-  startDate: string; // format YYYY-MM-DD
-  endDate: string; // format YYYY-MM-DD
-  startTime: string; // format HH:MM
-  endTime: string; // format HH:MM
-  availableSlots: number;
-  active: boolean;
-}
+import { BulkScheduleFormData } from "@/app/interfaces/interfaces";
 
 interface BulkScheduleFormProps {
   isOpen: boolean;

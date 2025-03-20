@@ -22,22 +22,13 @@ import {
 
 import { format } from "date-fns";
 import { DateTimePicker } from "@/components/ui/datetime-picker";
-
-export interface Attendee {
-  firstName: string;
-  lastName: string;
-  documentType: "CIE" | "Passaporto";
-  documentNumber: string;
-  phone: string;
-  email: string;
-  birthDate: string;
-}
+import { Attendee } from "../interfaces/interfaces";
 
 export interface FormData {
   attendees: Attendee[];
 }
 
-interface ConfirmationFormProps {
+export interface ConfirmationFormProps {
   numPeople: number;
   onSubmit: SubmitHandler<FormData>;
 }

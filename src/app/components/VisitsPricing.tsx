@@ -16,6 +16,7 @@ import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
+import { Visit } from "../interfaces/interfaces";
 
 function useWindowSize() {
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
@@ -40,15 +41,6 @@ export function VisitsPricing() {
   const [gap, setGap] = useState(32);
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  interface Visit {
-    id: string;
-    name: string;
-    shortDescription: string;
-    price: number;
-    frequency: string;
-    features: string[];
-    active: boolean;
-  }
   const [visits, setVisits] = useState<Visit[]>([]);
   const [, setLoading] = useState(true);
 

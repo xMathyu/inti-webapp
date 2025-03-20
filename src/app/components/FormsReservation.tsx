@@ -28,7 +28,7 @@ import { it } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 
-interface FormsReservationProps {
+export interface FormsReservationProps {
   visitType: string;
   setVisitType: (value: string) => void;
   date: string;
@@ -41,7 +41,7 @@ interface FormsReservationProps {
   visitId?: string;
 }
 
-interface FormData {
+export interface FormData {
   visitType: string;
   date: string;
   numPeople: number;

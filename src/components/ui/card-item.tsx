@@ -1,16 +1,7 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import CardContentComponent from "./card-content-component";
-
-interface Visit {
-  id: string;
-  name: string;
-  shortDescription: string;
-  price: number;
-  frequency: string;
-  features: string[];
-  active: boolean;
-}
+import { Visit } from "@/app/interfaces/interfaces";
 
 interface CardItemProps {
   visit: Visit;
