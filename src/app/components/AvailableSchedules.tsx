@@ -8,7 +8,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { AvailableSchedulesProps, Schedule } from "../interfaces/interfaces";
+import { AvailableSchedulesProps } from "../interfaces/interfaces";
 import ScheduleCard from "./admin/ScheduleCard";
 
 const AvailableSchedules: React.FC<AvailableSchedulesProps> = ({

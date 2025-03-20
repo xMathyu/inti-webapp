@@ -1,5 +1,4 @@
 import { SubmitHandler } from "react-hook-form";
-import { ScheduleMode } from "../components/admin/ScheduleForm";
 
 export interface Visit {
   id: string;
@@ -13,12 +12,6 @@ export interface Visit {
 
 export interface VisitOrder extends Visit {
   order: string;
-}
-
-export interface SimpleTimeOption {
-  value: any;
-  label: string;
-  disabled?: boolean;
 }
 
 export interface VisitTypeOption {
@@ -56,28 +49,6 @@ export interface ScheduleCardProps {
   onDelete?: (schedule: Schedule) => void;
   onToggleActive?: (schedule: Schedule) => void;
   hideBulkAndActions?: boolean;
-}
-
-export interface ScheduleFormData {
-  mode: ScheduleMode;
-  visitType: string;
-  // For individual mode:
-  date?: string; // YYYY-MM-DD
-  time?: string; // HH:MM
-  // For bulk mode:
-  startDate?: string;
-  endDate?: string;
-  startTime?: string;
-  endTime?: string;
-  availableSlots: number;
-  active: boolean;
-}
-
-export interface ScheduleFormProps {
-  initialData?: ScheduleFormData;
-  isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
-  onSave: (data: ScheduleFormData) => Promise<void>;
 }
 
 export interface VisitTypeOption {

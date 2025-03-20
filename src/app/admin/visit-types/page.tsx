@@ -10,12 +10,12 @@ import {
 } from "firebase/firestore";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import VisitTypeCard, { VisitType } from "@/app/components/admin/VisitTypeCard";
-import VisitTypeForm, {
-  VisitTypeFormData,
-} from "@/app/components/admin/VisitTypeForm";
+
 import { toast } from "sonner";
 import { db } from "@/app/lib/firebase";
+import { VisitType, VisitTypeFormData } from "@/app/interfaces/interfaces";
+import VisitTypeForm from "@/app/components/admin/VisitTypeForm";
+import VisitTypeCard from "@/app/components/admin/VisitTypeCard";
 
 export default function AdminVisitTypesPanel() {
   const [visitTypes, setVisitTypes] = useState<VisitType[]>([]);

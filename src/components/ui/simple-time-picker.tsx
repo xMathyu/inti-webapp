@@ -29,7 +29,12 @@ import {
   subHours,
   setMilliseconds,
 } from "date-fns";
-import { SimpleTimeOption } from "@/app/interfaces/interfaces";
+
+interface SimpleTimeOption {
+  value: any;
+  label: string;
+  disabled?: boolean;
+}
 
 const AM_VALUE = 0;
 const PM_VALUE = 1;

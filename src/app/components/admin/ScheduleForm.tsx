@@ -13,13 +13,31 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
-import {
-  ScheduleFormData,
-  ScheduleFormProps,
-  VisitTypeOption,
-} from "@/app/interfaces/interfaces";
+import { VisitTypeOption } from "@/app/interfaces/interfaces";
 
 export type ScheduleMode = "individual" | "bulk";
+
+export interface ScheduleFormData {
+  mode: ScheduleMode;
+  visitType: string;
+  // For individual mode:
+  date?: string; // YYYY-MM-DD
+  time?: string; // HH:MM
+  // For bulk mode:
+  startDate?: string;
+  endDate?: string;
+  startTime?: string;
+  endTime?: string;
+  availableSlots: number;
+  active: boolean;
+}
+
+export interface ScheduleFormProps {
+  initialData?: ScheduleFormData;
+  isOpen: boolean;
+  onOpenChange: (open: boolean) => void;
+  onSave: (data: ScheduleFormData) => Promise<void>;
+}
 
 export default function ScheduleForm({
   initialData,
