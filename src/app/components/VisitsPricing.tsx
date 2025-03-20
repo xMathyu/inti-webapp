@@ -1,9 +1,15 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/app/lib/firebase";
 import { useSwipeable } from "react-swipeable";
 import { motion } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
+import CardItem from "@/components/ui/card-item";
 import {
   Card,
   CardHeader,
@@ -12,16 +18,26 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { Check, ChevronLeft, ChevronRight } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "@/app/lib/firebase";
+
+interface Visit {
+  id: string;
+  name: string;
+  shortDescription: string;
+  price: number;
+  frequency: string;
+  features: string[];
+  active: boolean;
+  order: string;
+}
 
 function useWindowSize() {
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
   useEffect(() => {
     const handleResize = () => {
-      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
     };
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -31,184 +47,133 @@ function useWindowSize() {
 }
 
 export function VisitsPricing() {
-  const { width } = useWindowSize();
   const router = useRouter();
+  const { width } = useWindowSize();
 
-  const [visibleCards, setVisibleCards] = useState(3);
-  const [cardWidth, setCardWidth] = useState(314);
-  const [arrowSize, setArrowSize] = useState(24);
-  const [gap, setGap] = useState(32);
+  const [visits, setVisits] = useState<Visit[]>([]);
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  interface Visit {
-    id: string;
-    name: string;
-    shortDescription: string;
-    price: number;
-    frequency: string;
-    features: string[];
-    active: boolean;
-  }
-  const [visits, setVisits] = useState<Visit[]>([]);
-  const [, setLoading] = useState(true);
+  // Cantidad de cards visibles en desktop vs móvil
+  const [visibleCards, setVisibleCards] = useState(3);
 
   useEffect(() => {
     if (width < 768) {
       setVisibleCards(1);
-      setArrowSize(16);
-      setGap(16);
-      setCardWidth(width - 120);
     } else {
       setVisibleCards(3);
-      setArrowSize(24);
-      setGap(32);
-      setCardWidth(314);
     }
   }, [width]);
 
+  // Cargar visitas (solo las primeras 3 + "Ver más")
   useEffect(() => {
     const fetchVisits = async () => {
-      setLoading(true);
       try {
         const querySnapshot = await getDocs(collection(db, "visitTypes"));
         const data: Visit[] = [];
         querySnapshot.forEach((docSnap) => {
           const visit = docSnap.data() as Omit<Visit, "id">;
-          data.push({
-            id: docSnap.id,
-            ...visit,
-          });
+          data.push({ id: docSnap.id, ...visit });
         });
-        setVisits(data);
+        const activeVisits = data.filter((visit) => visit.active);
+        activeVisits.sort((a, b) => parseInt(a.order) - parseInt(b.order));
+        setVisits(activeVisits.slice(0, 4)); 
       } catch (error) {
         console.error("Error al cargar los tipos de visita:", error);
       }
-      setLoading(false);
     };
     fetchVisits();
   }, []);
 
-  const activeVisits = visits.filter((visit) => visit.active);
-
-  const totalCards = activeVisits.length;
-  const visibleWidth = visibleCards * cardWidth + (visibleCards - 1) * gap;
+  // Total de "cards" = 3 visitas + 1 “Ver más” (si hay al menos 3)
+  const totalCards = visits.length >= 3 ? 4 : visits.length;
   const maxSlide = totalCards - visibleCards;
 
-  const handlePrev = () => {
-    setCurrentSlide((prev) => Math.max(prev - 1, 0));
-  };
-
-  const handleNext = () => {
-    setCurrentSlide((prev) => Math.min(prev + 1, maxSlide));
-  };
-
+  // Handlers para swipe
   const swipeHandlers = useSwipeable({
-    onSwipedLeft: () => handleNext(),
-    onSwipedRight: () => handlePrev(),
+    onSwipedLeft: () => setCurrentSlide((prev) => Math.min(prev + 1, maxSlide)),
+    onSwipedRight: () => setCurrentSlide((prev) => Math.max(prev - 1, 0)),
     trackMouse: true,
   });
+
+  const goPrev = () => setCurrentSlide((prev) => Math.max(prev - 1, 0));
+  const goNext = () => setCurrentSlide((prev) => Math.min(prev + 1, maxSlide));
 
   return (
     <section id="tariffe" className="py-20 bg-white">
       <div className="max-w-6xl mx-auto px-4">
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          viewport={{ once: true }}
-          className="text-3xl md:text-4xl font-semibold text-center text-green-800 mb-12"
-        >
+        <h2 className="text-3xl md:text-4xl font-semibold text-center text-green-800 mb-12">
           Tipi di Visita e Tariffe
-        </motion.h2>
-        <div className="flex items-center justify-center">
+        </h2>
+        <div className="relative flex items-center justify-center" {...swipeHandlers}>
+          {/* Botón flecha izquierda */}
           <button
-            onClick={handlePrev}
+            onClick={goPrev}
+            className="absolute left-0 p-2 bg-white rounded-full shadow-md"
             disabled={currentSlide === 0}
-            className="mr-4 bg-white rounded-full shadow p-1 hover:bg-green-100 disabled:opacity-50"
           >
-            <ChevronLeft size={arrowSize} className="text-green-600" />
+            <ChevronLeft size={24} className="text-green-600" />
           </button>
-          <div
-            className="overflow-hidden"
-            style={{ width: visibleWidth }}
-            {...swipeHandlers}
-          >
-            <div
-              style={{
-                transform: `translateX(-${currentSlide * (cardWidth + gap)}px)`,
-                transition: "transform 0.5s ease",
-              }}
+
+          {/* Carrusel */}
+          <div className="overflow-hidden w-full max-w-screen-lg">
+            <motion.div
               className="flex"
+              animate={{
+                translateX: `-${(currentSlide * 100) / visibleCards}%`,
+              }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
             >
-              {activeVisits.map((visit) => (
-                <div
-                  key={visit.id}
-                  className="flex-shrink-0"
-                  style={{
-                    width: cardWidth,
-                    marginRight:
-                      visit.id === activeVisits[activeVisits.length - 1].id
-                        ? 0
-                        : gap,
-                  }}
-                >
+              {/* Render de las primeras 3 visitas */}
+              {visits.slice(0, 3).map((visit) => (
+                <div key={visit.id} className="flex-shrink-0 w-full md:w-1/3 px-2">
+                  <CardItem
+                    visit={visit}
+                    showButton={true}
+                    setIsModalOpen={() => {}}
+                  />
+                </div>
+              ))}
+
+              {/* 4ta tarjeta: "Ver más", con el mismo diseño que las otras */}
+              {visits.length >= 3 && (
+                <div className="flex-shrink-0 w-full md:w-1/3 px-2">
                   <Card className="bg-white shadow-lg border border-gray-200 flex flex-col h-full rounded-lg overflow-hidden">
                     <CardHeader className="p-6 pb-3">
+                      {/* Aquí agregas el texto personalizado */}
                       <CardTitle className="text-2xl font-bold text-gray-800">
-                        {visit.name}
+                        Conoce más de nuestros planes
                       </CardTitle>
                       <CardDescription className="text-lg text-gray-500 mt-2">
-                        {visit.shortDescription}
+                        Descubre todas las opciones y tarifas disponibles.
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="px-6 flex-1">
-                      <div className="text-3xl font-bold text-green-800 mb-2">
-                        €{visit.price}
-                        <span className="ml-1 text-base font-normal text-gray-400">
-                          {visit.frequency}
-                        </span>
-                      </div>
-                      <ul className="space-y-2 mt-4">
-                        {visit.features.map((feature: string, idx: number) => (
-                          <li
-                            key={idx}
-                            className="flex items-start text-gray-600 leading-relaxed"
-                          >
-                            <Check
-                              className="text-green-500 mr-2 mt-1"
-                              size={18}
-                            />
-                            <span className="text-sm md:text-base">
-                              {feature}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
+                      {/* Opcional: texto adicional, bullets, etc. */}
+                      <p className="text-gray-600 leading-relaxed">
+                        Tenemos diferentes experiencias y actividades para grupos y familias.
+                      </p>
                     </CardContent>
                     <CardFooter className="p-6 pt-0">
                       <Button
                         className="bg-green-600 hover:bg-green-700 w-full text-white text-lg"
-                        onClick={() =>
-                          // Redirige a /reservations con el query param ?type=...
-                          router.push(
-                            `/reservations?type=${encodeURIComponent(visit.id)}`
-                          )
-                        }
+                        onClick={() => router.push("/visits-prices")}
                       >
-                        Prenota
+                        Ver más
                       </Button>
                     </CardFooter>
                   </Card>
                 </div>
-              ))}
-            </div>
+              )}
+            </motion.div>
           </div>
+
+          {/* Botón flecha derecha */}
           <button
-            onClick={handleNext}
-            disabled={currentSlide === maxSlide}
-            className="ml-4 bg-white rounded-full shadow p-1 hover:bg-green-100 disabled:opacity-50"
+            onClick={goNext}
+            className="absolute right-0 p-2 bg-white rounded-full shadow-md"
+            disabled={currentSlide >= maxSlide || maxSlide < 0}
           >
-            <ChevronRight size={arrowSize} className="text-green-600" />
+            <ChevronRight size={24} className="text-green-600" />
           </button>
         </div>
       </div>

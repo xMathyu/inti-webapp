@@ -2,8 +2,10 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export function Hero() {
+  const router = useRouter();
   return (
     <section
       id="hero"
@@ -88,12 +90,7 @@ export function Hero() {
             hover:bg-white 
             hover:text-green-700
             "
-            onClick={() => {
-              const tariffeSection = document.getElementById("tariffe");
-              if (tariffeSection) {
-                tariffeSection.scrollIntoView({ behavior: "smooth" });
-              }
-            }}
+            onClick={() => router.push("/visits-prices")}
           >
             Prenota ora
           </Button>
