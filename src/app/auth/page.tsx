@@ -16,6 +16,10 @@ import { FcGoogle } from "react-icons/fc";
 import { Loader } from "lucide-react";
 import { auth } from "../lib/firebase";
 import { signInWithGoogle, saveUserToFirestore } from "../lib/auth";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { FirebaseError } from "firebase/app";
+import { AuthError } from "../interfaces/interfaces";
 
 function AuthForm() {
   const [isRegister, setIsRegister] = useState(false);
@@ -31,6 +35,7 @@ function AuthForm() {
 
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect");
@@ -40,8 +45,8 @@ function AuthForm() {
     setError("");
     setIsLoading(true);
 
-    if (isRegister) {
-      try {
+    try {
+      if (isRegister) {
         const userCredential = await createUserWithEmailAndPassword(
           auth,
           email,
@@ -49,27 +54,33 @@ function AuthForm() {
         );
         const user = userCredential.user;
 
-        await updateProfile(user, {
-          displayName: `${firstName} ${lastName}`,
-        });
-
+        await updateProfile(user, { displayName: `${firstName} ${lastName}` });
         await saveUserToFirestore(user, { phone });
-
-        router.push(redirect || "/");
-      } catch (err: unknown) {
-        setError((err as Error).message);
-      } finally {
-        setIsLoading(false);
-      }
-    } else {
-      try {
+      } else {
         await signInWithEmailAndPassword(auth, email, password);
-        router.push(redirect || "/");
-      } catch (err: unknown) {
-        setError((err as Error).message);
-      } finally {
-        setIsLoading(false);
       }
+      router.push(redirect || "/");
+    } catch (err) {
+      const errorTyped = err as FirebaseError | AuthError;
+
+      switch (errorTyped.code) {
+        case "auth/invalid-credential":
+        case "auth/user-not-found":
+        case "auth/wrong-password":
+          setError("Email o password errata.");
+          break;
+        case "auth/email-already-in-use":
+          setError("Questa e-mail è già registrata.");
+          break;
+        case "auth/invalid-email":
+          setError("L'e-mail non è valida.");
+          break;
+        default:
+          setError("Si è verificato un errore. Si prega di riprovare.");
+          break;
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -78,69 +89,98 @@ function AuthForm() {
       setIsLoading(true);
       await signInWithGoogle();
       router.push(redirect || "/");
-    } catch (err: unknown) {
-      setError((err as Error).message);
+    } catch (err) {
+      const errorTyped = err as FirebaseError | AuthError;
+      setError(errorTyped.message || "Si è verificato un errore con Google.");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
-        <CardTitle className="text-green-800">
+    <Card className="w-full max-w-md shadow-xl rounded-3xl p-4">
+      <CardHeader className="flex flex-col items-center gap-4">
+        <Image
+          src="/logos/logos_pequeno.svg"
+          alt="Inti Logo"
+          width={80}
+          height={80}
+        />
+        <CardTitle className="text-green-800 text-2xl font-bold">
           {isRegister ? "Registrati" : "Accedi"}
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        {error && <p className="text-red-500 mb-4">{error}</p>}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {isRegister && (
-            <>
-              <div>
-                <Label htmlFor="firstName" className="text-green-800">
-                  Nome
-                </Label>
-                <Input
-                  id="firstName"
-                  type="text"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  placeholder="Inserisci il tuo nome"
-                  required
-                  disabled={isLoading}
-                />
-              </div>
-              <div>
-                <Label htmlFor="lastName" className="text-green-800">
-                  Cognome
-                </Label>
-                <Input
-                  id="lastName"
-                  type="text"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  placeholder="Inserisci il tuo cognome"
-                  required
-                  disabled={isLoading}
-                />
-              </div>
-              <div>
-                <Label htmlFor="phone" className="text-green-800">
-                  Telefono
-                </Label>
-                <Input
-                  id="phone"
-                  type="tel"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="Inserisci il tuo numero di telefono"
-                  required
-                  disabled={isLoading}
-                />
-              </div>
-            </>
+      <CardContent className="space-y-6">
+        <AnimatePresence>
+          {error && (
+            <motion.p
+              className="text-red-500 text-sm text-center"
+              initial={{ opacity: 0, y: -5 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -5 }}
+            >
+              {error}
+            </motion.p>
           )}
+        </AnimatePresence>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <AnimatePresence initial={false} mode="wait">
+            {isRegister && (
+              <motion.div
+                key="register-fields"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+                className="space-y-4 overflow-hidden"
+              >
+                <div>
+                  <Label htmlFor="firstName" className="text-green-800">
+                    Nome
+                  </Label>
+                  <Input
+                    id="firstName"
+                    type="text"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    placeholder="Inserisci il tuo nome"
+                    required
+                    disabled={isLoading}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="lastName" className="text-green-800">
+                    Cognome
+                  </Label>
+                  <Input
+                    id="lastName"
+                    type="text"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    placeholder="Inserisci il tuo cognome"
+                    required
+                    disabled={isLoading}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="phone" className="text-green-800">
+                    Telefono
+                  </Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="Inserisci il tuo numero di telefono"
+                    required
+                    disabled={isLoading}
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           <div>
             <Label htmlFor="email" className="text-green-800">
               Email
@@ -169,9 +209,10 @@ function AuthForm() {
               disabled={isLoading}
             />
           </div>
+
           <Button
             type="submit"
-            className="w-full bg-green-600 hover:bg-green-700 text-white relative"
+            className="w-full bg-green-600 hover:bg-green-700 text-white transition-all"
             disabled={isLoading}
           >
             {isLoading ? (
@@ -183,11 +224,13 @@ function AuthForm() {
             )}
           </Button>
         </form>
+
         <Separator className="my-4" />
+
         <Button
           variant="outline"
           onClick={handleGoogleSignIn}
-          className="w-full flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 rounded-lg py-2.5 px-4 mt-2 relative"
+          className="w-full flex items-center justify-center gap-2 bg-white hover:bg-gray-50 border border-gray-300 transition-all"
           disabled={isLoading}
         >
           {isLoading ? (
@@ -195,24 +238,26 @@ function AuthForm() {
           ) : (
             <>
               <FcGoogle className="w-5 h-5" />
-              <span>Continue with Google</span>
+              <span>Continua con Google</span>
             </>
           )}
         </Button>
+
         <div className="mt-4 text-center">
-          <button
+          <motion.button
             type="button"
-            className="text-green-600 hover:underline"
+            className="text-green-700 hover:underline text-sm"
             onClick={() => {
               setIsRegister(!isRegister);
               setError("");
             }}
             disabled={isLoading}
+            whileTap={{ scale: 0.95 }}
           >
             {isRegister
               ? "Hai già un account? Accedi"
               : "Non hai un account? Registrati"}
-          </button>
+          </motion.button>
         </div>
       </CardContent>
     </Card>
@@ -221,8 +266,14 @@ function AuthForm() {
 
 export default function AuthPage() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-green-50">
-      <Suspense fallback={<div>Loading...</div>}>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-green-100 to-green-50 p-4">
+      <Suspense
+        fallback={
+          <div className="flex items-center justify-center h-screen">
+            <Loader className="h-8 w-8 animate-spin text-green-800" />
+          </div>
+        }
+      >
         <AuthForm />
       </Suspense>
     </div>
