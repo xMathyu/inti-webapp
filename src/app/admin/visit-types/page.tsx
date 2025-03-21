@@ -74,9 +74,7 @@ export default function AdminVisitTypesPanel() {
       toast.success("Tipo de visita eliminado.");
       // Remove the item from the local state
       setVisitTypes((prev) => prev.filter((item) => item.id !== visit.id));
-    } catch (err: unknown) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Error inesperado.";
+    } catch (err: unknown) {const errorMessage =err instanceof Error ? err.message : "Error inesperado.";
       toast.error(errorMessage);
     }
   };
