@@ -18,6 +18,8 @@ import { auth } from "../lib/firebase";
 import { signInWithGoogle, saveUserToFirestore } from "../lib/auth";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { FirebaseError } from "firebase/app";
+import { AuthError } from "../interfaces/interfaces";
 
 function AuthForm() {
   const [isRegister, setIsRegister] = useState(false);
@@ -58,11 +60,10 @@ function AuthForm() {
         await signInWithEmailAndPassword(auth, email, password);
       }
       router.push(redirect || "/");
-    } catch (err: unknown) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const errorCode = (err as any).code;
+    } catch (err) {
+      const errorTyped = err as FirebaseError | AuthError;
 
-      switch (errorCode) {
+      switch (errorTyped.code) {
         case "auth/invalid-credential":
         case "auth/user-not-found":
         case "auth/wrong-password":
@@ -88,8 +89,9 @@ function AuthForm() {
       setIsLoading(true);
       await signInWithGoogle();
       router.push(redirect || "/");
-    } catch (err: unknown) {
-      setError((err as Error).message);
+    } catch (err) {
+      const errorTyped = err as FirebaseError | AuthError;
+      setError(errorTyped.message || "Si è verificato un errore con Google.");
     } finally {
       setIsLoading(false);
     }
