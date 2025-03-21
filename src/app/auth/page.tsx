@@ -22,11 +22,11 @@ import { motion, AnimatePresence } from "framer-motion";
 function AuthForm() {
   const [isRegister, setIsRegister] = useState(false);
 
-  // Campos comunes para ambos modos
+  // Common fields for both modes
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // Campos adicionales para el registro
+  // Additional fields for registration
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");

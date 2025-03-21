@@ -14,7 +14,7 @@ export function About() {
       id="about"
       className="relative overflow-hidden py-20 bg-gradient-to-r from-green-100 to-green-50"
     >
-      {/* Wave superior */}
+      {/* Top wave */}
       <div className="pointer-events-none absolute top-0 left-0 w-full -translate-y-full">
         <svg
           className="w-full h-auto"
@@ -30,7 +30,7 @@ export function About() {
         </svg>
       </div>
 
-      {/* Wave inferior */}
+      {/* Bottom wave */}
       <div className="pointer-events-none absolute bottom-0 left-0 w-full translate-y-full rotate-180">
         <svg
           className="w-full h-auto"
@@ -46,7 +46,7 @@ export function About() {
         </svg>
       </div>
 
-      {/* Contenedor principal */}
+      {/* Main container */}
       <div className="relative max-w-6xl mx-auto px-4">
         <motion.div
           className="backdrop-blur-md bg-white/60 shadow-xl rounded-xl p-8 md:p-12"
@@ -55,7 +55,7 @@ export function About() {
           transition={{ duration: 0.7 }}
           viewport={{ once: true }}
         >
-          {/* Título principal */}
+          {/* Main title */}
           <h2 className="text-3xl md:text-4xl font-semibold text-green-800 mb-6 text-center">
             La nostra storia
           </h2>
@@ -66,9 +66,9 @@ export function About() {
             </Badge>
           </div>
 
-          {/* Grid con las 2 tarjetas */}
+          {/* Grid with 2 cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Tarjeta: Storia del Parco */}
+            {/* Card: Park History */}
             <motion.div
               className="bg-white p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105"
               initial={{ opacity: 0, x: -50 }}
@@ -132,7 +132,7 @@ export function About() {
               </ul>
             </motion.div>
 
-            {/* Tarjeta: Storia di Inti */}
+            {/* Card: Inti History */}
             <motion.div
               className="bg-white p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105"
               initial={{ opacity: 0, x: 50 }}
@@ -210,7 +210,7 @@ export function About() {
             </motion.div>
           </div>
 
-          {/* Botón principal */}
+          {/* Main button */}
           <div className="mt-8 flex justify-center">
             <Button
               className="bg-green-600 hover:bg-green-700"

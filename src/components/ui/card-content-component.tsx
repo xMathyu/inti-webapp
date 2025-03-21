@@ -7,16 +7,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Check } from "@mynaui/icons-react";
 import { useRouter } from "next/navigation";
-
-interface Visit {
-  id: string;
-  name: string;
-  shortDescription: string;
-  price: number;
-  frequency: string;
-  features: string[];
-  active: boolean;
-}
+import { Visit } from "@/app/interfaces/interfaces";
 
 interface CardContentComponentProps {
   visit: Visit;

@@ -67,7 +67,7 @@ export function UserMenu({
     </>
   );
 
-  // Se llama siempre a useState, pero solo se usará cuando mobile sea true.
+  // Always calls useState, but it will only be used when mobile is true.
   const [open, setOpen] = useState(false);
 
   if (!mobile) {

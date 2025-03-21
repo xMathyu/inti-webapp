@@ -7,7 +7,7 @@ export function Footer() {
 
   return (
     <footer className="relative overflow-hidden pt-12 bg-gradient-to-r from-green-600 to-green-700 text-white">
-      {/* Onda SVG superiore */}
+      {/* Upper SVG wave */}
       <div className="absolute top-0 left-0 w-full h-auto -translate-y-full pointer-events-none">
         <svg
           className="w-full h-auto"
@@ -23,7 +23,7 @@ export function Footer() {
         </svg>
       </div>
 
-      {/* Onda SVG inferiore */}
+      {/* Lower SVG wave */}
       <div className="absolute bottom-0 left-0 w-full translate-y-full rotate-180 pointer-events-none z-[1]">
         <svg
           className="w-full h-auto"
@@ -39,9 +39,9 @@ export function Footer() {
         </svg>
       </div>
 
-      {/* Contenuto del footer */}
+      {/* Footer content */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 pb-8 flex flex-col md:flex-row items-center md:justify-between space-y-4 md:space-y-0">
-        {/* Logo / Nome */}
+        {/* Logo / Name */}
         <div className="text-center md:text-left">
           <h2 className="text-2xl font-bold">Parco dei Colori</h2>
           <p className="text-sm">Associazione di Giardini e Farfalle</p>
@@ -68,7 +68,7 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Linea divisoria */}
+      {/* Divider line */}
       <div className="border-t border-green-500/50 mx-6" />
 
       {/* Copyright */}

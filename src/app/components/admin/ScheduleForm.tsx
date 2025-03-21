@@ -13,16 +13,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
+import { VisitTypeOption } from "@/app/interfaces/interfaces";
 
 export type ScheduleMode = "individual" | "bulk";
 
 export interface ScheduleFormData {
   mode: ScheduleMode;
   visitType: string;
-  // Para individual:
+  // For individual mode:
   date?: string; // YYYY-MM-DD
   time?: string; // HH:MM
-  // Para bulk:
+  // For bulk mode:
   startDate?: string;
   endDate?: string;
   startTime?: string;
@@ -31,16 +32,11 @@ export interface ScheduleFormData {
   active: boolean;
 }
 
-interface ScheduleFormProps {
+export interface ScheduleFormProps {
   initialData?: ScheduleFormData;
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   onSave: (data: ScheduleFormData) => Promise<void>;
-}
-
-interface VisitTypeOption {
-  id: string;
-  name: string;
 }
 
 export default function ScheduleForm({
@@ -49,7 +45,7 @@ export default function ScheduleForm({
   onOpenChange,
   onSave,
 }: ScheduleFormProps) {
-  // Si se edita un horario bulk, queremos mostrarlo en modo individual
+  // If editing a bulk schedule, we want to display it in individual mode
   const [mode, setMode] = useState<ScheduleMode>(
     initialData?.mode || "individual"
   );
@@ -67,7 +63,7 @@ export default function ScheduleForm({
   const [loading, setLoading] = useState(false);
   const [localError, setLocalError] = useState("");
 
-  // Opciones para el desplegable "Tipo de Visita"
+  // Options for the "Visit Type" dropdown
   const [visitTypesOptions, setVisitTypesOptions] = useState<VisitTypeOption[]>(
     []
   );
@@ -103,15 +99,15 @@ export default function ScheduleForm({
       setActive(true);
       setLocalError("");
     } else if (initialData) {
-      // Si el horario fue creado en bulk, lo convertimos a individual para edición
+      // If the schedule was created in bulk mode, convert it to individual mode for editing
       if (initialData.mode === "bulk") {
         setMode("individual");
         setVisitType(initialData.visitType);
         setDate(initialData.date || "");
-        setTime(initialData.startTime || ""); // Usamos startTime como la hora de reserva
+        setTime(initialData.startTime || ""); // Use startTime as the reservation time
         setAvailableSlots(initialData.availableSlots.toString());
         setActive(initialData.active);
-        // Limpia los campos bulk
+        // Clear bulk fields
         setStartDate("");
         setEndDate("");
         setStartTime("");
@@ -194,7 +190,7 @@ export default function ScheduleForm({
             Ingresa la información del horario.
           </DialogDescription>
         </DialogHeader>
-        {/* Selector de modo */}
+        {/* Mode selector */}
         <div className="mb-4">
           <Label htmlFor="mode" className="block text-green-800 mb-1">
             Modo:

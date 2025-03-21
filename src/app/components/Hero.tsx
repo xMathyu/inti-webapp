@@ -9,7 +9,7 @@ export function Hero() {
       id="hero"
       className="relative flex items-center justify-center min-h-[90vh] overflow-hidden"
     >
-      {/* Imagen de fondo con Parallax */}
+      {/* Background image with Parallax */}
       <motion.div
         className="absolute inset-0 bg-cover bg-center"
         style={{
@@ -22,7 +22,7 @@ export function Hero() {
         <div className="absolute inset-0 bg-black bg-opacity-30" />
       </motion.div>
 
-      {/* Contenido */}
+      {/* Content */}
       <div className="relative z-10 px-4 sm:px-6 text-center text-white max-w-2xl mx-auto flex flex-col items-center">
         <motion.h1
           className="text-4xl sm:text-5xl md:text-7xl font-extrabold drop-shadow-lg mb-2 sm:mb-4"
@@ -75,19 +75,19 @@ export function Hero() {
           <Button
             variant="outline"
             className="
-            w-full
-            sm:w-auto
-            px-6 
-            py-3 
-            text-base
-            sm:text-lg 
-            font-semibold 
-            text-white 
-            border-white
-            bg-transparent 
-            hover:bg-white 
-            hover:text-green-700
-            "
+        w-full
+        sm:w-auto
+        px-6 
+        py-3 
+        text-base
+        sm:text-lg 
+        font-semibold 
+        text-white 
+        border-white
+        bg-transparent 
+        hover:bg-white 
+        hover:text-green-700
+        "
             onClick={() => {
               const tariffeSection = document.getElementById("tariffe");
               if (tariffeSection) {

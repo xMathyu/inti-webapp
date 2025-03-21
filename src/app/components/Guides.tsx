@@ -12,7 +12,7 @@ import {
 import { AiOutlineCheck } from "react-icons/ai";
 import Image from "next/image";
 
-// Datos de los guías
+// Guides data
 const guides = [
   {
     name: "Valentina Di Carlo",
@@ -36,7 +36,7 @@ export function Guides() {
       id="guides"
       className="relative py-20 overflow-hidden bg-gradient-to-r from-green-100 to-green-50"
     >
-      {/* Ola superior */}
+      {/* Top wave */}
       <div className="pointer-events-none absolute top-0 left-0 w-full -translate-y-full z-[1]">
         <svg
           className="w-full h-auto"
@@ -51,7 +51,7 @@ export function Guides() {
         </svg>
       </div>
 
-      {/* Ola inferior */}
+      {/* Bottom wave */}
       <div className="pointer-events-none absolute bottom-0 left-0 w-full translate-y-full rotate-180 z-[1]">
         <svg
           className="w-full h-auto"
@@ -66,9 +66,9 @@ export function Guides() {
         </svg>
       </div>
 
-      {/* Contenedor principal */}
+      {/* Main container */}
       <div className="relative max-w-6xl mx-auto px-4 z-10">
-        {/* Título */}
+        {/* Title */}
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -79,7 +79,7 @@ export function Guides() {
           Accompagnatori
         </motion.h2>
 
-        {/* Grid de Guías */}
+        {/* Guides grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {guides.map((guide, idx) => (
             <motion.div
@@ -91,7 +91,7 @@ export function Guides() {
               className="transform transition-transform hover:-translate-y-2"
             >
               <Card className="shadow-md border border-gray-200 rounded-lg overflow-hidden bg-white hover:shadow-xl h-full flex flex-col">
-                {/* Imagen del guía */}
+                {/* Guide image */}
                 <div className="flex justify-center mt-6">
                   <Image
                     src={guide.image}
@@ -102,7 +102,7 @@ export function Guides() {
                   />
                 </div>
 
-                {/* Cabecera del Card */}
+                {/* Card header */}
                 <CardHeader className="pt-4 pb-2 text-center">
                   <CardTitle className="text-2xl text-green-800 font-bold">
                     {guide.name}
@@ -112,7 +112,7 @@ export function Guides() {
                   </CardDescription>
                 </CardHeader>
 
-                {/* Contenido: Biografía en bullet points */}
+                {/* Content: Biography in bullet points */}
                 <CardContent className="px-6 pb-6 flex-1">
                   <ul className="list-none space-y-2">
                     {guide.bio
@@ -133,7 +133,7 @@ export function Guides() {
                   </ul>
                 </CardContent>
 
-                {/* Footer: Botón */}
+                {/* Footer: Button */}
                 <CardFooter className="flex justify-center pb-6">
                   <button
                     className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded shadow transition-colors"

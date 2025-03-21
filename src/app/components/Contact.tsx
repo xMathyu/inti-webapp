@@ -17,7 +17,7 @@ export function Contact() {
     email: "",
     subject: "",
     phone: "",
-    message: ""
+    message: "",
   });
 
   const handleChange = (
@@ -26,7 +26,7 @@ export function Contact() {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -43,7 +43,7 @@ export function Contact() {
           from_email: formData.email,
           subject: formData.subject,
           phone: formData.phone,
-          message: formData.message
+          message: formData.message,
         },
         process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
       );
@@ -54,7 +54,7 @@ export function Contact() {
         email: "",
         subject: "",
         phone: "",
-        message: ""
+        message: "",
       });
     } catch (error) {
       toast.error(
@@ -71,7 +71,7 @@ export function Contact() {
       id="contact"
       className="relative py-20 overflow-hidden bg-gradient-to-r from-green-100 to-green-50"
     >
-      {/* Onda superiore */}
+      {/* Upper wave */}
       <div className="pointer-events-none absolute top-0 left-0 w-full -translate-y-full z-[1]">
         <svg
           className="w-full h-auto"
@@ -86,7 +86,7 @@ export function Contact() {
         </svg>
       </div>
 
-      {/* Onda inferiore */}
+      {/* Lower wave */}
       <div className="pointer-events-none absolute bottom-0 left-0 w-full translate-y-full rotate-180 z-[1]">
         <svg
           className="w-full h-auto"
@@ -108,7 +108,7 @@ export function Contact() {
         transition={{ duration: 0.7 }}
         viewport={{ once: true }}
       >
-        {/* Titolo e Sottotitolo */}
+        {/* Title and Subtitle */}
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-semibold text-green-800">
             Contattaci
@@ -118,9 +118,9 @@ export function Contact() {
           </p>
         </div>
 
-        {/* Contenitore "Glass" in 2 colonne */}
+        {/* "Glass" container in 2 columns */}
         <div className="backdrop-blur-md bg-white/60 shadow-lg rounded-xl border border-white/20 p-6 md:p-10 grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Colonna Sinistra: Informazioni di Contatto */}
+          {/* Left Column: Contact Information */}
           <div className="flex flex-col justify-center space-y-6">
             <div>
               <h3 className="text-2xl font-semibold text-green-800 mb-2">
@@ -132,7 +132,7 @@ export function Contact() {
               </p>
             </div>
 
-            {/* Telefono / Email */}
+            {/* Phone / Email */}
             <div className="space-y-3">
               <div className="flex items-center text-green-800 font-medium">
                 <PhoneCall className="mr-2" /> 3477930530
@@ -166,13 +166,13 @@ export function Contact() {
             </div>
           </div>
 
-          {/* Colonna Destra: Formulario */}
+          {/* Right Column: Form */}
           <div className="bg-white rounded-lg shadow p-4 md:p-6 lg:p-8">
             <h3 className="text-xl font-semibold text-green-800 mb-4">
-              Inviaci un Messaggio
+              Send us a Message
             </h3>
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Nome ed Email in 2 colonne */}
+              {/* Name and Email in 2 columns */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="name" className="font-medium text-gray-700">
@@ -206,7 +206,7 @@ export function Contact() {
                 </div>
               </div>
 
-              {/* Oggetto */}
+              {/* Subject */}
               <div>
                 <Label htmlFor="subject" className="font-medium text-gray-700">
                   Oggetto
@@ -223,7 +223,7 @@ export function Contact() {
                 />
               </div>
 
-              {/* Telefono (Opzionale) */}
+              {/* Phone (Optional) */}
               <div>
                 <Label htmlFor="phone" className="font-medium text-gray-700">
                   Telefono
@@ -239,7 +239,7 @@ export function Contact() {
                 />
               </div>
 
-              {/* Messaggio */}
+              {/* Message */}
               <div>
                 <Label htmlFor="message" className="font-medium text-gray-700">
                   Messaggio
@@ -256,7 +256,7 @@ export function Contact() {
                 />
               </div>
 
-              {/* Bottone Invia */}
+              {/* Submit Button */}
               <Button
                 className="bg-green-600 hover:bg-green-700 w-full text-lg mt-2"
                 type="submit"

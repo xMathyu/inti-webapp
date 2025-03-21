@@ -31,7 +31,7 @@ export function Navbar() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Autenticación y chequeo de rol de usuario
+  // Authentication and user role check
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
@@ -55,7 +55,7 @@ export function Navbar() {
     }
   };
 
-  // Para mobile se usa la función tradicional
+  // For mobile, the traditional function is used
   const renderMobileNavLinks = (className = "") =>
     navLinks.map(({ href, label }) => (
       <Link
@@ -89,7 +89,7 @@ export function Navbar() {
           </div>
         </Link>
 
-        {/* Menú Desktop usando NavigationMenu */}
+        {/* Desktop Menu using NavigationMenu */}
         <div className="hidden md:flex items-center text-white space-x-4">
           <NavigationMenu>
             <NavigationMenuList className="flex space-x-4">
@@ -123,7 +123,7 @@ export function Navbar() {
           )}
         </div>
 
-        {/* Botón del menú mobile */}
+        {/* Mobile menu button */}
         <button
           className="md:hidden text-white"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -136,7 +136,7 @@ export function Navbar() {
         </button>
       </div>
 
-      {/* Menú Mobile */}
+      {/* Mobile Menu */}
       {mobileMenuOpen && (
         <motion.div
           initial={{ y: -20, opacity: 0 }}

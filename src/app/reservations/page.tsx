@@ -8,12 +8,7 @@ import { db } from "@/app/lib/firebase";
 import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import FormsReservation from "../components/FormsReservation";
 import AvailableSchedules from "../components/AvailableSchedules";
-import { Schedule } from "../components/admin/ScheduleCard";
-
-interface VisitTypeOption {
-  id: string;
-  name: string;
-}
+import { Schedule, VisitTypeOption } from "../interfaces/interfaces";
 
 const ReservationsPage = () => {
   const router = useRouter();
@@ -142,9 +137,11 @@ const ReservationsPage = () => {
 
   const handleSelectSchedule = (schedule: Schedule) => {
     router.push(
-      `/reservations/confirm?scheduleId=${encodeURIComponent(schedule.id)}&numPeople=${numPeople}`
+      `/reservations/confirm?scheduleId=${encodeURIComponent(
+        schedule.id
+      )}&numPeople=${numPeople}`
     );
-  };  
+  };
 
   return (
     <FormProvider {...methods}>

@@ -6,22 +6,12 @@ import GrillaCard from "@/components/ui/grilla-card";
 import { collection, doc, writeBatch } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
 import { toast } from "sonner";
-
-interface Visit {
-  id: string;
-  name: string;
-  shortDescription: string;
-  price: number;
-  frequency: string;
-  features: string[];
-  active: boolean;
-  order: string;
-}
+import { VisitOrder } from "@/app/interfaces/interfaces";
 
 export default function AdminVisitsPricePage() {
-  const [visits, setVisits] = useState<Visit[]>([]);
+  const [visits, setVisits] = useState<VisitOrder[]>([]);
 
-  const handleSaveOrder = async (visits: Visit[]) => {
+  const handleSaveOrder = async (visits: VisitOrder[]) => {
     try {
       const batch = writeBatch(db);
       visits.forEach((visit, index) => {

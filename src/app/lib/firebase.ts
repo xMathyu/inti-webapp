@@ -4,7 +4,7 @@ import { getAuth, Auth } from "firebase/auth";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 
-// Configuración de Firebase utilizando variables de entorno
+// Firebase configuration using environment variables
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY!,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN!,
@@ -15,7 +15,7 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID!,
 };
 
-// Inicializa la app solo si no se ha inicializado previamente
+// Initialize the app only if it hasn't been initialized already
 let app: FirebaseApp;
 if (!getApps().length) {
   app = initializeApp(firebaseConfig);
@@ -23,11 +23,11 @@ if (!getApps().length) {
   app = getApps()[0];
 }
 
-// Inicializa Analytics (opcional, solo si se usa)
+// Initialize Analytics (optional, only if used)
 if (typeof window !== "undefined") {
   getAnalytics(app);
 }
 
-// Exporta la instancia de autenticación
+// Export the authentication instance
 export const auth: Auth = getAuth(app);
 export const db = getFirestore(app);
