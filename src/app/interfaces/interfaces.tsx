@@ -112,3 +112,8 @@ export interface ConfirmationFormProps {
   numPeople: number;
   onSubmit: SubmitHandler<FormData>;
 }
+
+export interface AuthError {
+  code: string;
+  message: string;
+}
