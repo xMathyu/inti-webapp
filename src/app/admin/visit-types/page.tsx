@@ -51,12 +51,8 @@ export default function AdminVisitTypesPanel() {
       const docId = selectedVisit ? selectedVisit.id : data.name;
       await setDoc(doc(db, "visitTypes", docId), { ...data }, { merge: true });
       toast.success("Tipo de visita guardado con éxito.");
-      setModalOpen(false);
-      // Update local state without reloading all data:
-      setVisitTypes((prev) => {
-        const newItem = { id: docId, ...data };
-        if (selectedVisit) {
-          // Update the existing item
+      setModalOpen(false);// Update local state without reloading all data:
+      setVisitTypes((prev) => {const newItem = { id: docId, ...data };if (selectedVisit) {// Update the existing item
           return prev.map((item) =>
             item.id === selectedVisit.id ? newItem : item
           );
