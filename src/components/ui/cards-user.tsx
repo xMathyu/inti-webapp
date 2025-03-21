@@ -15,16 +15,7 @@ import {
 } from "@/components/ui/card";
 import { Check } from "lucide-react";
 import { useRouter } from "next/navigation";
-
-interface Visit {
-  id: string;
-  name: string;
-  shortDescription: string;
-  price: number;
-  frequency: string;
-  features: string[];
-  active: boolean;
-}
+import { Visit } from "@/app/interfaces/interfaces";
 
 interface CardsUserProps {
   columns?: number; // Opción para definir el número de columnas
@@ -89,7 +80,10 @@ const CardsUser: React.FC<CardsUserProps> = ({ columns = 3 }) => {
                   </div>
                   <ul className="space-y-2 mt-4">
                     {visit.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-start text-gray-600 leading-relaxed">
+                      <li
+                        key={idx}
+                        className="flex items-start text-gray-600 leading-relaxed"
+                      >
                         <Check className="text-green-500 mr-2 mt-1" size={18} />
                         <span className="text-sm md:text-base">{feature}</span>
                       </li>
@@ -99,7 +93,11 @@ const CardsUser: React.FC<CardsUserProps> = ({ columns = 3 }) => {
                 <CardFooter className="p-6 pt-0">
                   <Button
                     className="bg-green-600 hover:bg-green-700 w-full text-white text-lg"
-                    onClick={() => router.push(`/reservations?type=${encodeURIComponent(visit.id)}`)}
+                    onClick={() =>
+                      router.push(
+                        `/reservations?type=${encodeURIComponent(visit.id)}`
+                      )
+                    }
                   >
                     Prenota
                   </Button>

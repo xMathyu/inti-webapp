@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ScheduleCard, { Schedule } from "./admin/ScheduleCard";
+
 import {
   Pagination,
   PaginationContent,
@@ -8,11 +8,8 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-
-interface AvailableSchedulesProps {
-  schedules: Schedule[];
-  handleSelectSchedule: (schedule: Schedule) => void;
-}
+import { AvailableSchedulesProps } from "../interfaces/interfaces";
+import ScheduleCard from "./admin/ScheduleCard";
 
 const AvailableSchedules: React.FC<AvailableSchedulesProps> = ({
   schedules,

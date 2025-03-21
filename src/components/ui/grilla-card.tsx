@@ -4,22 +4,12 @@ import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
 import CardItem from "./card-item";
-
-interface Visit {
-  id: string;
-  name: string;
-  shortDescription: string;
-  price: number;
-  frequency: string;
-  features: string[];
-  active: boolean;
-  order: string;
-}
+import { VisitOrder } from "@/app/interfaces/interfaces";
 
 interface GrillaCardProps {
   showButton?: boolean;
   isAdmin?: boolean;
-  onVisitsChange?: (visits: Visit[]) => void;
+  onVisitsChange?: (visits: VisitOrder[]) => void;
 }
 
 export default function GrillaCard({
@@ -27,7 +17,7 @@ export default function GrillaCard({
   isAdmin = false,
   onVisitsChange,
 }: GrillaCardProps) {
-  const [visits, setVisits] = useState<Visit[]>([]);
+  const [visits, setVisits] = useState<VisitOrder[]>([]);
   const [draggedItemIndex, setDraggedItemIndex] = useState<number | null>(null);
   const [dragOverItemIndex, setDragOverItemIndex] = useState<number | null>(
     null
@@ -38,9 +28,9 @@ export default function GrillaCard({
     const fetchVisits = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "visitTypes"));
-        const data: Visit[] = [];
+        const data: VisitOrder[] = [];
         querySnapshot.forEach((docSnap) => {
-          const visit = docSnap.data() as Omit<Visit, "id">;
+          const visit = docSnap.data() as Omit<VisitOrder, "id">;
           data.push({ id: docSnap.id, ...visit });
         });
         const activeVisits = data.filter((visit) => visit.active);

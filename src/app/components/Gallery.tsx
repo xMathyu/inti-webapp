@@ -50,7 +50,7 @@ export function Gallery() {
         slides={images.map((image) => ({ src: image.src }))}
         index={currentIndex}
         on={{
-          click: () => {}, // manejar clicks dentro del lightbox si quieres
+          click: () => {}, // handle clicks inside the lightbox if needed
         }}
       />
     </section>

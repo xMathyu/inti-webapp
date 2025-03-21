@@ -14,22 +14,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-
-export interface VisitTypeFormData {
-  name: string;
-  price: number;
-  frequency: string;
-  shortDescription: string;
-  features: string[];
-  active: boolean;
-}
-
-interface VisitTypeFormProps {
-  initialData?: VisitTypeFormData;
-  isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
-  onSave: (data: VisitTypeFormData) => Promise<void>;
-}
+import {
+  VisitTypeFormData,
+  VisitTypeFormProps,
+} from "@/app/interfaces/interfaces";
 
 export default function VisitTypeForm({
   initialData,
@@ -52,7 +40,7 @@ export default function VisitTypeForm({
   const [loading, setLoading] = useState(false);
   const [localError, setLocalError] = useState("");
 
-  // Si cambia initialData, actualizamos los campos
+  // If initialData changes, update the fields
   useEffect(() => {
     if (initialData) {
       setName(initialData.name);
@@ -64,7 +52,7 @@ export default function VisitTypeForm({
     }
   }, [initialData]);
 
-  // Si se abre el modal en modo "Agregar" (sin initialData), reiniciamos el formulario
+  // If the modal is opened in "Add" mode (without initialData), reset the form
   useEffect(() => {
     if (isOpen && !initialData) {
       setName("");

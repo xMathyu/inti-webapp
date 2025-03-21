@@ -12,23 +12,7 @@ import {
   DialogFooter,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
-export interface VisitType {
-  id: string;
-  name: string;
-  price: number;
-  frequency: string;
-  shortDescription: string;
-  features: string[];
-  active: boolean;
-}
-
-interface VisitTypeCardProps {
-  visit: VisitType;
-  onEdit: (visit: VisitType) => void;
-  onDelete: (visit: VisitType) => void;
-  onToggleActive: (visit: VisitType) => void;
-}
+import { VisitTypeCardProps } from "@/app/interfaces/interfaces";
 
 export default function VisitTypeCard({
   visit,

@@ -10,7 +10,7 @@ import {
 } from "firebase/firestore";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import ScheduleCard, { Schedule } from "@/app/components/admin/ScheduleCard";
+
 import ScheduleForm, {
   ScheduleFormData,
 } from "@/app/components/admin/ScheduleForm";
@@ -35,11 +35,8 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-
-interface VisitTypeOption {
-  id: string;
-  name: string;
-}
+import { Schedule, VisitTypeOption } from "@/app/interfaces/interfaces";
+import ScheduleCard from "@/app/components/admin/ScheduleCard";
 
 export default function AdminSchedulesPanel() {
   const [schedules, setSchedules] = useState<Schedule[]>([]);

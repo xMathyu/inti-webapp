@@ -16,6 +16,7 @@ import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
+import { Visit } from "../interfaces/interfaces";
 
 function useWindowSize() {
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
@@ -40,15 +41,6 @@ export function VisitsPricing() {
   const [gap, setGap] = useState(32);
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  interface Visit {
-    id: string;
-    name: string;
-    shortDescription: string;
-    price: number;
-    frequency: string;
-    features: string[];
-    active: boolean;
-  }
   const [visits, setVisits] = useState<Visit[]>([]);
   const [, setLoading] = useState(true);
 
@@ -189,7 +181,7 @@ export function VisitsPricing() {
                       <Button
                         className="bg-green-600 hover:bg-green-700 w-full text-white text-lg"
                         onClick={() =>
-                          // Redirige a /reservations con el query param ?type=...
+                          // Redirects to /reservations with the query param ?type=...
                           router.push(
                             `/reservations?type=${encodeURIComponent(visit.id)}`
                           )

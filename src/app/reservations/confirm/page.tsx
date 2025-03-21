@@ -54,7 +54,7 @@ function ConfirmPageContent() {
         return;
       }
 
-      // Registrar la reserva
+      // Register the reservation
       await addDoc(collection(db, "reservations"), {
         userId,
         scheduleId,
@@ -62,7 +62,7 @@ function ConfirmPageContent() {
         createdAt: new Date(),
       });
 
-      // Actualizar cupos disponibles
+      // Update available slots
       await updateDoc(scheduleRef, {
         availableSlots: scheduleData.availableSlots - numPeople,
       });

@@ -13,16 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { db } from "@/app/lib/firebase";
 import { collection, getDocs } from "firebase/firestore";
-
-export interface BulkScheduleFormData {
-  visitType: string;
-  startDate: string; // formato YYYY-MM-DD
-  endDate: string; // formato YYYY-MM-DD
-  startTime: string; // formato HH:MM
-  endTime: string; // formato HH:MM
-  availableSlots: number;
-  active: boolean;
-}
+import { BulkScheduleFormData } from "@/app/interfaces/interfaces";
 
 interface BulkScheduleFormProps {
   isOpen: boolean;
@@ -40,7 +31,7 @@ export default function BulkScheduleForm({
   onOpenChange,
   onSave,
 }: BulkScheduleFormProps) {
-  // Campos del formulario
+  // Form fields
   const [visitType, setVisitType] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -51,13 +42,13 @@ export default function BulkScheduleForm({
   const [loading, setLoading] = useState(false);
   const [localError, setLocalError] = useState("");
 
-  // Opciones para el desplegable "Tipo de Visita"
+  // Options for the "Visit Type" dropdown
   const [visitTypesOptions, setVisitTypesOptions] = useState<VisitTypeOption[]>(
     []
   );
 
   useEffect(() => {
-    // Consulta a Firestore para obtener los tipos de visita
+    // Firestore query to fetch visit types
     const fetchVisitTypesOptions = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "visitTypes"));
@@ -77,7 +68,7 @@ export default function BulkScheduleForm({
     fetchVisitTypesOptions();
   }, []);
 
-  // Reiniciar campos al abrir el modal en modo "Agregar"
+  // Reset fields when opening the modal in "Add" mode
   useEffect(() => {
     if (isOpen) {
       setVisitType("");
