@@ -83,7 +83,9 @@ export default function VisitTypeForm({
       frequency,
       shortDescription,
       features: featuresArray,
-      active,
+			active,
+			stripeProductId: initialData?.stripeProductId,
+			stripePriceId: initialData?.stripePriceId,
     };
     try {
       await onSave(formData);

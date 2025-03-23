@@ -45,6 +45,7 @@
     "react-icons": "^5.4.0",
     "react-swipeable": "^7.0.2",
     "sonner": "^2.0.1",
+    "stripe": "^17.7.0",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "yet-another-react-lightbox": "^3.21.7",

@@ -8,6 +8,8 @@ export interface Visit {
   frequency: string;
   features: string[];
   active: boolean;
+  stripeProductId?: string;
+  stripePriceId?: string;
 }
 
 export interface VisitOrder extends Visit {
@@ -63,7 +65,9 @@ export interface VisitType {
   frequency: string;
   shortDescription: string;
   features: string[];
-  active: boolean;
+	active: boolean;
+	stripeProductId?: string;
+	stripePriceId?: string;
 }
 
 export interface VisitTypeCardProps {
@@ -80,6 +84,8 @@ export interface VisitTypeFormData {
   shortDescription: string;
   features: string[];
   active: boolean;
+  stripeProductId?: string;
+  stripePriceId?: string;
 }
 
 export interface VisitTypeFormProps {

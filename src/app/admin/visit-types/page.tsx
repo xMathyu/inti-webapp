@@ -16,6 +16,11 @@ import { db } from "@/app/lib/firebase";
 import { VisitType, VisitTypeFormData } from "@/app/interfaces/interfaces";
 import VisitTypeForm from "@/app/components/admin/VisitTypeForm";
 import VisitTypeCard from "@/app/components/admin/VisitTypeCard";
+import {
+  createStripeProduct,
+  updateStripeProduct,
+  deleteStripeProduct,
+} from "@/app/lib/stripe";
 
 export default function AdminVisitTypesPanel() {
   const [visitTypes, setVisitTypes] = useState<VisitType[]>([]);
@@ -46,9 +51,39 @@ export default function AdminVisitTypesPanel() {
     fetchVisitTypes();
   }, [fetchVisitTypes]);
 
-  const handleSave = async (data: VisitTypeFormData) => {
+	const handleSave = async (data: VisitTypeFormData) => {
+		console.log("Data to save:", data);
     try {
       const docId = selectedVisit ? selectedVisit.id : data.name;
+
+      // Si es una actualización
+      if (selectedVisit) {
+        await updateStripeProduct({
+          id: data.stripeProductId || "",
+          name: data.name,
+          shortDescription: data.shortDescription,
+          price: data.price,
+					features: data.features,
+					frequency: data.frequency,
+        });
+      } else {
+        // Si es una nueva visita
+        const stripeProduct = await createStripeProduct({
+          name: data.name,
+          shortDescription: data.shortDescription,
+          price: data.price,
+					features: data.features,
+					frequency: data.frequency,
+        });
+
+        // Guardar los IDs de Stripe en Firestore junto con los datos de la visita
+        data = {
+          ...data,
+          stripeProductId: stripeProduct.productId,
+          stripePriceId: stripeProduct.priceId,
+        };
+      }
+
       await setDoc(doc(db, "visitTypes", docId), { ...data }, { merge: true });
       toast.success("Tipo de visita guardado con éxito.");
       setModalOpen(false);
@@ -76,9 +111,14 @@ export default function AdminVisitTypesPanel() {
 
   const handleDelete = async (visit: VisitType) => {
     try {
+      // Primero desactivar el producto en Stripe
+      await deleteStripeProduct(visit.stripeProductId!);
+
+      // Luego eliminar de Firestore
       await deleteDoc(doc(db, "visitTypes", visit.id));
+      
       toast.success("Tipo de visita eliminado.");
-      // Remove the item from the local state
+      // Actualizar estado local
       setVisitTypes((prev) => prev.filter((item) => item.id !== visit.id));
     } catch (err: unknown) {
       const errorMessage =
@@ -142,7 +182,9 @@ export default function AdminVisitTypesPanel() {
                 frequency: selectedVisit.frequency,
                 shortDescription: selectedVisit.shortDescription,
                 features: selectedVisit.features,
-                active: selectedVisit.active,
+								active: selectedVisit.active,
+								stripeProductId: selectedVisit.stripeProductId,
+								stripePriceId: selectedVisit.stripePriceId
               }
             : undefined
         }

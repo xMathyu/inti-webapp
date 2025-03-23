@@ -2,6 +2,7 @@ import { GoogleAuthProvider, signInWithPopup, User } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth } from "./firebase";
 import { db } from "@/app/lib/firebase";
+import { createStripeCustomer } from "./stripe";
 
 export async function signInWithGoogle(): Promise<User> {
   const provider = new GoogleAuthProvider();
@@ -14,11 +15,18 @@ export async function signInWithGoogle(): Promise<User> {
     const userDoc = await getDoc(userRef);
 
     if (!userDoc.exists()) {
-      // If the user does not exist in Firestore, create it with the default role "user"
+      // Si el usuario no existe, creamos el Customer en Stripe
+      const stripeCustomerId = await createStripeCustomer(
+        user.email || "",
+        user.uid || ""
+      );
+
+      // Guardamos el usuario en Firestore con su Stripe Customer ID
       await setDoc(userRef, {
         email: user.email,
         name: user.displayName,
         role: "user",
+        stripeCustomerId
       });
     }
 
@@ -35,12 +43,21 @@ export async function saveUserToFirestore(
 ) {
   const userRef = doc(db, "users", user.uid);
   const userDoc = await getDoc(userRef);
+
   if (!userDoc.exists()) {
+    // Crear el Customer en Stripe
+    const stripeCustomerId = await createStripeCustomer(
+      user.email || "",
+      user.uid || ""
+    );
+
+    // Guardar el usuario en Firestore con su Stripe Customer ID
     await setDoc(userRef, {
       email: user.email,
       name: user.displayName || "",
       role: "user",
-      ...additionalData,
+      stripeCustomerId,
+      ...additionalData
     });
   }
 }
