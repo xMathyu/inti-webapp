@@ -28,7 +28,9 @@
             "label": "Contact"
           }
         ],
-        "AccessLogin": "Sign In / Register"
+        "AccessLogin": "Sign In / Register",
+        "Greeting": "Hi",
+        "Account": "Your Account"
       },
       "Hero": {
         "Title": "Park of Colors",

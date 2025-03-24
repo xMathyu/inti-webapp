@@ -112,3 +112,10 @@ export interface ConfirmationFormProps {
   numPeople: number;
   onSubmit: SubmitHandler<FormData>;
 }
+
+export interface Guide {
+  name: string;
+  specialty: string;
+  image: string;
+  bio: string;
+}

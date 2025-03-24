@@ -20,6 +20,7 @@ import { signInWithGoogle, saveUserToFirestore } from "../lib/auth";
 import { useTranslations } from "next-intl";
 
 function AuthForm() {
+  const t = useTranslations("SignIn/Register");
   const [isRegister, setIsRegister] = useState(false);
 
   // Common fields for both modes
@@ -86,8 +87,6 @@ function AuthForm() {
       setIsLoading(false);
     }
   };
-
-  const t = useTranslations("SignIn/Register");
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
@@ -221,9 +220,10 @@ function AuthForm() {
 }
 
 export default function AuthPage() {
+  const t = useTranslations("SignIn/Register");
   return (
     <div className="flex items-center justify-center min-h-screen bg-green-50">
-      <Suspense fallback={<div>t("Loading")</div>}>
+      <Suspense fallback={<div>{t("Loading")}</div>}>
         <AuthForm />
       </Suspense>
     </div>

@@ -28,8 +28,10 @@
             "label": "Contatti"
           }
         ],
-        "AccessLogin": "Accedi / Registratti"
+        "AccessLogin": "Accedi / Registratti",
+        "Greeting": "Ciao"
       },
+
       "Hero": {
         "Title": "Parco dei Colori",
         "Description": "alla riscoperta del ciclo della natura, tra flora resiliente e fauna curiosa!",

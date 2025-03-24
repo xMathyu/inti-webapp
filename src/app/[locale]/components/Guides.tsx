@@ -13,6 +13,7 @@ import { AiOutlineCheck } from "react-icons/ai";
 import Image from "next/image";
 
 import { useTranslations } from "next-intl";
+import { Guide } from "../interfaces/interfaces";
 
 // Guides data
 // const guides = [
@@ -85,7 +86,7 @@ export function Guides() {
 
         {/* Guides grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {guides.map((guide: any, idx: any) => (
+          {guides.map((guide: Guide, idx: number) => (
             <motion.div
               key={idx}
               initial={{ opacity: 0, y: 20 }}
@@ -121,8 +122,8 @@ export function Guides() {
                   <ul className="list-none space-y-2">
                     {guide.bio
                       .split(". ")
-                      .filter((sentence: any) => sentence.trim().length > 0)
-                      .map((sentence: any, i: any) => (
+                      .filter((sentence: string) => sentence.trim().length > 0)
+                      .map((sentence: string, i: number) => (
                         <li key={i} className="flex items-start">
                           <AiOutlineCheck className="text-green-600 mt-1 mr-2 flex-shrink-0" />
                           <span

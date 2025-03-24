@@ -99,7 +99,7 @@ export default function AdminSchedulesPanel() {
       toast.error(t("ToastMessages.UploadError"));
     }
     setLoading(false);
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     fetchSchedules();

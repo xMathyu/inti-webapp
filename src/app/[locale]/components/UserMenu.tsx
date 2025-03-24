@@ -8,6 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 
 type UserMenuProps = {
   userDisplayName?: string;
@@ -22,6 +23,7 @@ export function UserMenu({
   handleSignOut,
   mobile,
 }: UserMenuProps) {
+  const t = useTranslations("LandingPage.Section.Navbar");
   const commonLinks = (
     <>
       <Link
@@ -78,7 +80,9 @@ export function UserMenu({
             variant="outline"
             className="bg-transparent text-white border-white hover:bg-green-500/20"
           >
-            {userDisplayName ? `Ciao, ${userDisplayName}` : "Il tuo account"}
+            {userDisplayName
+              ? `${t("Greeting")}, ${userDisplayName}`
+              : t("Account")}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="bg-white shadow-lg rounded-md py-2 w-48">
@@ -95,7 +99,9 @@ export function UserMenu({
         variant="outline"
         className="bg-transparent text-green-700 border-green-700 hover:bg-green-50 w-full"
       >
-        {userDisplayName ? `Ciao, ${userDisplayName}` : "Il tuo account"}
+        {userDisplayName
+          ? `${t("Greeting")}, ${userDisplayName}`
+          : t("Account")}
       </Button>
       {open && (
         <div className="w-full bg-white shadow-lg rounded-md py-2 text-center">

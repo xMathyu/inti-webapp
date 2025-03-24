@@ -47,7 +47,7 @@ export default function AdminVisitTypesPanel() {
       toast.error(t("ToastMessages.Error"));
     }
     setLoading(false);
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     fetchVisitTypes();
