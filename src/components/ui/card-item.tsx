@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import CardContentComponent from "./card-content-component";
-import { Visit } from "@/app/interfaces/interfaces";
+import { Visit } from "@/app/[locale]/interfaces/interfaces";
 
 interface CardItemProps {
   visit: Visit;

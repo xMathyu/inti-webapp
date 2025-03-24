@@ -1,0 +1,223 @@
+{
+  "LandingPage": {
+    "Section": {
+      "Navbar": {
+        "NavItems": [
+          {
+            "href": "/#hero",
+            "label": "Start"
+          },
+          {
+            "href": "/#about",
+            "label": "About Us"
+          },
+          {
+            "href": "/#gallery",
+            "label": "Gallery"
+          },
+          {
+            "href": "#guides",
+            "label": "Guides"
+          },
+          {
+            "href": "/#tariffe",
+            "label": "Rates"
+          },
+          {
+            "href": "/#contact",
+            "label": "Contact"
+          }
+        ],
+        "AccessLogin": "Sign In / Register"
+      },
+      "Hero": {
+        "Title": "Park of Colors",
+        "Description": "Rediscovering the cycle of nature, among resilient flora and curious fauna!",
+        "Phrase": "immerse yourself in the rhythms of nature",
+        "Button1": "Get to know each other better",
+        "Button2": "Book now"
+      },
+      "About": {
+        "Title": "Our Story",
+        "Visitors": "More than 1,000 satisfied visitors",
+        "Park_History": {
+          "Title": "Park History",
+          "Paragraph_1": "The English Park, located in Castelgrande in Basilicata, about 1,000 m.a.s.l. covers an area of two hectares in the Coppolo locality.",
+          "Paragraph_2": "Designed by Professor Spicciarelli and dedicated to the famous botanist Guglielmo Gasparrini, the park was built in 2012 using European funds.",
+          "Paragraph_3": "Initially managed by the Gasparrini Association, it then came under the management of the Aphelion Association and, since 2020, has been administered by the Inti Aps Association.",
+          "Paragraph_4": "The park is surrounded by an ancient oak forest crossed by a small stream. Within it are numerous varieties of trees, shrubs, creepers and fruit trees that complement the native flora."
+        },
+        "Inty History": {
+          "Title": "History of Inti",
+          "Paragraph_1": "The association was founded in 2020 with the aim of restoring life to the Park of Colors, which was in a state of neglect at the time, and promoting the preservation of Lucanian biodiversity.",
+          "Paragraph_2": "The name “Inti,” of Quechua origin, means “light bearers,” a concept that reflects the association's mission: to bring light and hope to the Lucanian Apennines.",
+          "Paragraph_3": "Since 2020, art gardeners Valentina Di Carlo and Lorenzo Staderini have been designing and “playing” with the flowering cycles of native plants and introduced species, ensuring consistent blooms and alternating colors.",
+          "Paragraph_4": "The association's main activity is breeding native butterflies and raising awareness of pollinator protection.",
+          "Paragraph_5": "Currently, the association is involved in the planning, maintenance and management of the park, also organizing guided tours and workshops."
+        },
+        "MoreButton": "Learn more"
+      },
+      "Gallery": {
+        "Title": "Our Gallery"
+      },
+      "Guides": {
+        "Title": "Companions",
+        "GuidesList": [
+          {
+            "name": "Valentina Di Carlo",
+            "specialty": "Documentary filmmaker, art gardener, educator, caterpillar and butterfly breeder – Stories and curiosities about the world of plants and butterflies",
+            "image": "/valentina.jpg",
+            "bio": "Passionate about the natural world, able to guide visitors on a journey to discover the hidden treasures of flora and fauna. Her mission is to raise awareness and educate the public about the beauty and importance of the natural environment."
+          },
+          {
+            "name": "Lorenzo",
+            "specialty": "Chef, art gardener, farmer, caterpillar and butterfly breeder – A perfect recipe to discover curiosities about plants and dishes",
+            "image": "/lorenzo.jpg",
+            "bio": "Passionate about cooking and with deep respect for the land, he is a figure capable of telling and preparing dishes that testify to a deep connection with nature and the cycle of the seasons."
+          }
+        ],
+        "MoreButton": "Learn more"
+      },
+      "Rates": {},
+      "Contact": {
+        "Title": "Contact Us",
+        "Subtitle": "Doubts or comments? We are here to help you!",
+        "Information": "Contact Information",
+        "Description": "You can contact our staff through our contacts. We will be happy to help you!",
+        "Social": "Follow us on social media:",
+        "Form": {
+          "Title": "Send us a Message",
+          "Name": "Name",
+          "Name_PH": "Your name",
+          "Email": "Email",
+          "Email_PH": "youremail@example.com",
+          "Subject": "Subject",
+          "Subject_PH": "Reason for your message",
+          "Telephone": "Telephone",
+          "Telephone_PH": "Ex: 3477930530",
+          "Message": "Message",
+          "Message_PH": "Write your message...",
+          "Submit": "Submit",
+          "Submitting": "Sending in progress..."
+        }
+      },
+      "Footer": {
+        "Title": "Park of Colors",
+        "Subtitle": "Association of Gardens and Butterflies",
+        "Copyright": "Park of Colors. All rights reserved."
+      }
+    }
+  },
+  "SignIn/Register": {
+    "SignIn": "Sign In",
+    "Register": "Register",
+    "Name": "Name",
+    "Last_Name": "Last Name",
+    "Telephone": "Telephone",
+    "Email": "Email",
+    "Password": "Password",
+    "Email_PH": "Enter your email",
+    "Password_PH": "Enter your password",
+    "Login_AccessButton": "Sign in with Email",
+    "Name_PH": "Enter your name",
+    "Last_Name_PH": "Enter your last name",
+    "Telephone_PH": "Enter your phone number",
+    "Register_AccessButton": "Register with Email",
+    "Google_AccessButton": "Continue  with Google",
+    "AlreadyRegistered": "Do you already have an account? Sign in",
+    "NotRegistered": "Don't have an account? Register",
+    "Loading": "Loading..."
+  },
+  "Admin": {
+    "Title": "Booking Administration Panel",
+    "VisitType": "Visit Types",
+    "VisitType_PH": "E.g.: Guided Tour",
+    "Date": "Date",
+    "Time": "Time",
+    "QuoteAvailable": "Available Slots:",
+    "Update": "Update Slots"
+  },
+  "Admin/Schedules": {
+    "Title": "Booking Schedule Administration Panel",
+    "Subtitle": "Select start and end date and type of visit:",
+    "ByDate": "By dates",
+    "ByVisit": "By visit type",
+    "NoReservationMade": "There is no reservation program for this period.",
+    "NoReservationType": "There is no reservation program for this type of visit.",
+    "Loading": "Loading...",
+    "ToastMessages": {
+      "UploadError": "Error while uploading booking schedules.",
+      "TimeTable": "Schedule saved successfully.",
+      "CreationSuccess": "Schedules created successfully.",
+      "Error": "Error while creating schedules.",
+      "UnexpectedError": "Unexpected error.",
+      "DeleteSuccess": "Schedule deleted."
+    },
+    "Form": {
+      "EditSchedule": "Edit Booking Schedule",
+      "AddSchedule": "Add Booking Schedule",
+      "InputSchedule": "Enter schedule information.",
+      "Mode": "Mode",
+      "Individual": "Individual",
+      "Block": "Batch",
+      "VisitType": "Visit Type",
+      "VisitSelect": "Select a visit type",
+      "Date": "Date",
+      "Time": "Time",
+      "StartDate": "Start Date",
+      "EndDate": "End Date",
+      "StartTime": "Start Time",
+      "EndTime": "End Time",
+      "Availability": "Available Slots",
+      "Active": "Active",
+      "Creating": "Creating...",
+      "SaveSchedule": "Saving schedule"
+    },
+    "Card": {
+      "Resources": "Resources",
+      "Loading": "Loading...",
+      "Modify": "Edit",
+      "Delete": "Delete"
+    }
+  },
+  "Admin/VisitTypes": {
+    "Title": "Visit Type Management Panel",
+    "Loading": "Loading...",
+    "ToastMessages": {
+      "Error": "Error loading visit types.",
+      "SaveSuccess": "Visit type saved successfully.",
+      "UnexpectedError": "Unexpected error.",
+      "DeleteSuccess": "Visit type deleted."
+    },
+    "Form": {
+      "ModifyVisitType": "Edit Visit Type",
+      "AddVisitType": "Add Visit Type",
+      "InputVisitType": "Enter visit type information.",
+      "VisitName": "Visit Name:",
+      "VisitName_PH": "E.g.: Guided Tour",
+      "Price": "Price:",
+      "Price_PH": "E.g.: 10",
+      "Frequency": "Frequency:",
+      "Frequency_PH": "E.g.: per visit",
+      "Description": "Short Description:",
+      "Description_PH": "E.g.: Full experience with video and tea tasting.",
+      "Characteristics": "Characteristics (one per line):",
+      "Characteristics_PH": "Enter each characteristic on a separate line",
+      "Active": "Active",
+      "Update": "Update",
+      "Create": "Create"
+    }
+  },
+  "Admin/VisitTypePrices": {
+    "Title": "Visit Type Order",
+    "Button": "Save New Order",
+    "ToastMessages": {
+      "SaveSuccess": "New order updated successfully.",
+      "SaveError": "Error while saving the new order."
+    }
+  },
+  "Pagination": {
+    "Previous": "Previous",
+    "Next": "Next"
+  }
+}

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "@/app/lib/firebase";
+import { db } from "@/app/[locale]/lib/firebase";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/card";
 import { Check } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Visit } from "@/app/interfaces/interfaces";
+import { Visit } from "@/app/[locale]/interfaces/interfaces";
 
 interface CardsUserProps {
   columns?: number; // Opción para definir el número de columnas

@@ -1,0 +1,232 @@
+{
+  "LandingPage": {
+    "Section": {
+      "Navbar": {
+        "NavItems": [
+          {
+            "href": "/#hero",
+            "label": "Inizio"
+          },
+          {
+            "href": "/#about",
+            "label": "Chi siamo"
+          },
+          {
+            "href": "/#gallery",
+            "label": "Galleria"
+          },
+          {
+            "href": "#guides",
+            "label": "Guide"
+          },
+          {
+            "href": "/#tariffe",
+            "label": "Tariffe"
+          },
+          {
+            "href": "/#contact",
+            "label": "Contatti"
+          }
+        ],
+        "AccessLogin": "Accedi / Registratti"
+      },
+      "Hero": {
+        "Title": "Parco dei Colori",
+        "Description": "alla riscoperta del ciclo della natura, tra flora resiliente e fauna curiosa!",
+        "Phrase": "immergiti nei ritmi della natura",
+        "Button1": "Conosciamoci meglio",
+        "Button2": "Prenota ora"
+      },
+      "About": {
+        "Title": "La nostra storia",
+        "Visitors": "Più di 1.000 visitatori soddisfatti",
+        "Park_History": {
+          "Title": "Storia del Parco",
+          "Paragraph_1": "Il Parco all’inglese, situato a Castelgrande in Basilicata, a circa 1000 m.s.l.d.m si estende su una superficie di due ettari nella località Coppolo.",
+          "Paragraph_2": "Progettato dal professor Spicciarelli e dedicato al celebre botanico Guglielmo Gasparrini, il parco è stato realizzato nel 2012 grazie a fondi europei.",
+          "Paragraph_3": "Inizialmente gestito dall’Associazione Gasparrini, è poi passato sotto la gestione dell’associazione Aphelion e, dal 2020, è amministrato dall’associazione Inti Aps.",
+          "Paragraph_4": "Il parco è circondato da un antico bosco di querce attraversato da un piccolo ruscello. Al suo interno si trovano numerose varietà di alberi, arbusti, rampicanti e alberi da frutto che si integrano con la flora autoctona."
+        },
+        "Inty History": {
+          "Title": "Storia di Inti",
+          "Paragraph_1": "L'associazione nasce nel 2020 con l'obbiettivo di restituire vita al Parco dei Colori, che all'epoca versava in stato di abbandono, e di promuovere la salvaguardia della biodiversità lucana.",
+          "Paragraph_2": "Il nome “Inti”, di origine quechua, significa “portatori di luce”, un concetto che rispecchia la missione dell'associazione: portare luce e speranza nell'Appennino Lucano.",
+          "Paragraph_3": "Dal 2020, i giardinieri d'arte Valentina Di Carlo e Lorenzo Staderini hanno iniziato a progettare e “giocare” con i cicli di fioritura delle piante autoctone e delle specie introdotte, garantendo fioriture costanti e alternanza di colori.",
+          "Paragraph_4": "L'attività principale dell'associazione è l'allevamento di farfalle autoctone e la sensibilizzazione sulla protezione degli impollinatori.",
+          "Paragraph_5": "Attualmente l'associazione si occupa della progettazione, manutenzione e gestione del parco, organizzando anche visite guidate e laboratori."
+        },
+        "MoreButton": "Scopri di piùLa"
+      },
+      "Gallery": {
+        "Title": "La nostra galleria"
+      },
+      "Guides": {
+        "Title": "Accompagnatori",
+        "GuidesList": [
+          {
+            "name": "Valentina Di Carlo",
+            "specialty": "Documentarista, giardiniere d'arte, educatrice, allevatrice di bruchi e farfalle – Racconti e curiosità sul mondo delle piante e delle farfalle",
+            "image": "/valentina.jpg",
+            "bio": "Appassionata del mondo naturale, capace di accompagnare i visitatori in un viaggio alla scoperta dei tesori nascosti della flora e della fauna. La sua missione è sensibilizzare ed educare il pubblico alla bellezza e importanza dell'ambiente naturale."
+          },
+          {
+            "name": "Lorenzo",
+            "specialty": "Cuoco, giardiniere d'arte, agricoltore, allevatore di bruchi e farfalle – Una ricetta perfetta per scoprire curiosità su piante e piatti",
+            "image": "/lorenzo.jpg",
+            "bio": "Passione per la cucina e profondo rispetto per la terra, una figura capace di raccontarvi e preparare piatti che testimoniano un legame profondo con la natura e il ciclo delle stagioni."
+          }
+        ],
+        "MoreButton": "Scopri di più"
+      },
+      "Rates": {},
+      "Contact": {
+        "Title": "Contattaci",
+        "Subtitle": "Dubbi o commenti? Siamo qui per aiutarti!",
+        "Information": "Informazioni di Contatto",
+        "Description": "Puoi contattare il nostro staff tramite i nostri contatti. Saremo felici di aiutarti!",
+        "Social": "Seguici sui social:",
+        "Form": {
+          "Title": "Send us a Message",
+          "Name": "Name",
+          "Name_PH": "Il tuo nome",
+          "Email": "Email",
+          "Email_PH": "tuaemail@esempio.com",
+          "Subject": "Subject",
+          "Subject_PH": "Motivo del tuo messaggio",
+          "Telephone": "Telephone",
+          "Telephone_PH": "Es: 3477930530",
+          "Message": "Message",
+          "Message_PH": "Scrivi il tuo messaggio...",
+          "Submit": "Invia",
+          "Submitting": "Invio in corso..."
+        }
+      },
+      "Footer": {
+        "Title": "Parco dei Colori",
+        "Subtitle": "Associazione di Giardini e Farfalle",
+        "Copyright": "Parco dei Colori. Tutti i diritti riservati."
+      }
+    }
+  },
+  "SignIn/Register": {
+    "SignIn": "Accedi",
+    "Register": "Registrati",
+    "Name": "Nome",
+    "Last_Name": "Cognome",
+    "Telephone": "Telefono",
+    "Email": "Email",
+    "Password": "Password",
+    "Email_PH": "Inserisci la tua email",
+    "Password_PH": "Inserisci la tua password",
+    "Login_AccessButton": "Accedi con Email",
+    "Name_PH": "Inserisci il tuo nome",
+    "Last_Name_PH": "Inserisci il tuo cognome",
+    "Telephone_PH": "Inserisci il tuo numero di telefono",
+    "Register_AccessButton": "Registrati con Email",
+    "Google_AccessButton": "Continua con Google",
+    "AlreadyRegistered": "Hai già un account? Accedi",
+    "NotRegistered": "Non hai un account? Registrati",
+    "Loading": "Caricamento..."
+  },
+  "Admin": {
+    "Title": "Pannello di amministrazione delle prenotazioni",
+    "VisitType": "Tipi di visita",
+    "VisitType_PH": "Ej: Visita guidata",
+    "Date": "Data",
+    "Time": "Ora",
+    "QuoteAvailable": "Quote disponibili:",
+    "Update": "Aggiornamento delle quote"
+  },
+  "Admin/Schedules": {
+    "Title": "Pannello di amministrazione del programma di prenotazione",
+    "Subtitle": "Seleziona data di inizio e fine e tipologia di visita:",
+    "ByDate": "Per date",
+    "ByVisit": "Per tipo di visita",
+    "NoReservationMade": "Non è previsto un programma di prenotazione per questo periodo.",
+    "NoReservationType": "Non è previsto un programma di prenotazione per questo tipo di visita.",
+    "Loading": "Caricamento...",
+    "ToastMessages": {
+      "UploadError": "Errore durante il caricamento degli orari di prenotazione.",
+      "TimeTalbe": "Orario salvato con successo.",
+      "CreationSuccess": "Orari creati con successo.",
+      "Error": "Errore durante la creazione degli orari.",
+      "UnexpectedError": "Errore inaspettato.",
+      "DeleteSuccess": "Orario eliminato."
+    },
+    "Form": {
+      "EditSchedule": "Modifica del piano di prenotazione",
+      "AddSchedule": "Aggiungi programma di prenotazione",
+      "InputSchedule": "Inserire le informazioni sull'orario.",
+      "Mode": "Modalità",
+      "Individual": "Individuale",
+      "Block": "In blocco",
+      "VisitType": "Tipo di visita",
+      "VisitSelect": "Selezionare un tipo di visita",
+      "Date": "Data",
+      "Time": "Tempo",
+      "StartDate": "Data di inizio",
+      "EndDate": "Data di fine",
+      "StartTime": "Ora di inizio",
+      "EndTime": "Ora di fine",
+      "Availability": "Quote disponibili",
+      "Active": "Attivo",
+      "Creating": "Creare...",
+      "SaveSchedule": "Salva l'orario"
+    },
+    "Card": {
+      "Resources": "Risorse",
+      "Loafing": "Caricamento...",
+      "Modify": "Modifica",
+      "Delete": "Elimina"
+    }
+  },
+  "Admin/VisitTypes": {
+    "Title": "Pannello di gestione del tipo di visita",
+    "Loading": "Caricamento...",
+    "ToastMessages": {
+      "Error": "Errore nel caricamento dei tipi di visita.",
+      "SaveSuccess": "Tipo di visita salvato con successo.",
+      "UnexpectedError": "Errore inaspettato.",
+      "DeleteSuccess": "Tipo di visita cancellato."
+    },
+    "Form": {
+      "ModifyVisitType": "Modifica del tipo di visita",
+      "AddVisitType": "Aggiungere il tipo di visita",
+      "InputVisitType": "Inserire le informazioni sul tipo di visita.",
+      "VisitName": "Nome della visita:",
+      "VisitName_PH": "Ej: Visita guidata",
+      "Price": "Prezzo:",
+      "Price_PH": "Ej: 10",
+      "Frequency": "Frequenza:",
+      "Frequency_PH": "Ej: per visita",
+      "Description": "Descrizione breve:",
+      "Description_PH": "Ej: Esperienza completa con video e degustazione di tè.",
+      "Characteristics": "Caratteristiche (una per riga):",
+      "Characteristics_PH": "Ingresa cada característica en una línea",
+      "Active": "Attivo",
+      "Update": "Aggiornamento",
+      "Create": "Creare"
+    },
+    "Card": {
+      "Active": "Attivo",
+      "Inactive": "Inattivo",
+      "Edit": "Modifica",
+      "Delete": "Elimina",
+      "ConfirmDelete": "Conferma eliminazione",
+      "DeleteConfirmation": "È sicuro di voler rimuovere questo tipo di visita?",
+      "Cancel": "Annulla"
+    }
+  },
+  "Admin/VisitTypePrices": {
+    "Title": "Visita tipo ordine",
+    "Button": "Mantieni il nuovo ordine",
+    "ToastMessages": {
+      "SaveSuccess": "Nuovo ordine aggiornato correttamente",
+      "SaveError": "Errore durante il salvataggio del nuovo ordine"
+    }
+  },
+  "Pagination": {
+    "Previous": "Precedente",
+    "Next": "Successivo"
+  }
+}
