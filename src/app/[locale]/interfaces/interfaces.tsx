@@ -113,6 +113,11 @@ export interface ConfirmationFormProps {
   onSubmit: SubmitHandler<FormData>;
 }
 
+export interface AuthError {
+  code: string;
+  message: string;
+}
+
 export interface Guide {
   name: string;
   specialty: string;
