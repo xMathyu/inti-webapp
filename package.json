@@ -10,9 +10,8 @@
     "prepare": "husky install"
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx,json,css,md}": [
-      "prettier --write",
-      "git add"
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write"
     ]
   },
   "dependencies": {
