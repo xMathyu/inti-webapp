@@ -1,42 +1,44 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
 
 export function LanguageSwitcher() {
-  const pathname = usePathname(); // Obtiene la URL actual
+  const pathname = usePathname();
   const router = useRouter();
 
-  //  Languages list
   const languages = [
-    { code: "en", label: "EN" },
-    { code: "it", label: "ITAL" },
+    { code: "en", label: "EN", flag: "/flags/america.svg" },
+    { code: "it", label: "IT", flag: "/flags/italy.svg" },
   ];
 
-  // Detects the current locale from the URL
-  const currentLocale = pathname.split("/")[1]; // Gets the locale from the URL
+  const currentLocale = pathname.split("/")[1];
+  const nextLanguage =
+    languages.find((lang) => lang.code !== currentLocale) || languages[0];
 
-  // Changes the language
-  const switchLanguage = (newLocale: string) => {
-    const newPath = pathname.replace(`/${currentLocale}`, `/${newLocale}`);
+  const switchLanguage = () => {
+    const newPath = pathname.replace(
+      `/${currentLocale}`,
+      `/${nextLanguage.code}`
+    );
     router.push(newPath);
   };
 
   return (
-    <div className="flex space-x-2">
-      {languages.map(({ code, label }) => (
-        <button
-          key={code}
-          onClick={() => switchLanguage(code)}
-          disabled={code === currentLocale} // Disables the current locale
-          className={`px-3 py-1 rounded border ${
-            code === currentLocale
-              ? "bg-gray-300 cursor-not-allowed"
-              : "bg-white hover:bg-gray-200"
-          }`}
-        >
-          {label}
-        </button>
-      ))}
-    </div>
+    <button
+      onClick={switchLanguage}
+      className="group flex items-center gap-2 rounded-lg bg-white px-3.5 py-2 text-sm font-medium text-gray-700 shadow-sm transition-all hover:bg-gray-50 hover:shadow border border-gray-200"
+    >
+      <div className="relative h-5 w-5 overflow-hidden rounded-sm">
+        <Image
+          src={nextLanguage.flag}
+          alt={nextLanguage.label}
+          className="object-cover"
+          fill
+          sizes="20px"
+        />
+      </div>
+      <span>{nextLanguage.label}</span>
+    </button>
   );
 }

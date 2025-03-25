@@ -85,7 +85,7 @@ export function Navbar() {
       transition={{ duration: 0.8, ease: "easeOut" }}
       className="h-16 shadow-md bg-gradient-to-r from-green-700 to-green-600 relative"
     >
-      <div className="max-w-7xl mx-auto h-full flex items-center justify-between pr-4 pl-0 md:px-8">
+      <div className="max-w-7xl mx-auto h-full flex items-center justify-between pr-4 pl-0 md:pr-2 md:pl-0 ">
         {/* Logo */}
         <Link href="/#hero" className="h-full flex items-center">
           <div className="relative h-full w-32">
@@ -101,13 +101,13 @@ export function Navbar() {
         {/* Desktop Menu using NavigationMenu */}
         <div className="hidden md:flex items-center text-white space-x-4">
           <NavigationMenu>
-            <NavigationMenuList className="flex space-x-4">
+            <NavigationMenuList className="flex space-x-2">
               {navLinks.map(({ href, label }) => (
                 <NavigationMenuItem key={href}>
                   <NavigationMenuLink asChild>
                     <Link
                       href={href}
-                      className="hover:bg-green-500/20 px-2 py-1 rounded"
+                      className="hover:bg-green-500/20 px-2 md:text-base md:px-0 lg:px-2 py-1 rounded"
                     >
                       {label}
                     </Link>
@@ -125,9 +125,9 @@ export function Navbar() {
           ) : (
             <Button
               variant="outline"
-              className="bg-transparent text-white border-white hover:bg-green-500/20"
+              className="bg-transparent text-white border-white hover:bg-green-500/20 p-4   "
             >
-              <Link href="/auth">{t("AccessLogin")}i</Link>
+              <Link href="/auth">{t("AccessLogin")}</Link>
             </Button>
           )}
         </div>
