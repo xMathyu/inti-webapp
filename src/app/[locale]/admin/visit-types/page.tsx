@@ -1,15 +1,9 @@
-"use client";
+'use client'
 
-import { useState, useEffect, useCallback } from "react";
-import {
-  collection,
-  getDocs,
-  doc,
-  setDoc,
-  deleteDoc,
-} from "firebase/firestore";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { useState, useEffect, useCallback } from 'react'
+import { collection, getDocs, doc, setDoc, deleteDoc } from 'firebase/firestore'
+import { Button } from '@/components/ui/button'
+import { Plus } from 'lucide-react'
 
 import { toast } from "sonner";
 import { db } from "@/app/[locale]/lib/firebase";
@@ -32,17 +26,16 @@ export default function AdminVisitTypesPanel() {
 
   // Initial load (only once)
   const fetchVisitTypes = useCallback(async () => {
-    setLoading(true);
-    try {
-      const querySnapshot = await getDocs(collection(db, "visitTypes"));
-      const types: VisitType[] = [];
-      querySnapshot.forEach((docSnap) => {
-        types.push({
-          id: docSnap.id,
-          ...(docSnap.data() as Omit<VisitType, "id">),
-        });
-      });
-      setVisitTypes(types);
+    setLoading(true)
+    try {const querySnapshot = await getDocs(collection(db, 'visitTypes'))
+const types: VisitType[] = []
+  querySnapshot.forEach((docSnap) => {
+    types.push({
+      id: docSnap.id,
+      ...(docSnap.data() as Omit<VisitType, 'id'>),
+        })
+      })
+      setVisitTypes(types)
     } catch {
       toast.error(t("ToastMessages.Error"));
     }
@@ -50,8 +43,8 @@ export default function AdminVisitTypesPanel() {
   }, [t]);
 
   useEffect(() => {
-    fetchVisitTypes();
-  }, [fetchVisitTypes]);
+    fetchVisitTypes()
+  }, [fetchVisitTypes])
 
   const handleSave = async (data: VisitTypeFormData) => {
     try {
@@ -61,17 +54,15 @@ export default function AdminVisitTypesPanel() {
       setModalOpen(false);
       // Update local state without reloading all data:
       setVisitTypes((prev) => {
-        const newItem = { id: docId, ...data };
+        const newItem = { id: docId, ...data }
         if (selectedVisit) {
           // Update the existing item
-          return prev.map((item) =>
-            item.id === selectedVisit.id ? newItem : item
-          );
+          return prev.map((item) => (item.id === selectedVisit.id ? newItem : item))
         } else {
           // Add the new item (at the beginning)
-          return [newItem, ...prev];
+          return [newItem, ...prev]
         }
-      });
+      })
     } catch (err: unknown) {
       if (err instanceof Error) {
         toast.error(err.message || t("ToastMessages.UnexpectedError"));
@@ -79,55 +70,49 @@ export default function AdminVisitTypesPanel() {
         toast.error(t("ToastMessages.UnexpectedError"));
       }
     }
-  };
+  }
 
   const handleDelete = async (visit: VisitType) => {
     try {
       await deleteDoc(doc(db, "visitTypes", visit.id));
       toast.success(t("ToastMessages.DeleteSuccess"));
       // Remove the item from the local state
-      setVisitTypes((prev) => prev.filter((item) => item.id !== visit.id));
+      setVisitTypes((prev) => prev.filter((item) => item.id !== visit.id))
     } catch (err: unknown) {
       const errorMessage =
         err instanceof Error ? err.message : t("ToastMessages.UnexpectedError");
       toast.error(errorMessage);
     }
-  };
+  }
 
   const handleToggleActive = async (visit: VisitType) => {
     try {
-      const newStatus = !visit.active;
-      await setDoc(
-        doc(db, "visitTypes", visit.id),
-        { active: newStatus },
-        { merge: true }
-      );
+      const newStatus = !visit.active
+      await setDoc(doc(db, 'visitTypes', visit.id), { active: newStatus }, { merge: true })
       // Update local state for that item without showing toast
       setVisitTypes((prev) =>
-        prev.map((item) =>
-          item.id === visit.id ? { ...item, active: newStatus } : item
-        )
-      );
+        prev.map((item) => (item.id === visit.id ? { ...item, active: newStatus } : item)),
+      )
     } catch (err: unknown) {
       const errorMessage =
         err instanceof Error ? err.message : t("ToastMessages.UnexpectedError");
       toast.error(errorMessage);
     }
-  };
+  }
 
   const openModalForNew = () => {
-    setSelectedVisit(null);
-    setModalOpen(true);
-  };
+    setSelectedVisit(null)
+    setModalOpen(true)
+  }
 
   const openModalForEdit = (visit: VisitType) => {
-    setSelectedVisit(visit);
-    setModalOpen(true);
-  };
+    setSelectedVisit(visit)
+    setModalOpen(true)
+  }
 
   return (
     <div className="max-w-4xl mx-auto p-4 bg-green-50 rounded shadow relative">
-      {/* Header with unique title and button on the right */}
+      {/* Header with unique title and button on the rights */}
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold text-green-800">{t("Title")}</h1>
         <Button
@@ -174,5 +159,5 @@ export default function AdminVisitTypesPanel() {
         </div>
       )}
     </div>
-  );
+  )
 }
