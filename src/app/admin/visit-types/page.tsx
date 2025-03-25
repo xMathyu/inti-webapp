@@ -120,7 +120,7 @@ export default function AdminVisitTypesPanel() {
 
   return (
     <div className="max-w-4xl mx-auto p-4 bg-green-50 rounded shadow relative">
-      {/* Header with unique title and button on the right */}
+      {/* Header with unique title and button on the rights */}
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold text-green-800">
           Panel de Administración de Tipos de Visita
