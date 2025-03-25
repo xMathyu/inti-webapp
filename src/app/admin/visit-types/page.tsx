@@ -1,13 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import {
-  collection,
-  getDocs,
-  doc,
-  setDoc,
-  deleteDoc,
-} from "firebase/firestore";
+import { collection, getDocs, doc, setDoc, deleteDoc } from "firebase/firestore";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 
@@ -20,7 +14,7 @@ import {
   createStripeProduct,
   updateStripeProduct,
   deleteStripeProduct,
-} from "@/app/lib/stripe";
+} from "@/app/lib/stripe/products";
 
 export default function AdminVisitTypesPanel() {
   const [visitTypes, setVisitTypes] = useState<VisitType[]>([]);
@@ -51,29 +45,36 @@ export default function AdminVisitTypesPanel() {
     fetchVisitTypes();
   }, [fetchVisitTypes]);
 
-	const handleSave = async (data: VisitTypeFormData) => {
-		console.log("Data to save:", data);
+  const handleSave = async (data: VisitTypeFormData) => {
     try {
       const docId = selectedVisit ? selectedVisit.id : data.name;
 
       // Si es una actualización
       if (selectedVisit) {
-        await updateStripeProduct({
+        const updatedStripeData = await updateStripeProduct({
           id: data.stripeProductId || "",
           name: data.name,
           shortDescription: data.shortDescription,
           price: data.price,
-					features: data.features,
-					frequency: data.frequency,
+          features: data.features,
+          frequency: data.frequency,
         });
+
+        // Si hay un nuevo priceId, actualizamos los datos
+        if (updatedStripeData?.priceId) {
+          data = {
+            ...data,
+            stripePriceId: updatedStripeData.priceId,
+          };
+        }
       } else {
         // Si es una nueva visita
         const stripeProduct = await createStripeProduct({
           name: data.name,
           shortDescription: data.shortDescription,
           price: data.price,
-					features: data.features,
-					frequency: data.frequency,
+          features: data.features,
+          frequency: data.frequency,
         });
 
         // Guardar los IDs de Stripe en Firestore junto con los datos de la visita
@@ -92,9 +93,7 @@ export default function AdminVisitTypesPanel() {
         const newItem = { id: docId, ...data };
         if (selectedVisit) {
           // Update the existing item
-          return prev.map((item) =>
-            item.id === selectedVisit.id ? newItem : item
-          );
+          return prev.map((item) => (item.id === selectedVisit.id ? newItem : item));
         } else {
           // Add the new item (at the beginning)
           return [newItem, ...prev];
@@ -116,13 +115,12 @@ export default function AdminVisitTypesPanel() {
 
       // Luego eliminar de Firestore
       await deleteDoc(doc(db, "visitTypes", visit.id));
-      
+
       toast.success("Tipo de visita eliminado.");
       // Actualizar estado local
       setVisitTypes((prev) => prev.filter((item) => item.id !== visit.id));
     } catch (err: unknown) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Error inesperado.";
+      const errorMessage = err instanceof Error ? err.message : "Error inesperado.";
       toast.error(errorMessage);
     }
   };
@@ -130,20 +128,13 @@ export default function AdminVisitTypesPanel() {
   const handleToggleActive = async (visit: VisitType) => {
     try {
       const newStatus = !visit.active;
-      await setDoc(
-        doc(db, "visitTypes", visit.id),
-        { active: newStatus },
-        { merge: true }
-      );
+      await setDoc(doc(db, "visitTypes", visit.id), { active: newStatus }, { merge: true });
       // Update local state for that item without showing toast
       setVisitTypes((prev) =>
-        prev.map((item) =>
-          item.id === visit.id ? { ...item, active: newStatus } : item
-        )
+        prev.map((item) => (item.id === visit.id ? { ...item, active: newStatus } : item)),
       );
     } catch (err: unknown) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Error inesperado.";
+      const errorMessage = err instanceof Error ? err.message : "Error inesperado.";
       toast.error(errorMessage);
     }
   };
@@ -182,9 +173,9 @@ export default function AdminVisitTypesPanel() {
                 frequency: selectedVisit.frequency,
                 shortDescription: selectedVisit.shortDescription,
                 features: selectedVisit.features,
-								active: selectedVisit.active,
-								stripeProductId: selectedVisit.stripeProductId,
-								stripePriceId: selectedVisit.stripePriceId
+                active: selectedVisit.active,
+                stripeProductId: selectedVisit.stripeProductId,
+                stripePriceId: selectedVisit.stripePriceId,
               }
             : undefined
         }

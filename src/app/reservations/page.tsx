@@ -20,9 +20,7 @@ const ReservationsPage = () => {
   const [numPeople, setNumPeople] = useState(1);
   const [visitId, setVisitId] = useState("");
 
-  const [visitTypesOptions, setVisitTypesOptions] = useState<VisitTypeOption[]>(
-    []
-  );
+  const [visitTypesOptions, setVisitTypesOptions] = useState<VisitTypeOption[]>([]);
   const [availableSchedules, setAvailableSchedules] = useState<Schedule[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -70,7 +68,7 @@ const ReservationsPage = () => {
         const q = query(
           schedulesRef,
           where("visitType", "==", visitType),
-          ...(date ? [where("date", "==", date)] : [])
+          ...(date ? [where("date", "==", date)] : []),
         );
         const querySnapshot = await getDocs(q);
         const schedules: Schedule[] = [];
@@ -95,9 +93,7 @@ const ReservationsPage = () => {
         });
 
         if (schedules.length === 0) {
-          toast.error(
-            "Non ci sono orari disponibili per la data e gli spazi richiesti."
-          );
+          toast.error("Non ci sono orari disponibili per la data e gli spazi richiesti.");
         } else {
           setAvailableSchedules(schedules);
           toast.success("Orari disponibili trovati.");
@@ -112,7 +108,7 @@ const ReservationsPage = () => {
       }
       setLoading(false);
     },
-    [visitType, date, numPeople]
+    [visitType, date, numPeople],
   );
 
   useEffect(() => {
@@ -136,19 +132,20 @@ const ReservationsPage = () => {
   };
 
   const handleSelectSchedule = (schedule: Schedule) => {
+    if (!schedule.id || !numPeople) {
+      toast.error("Por favor, seleccione un horario válido y el número de personas");
+      return;
+    }
+
     router.push(
-      `/reservations/confirm?scheduleId=${encodeURIComponent(
-        schedule.id
-      )}&numPeople=${numPeople}`
+      `/reservations/confirm?scheduleId=${encodeURIComponent(schedule.id)}&numPeople=${numPeople}`,
     );
   };
 
   return (
     <FormProvider {...methods}>
       <div className="max-w-full mx-auto p-4 bg-green-50 rounded shadow">
-        <h1 className="text-xl font-bold text-green-800 mb-4">
-          Effettua la tua prenotazione
-        </h1>
+        <h1 className="text-xl font-bold text-green-800 mb-4">Effettua la tua prenotazione</h1>
 
         <FormsReservation
           visitType={visitType}

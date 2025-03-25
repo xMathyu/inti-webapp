@@ -2,7 +2,7 @@ import { GoogleAuthProvider, signInWithPopup, User } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth } from "./firebase";
 import { db } from "@/app/lib/firebase";
-import { createStripeCustomer } from "./stripe";
+import { createStripeCustomer } from "@/app/lib/stripe/customers";
 
 export async function signInWithGoogle(): Promise<User> {
   const provider = new GoogleAuthProvider();
@@ -16,17 +16,14 @@ export async function signInWithGoogle(): Promise<User> {
 
     if (!userDoc.exists()) {
       // Si el usuario no existe, creamos el Customer en Stripe
-      const stripeCustomerId = await createStripeCustomer(
-        user.email || "",
-        user.uid || ""
-      );
+      const stripeCustomerId = await createStripeCustomer(user.email || "", user.uid || "");
 
       // Guardamos el usuario en Firestore con su Stripe Customer ID
       await setDoc(userRef, {
         email: user.email,
         name: user.displayName,
         role: "user",
-        stripeCustomerId
+        stripeCustomerId,
       });
     }
 
@@ -37,19 +34,13 @@ export async function signInWithGoogle(): Promise<User> {
   }
 }
 
-export async function saveUserToFirestore(
-  user: User,
-  additionalData?: Record<string, unknown>
-) {
+export async function saveUserToFirestore(user: User, additionalData?: Record<string, unknown>) {
   const userRef = doc(db, "users", user.uid);
   const userDoc = await getDoc(userRef);
 
   if (!userDoc.exists()) {
     // Crear el Customer en Stripe
-    const stripeCustomerId = await createStripeCustomer(
-      user.email || "",
-      user.uid || ""
-    );
+    const stripeCustomerId = await createStripeCustomer(user.email || "", user.uid || "");
 
     // Guardar el usuario en Firestore con su Stripe Customer ID
     await setDoc(userRef, {
@@ -57,7 +48,7 @@ export async function saveUserToFirestore(
       name: user.displayName || "",
       role: "user",
       stripeCustomerId,
-      ...additionalData
+      ...additionalData,
     });
   }
 }
