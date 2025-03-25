@@ -3,7 +3,7 @@
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect, Suspense } from "react";
 import { toast } from "sonner";
-import { collection, addDoc, doc, updateDoc, getDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { db, auth } from "@/app/lib/firebase";
 import ConfirmationForm, { FormData } from "@/app/components/ConfirmationForm";
@@ -16,7 +16,6 @@ function ConfirmPageContent() {
   const scheduleId = searchParams.get("scheduleId");
   const numPeople = parseInt(searchParams.get("numPeople") || "1", 10);
   const [userId, setUserId] = useState<string | null>(null);
-  const [formData, setFormData] = useState<FormData | null>(null);
   const [stripeCustomerId, setStripeCustomerId] = useState<string | null>(null);
 
   useEffect(() => {

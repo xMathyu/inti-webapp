@@ -23,7 +23,7 @@ export interface StripeApiError {
 export interface SerializedSession {
   id: string;
   customer: string;
-  payment_intent: any;
+  payment_intent: string | null;
   amount_total: number;
   currency: string;
   metadata: Record<string, string> | null;

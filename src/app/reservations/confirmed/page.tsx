@@ -4,20 +4,24 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "@/app/lib/firebase";
 import { ClientConfirmationPage } from "./ClientConfirmationPage";
 import { SerializedSession } from "@/app/lib/stripe/types";
+import Link from "next/link";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-interface PageProps {
-  params: {}; // Parámetros de ruta
-  searchParams: { [key: string]: string | string[] | undefined }; // Parámetros de búsqueda
-}
-
 // Función auxiliar para convertir la sesión de Stripe en un objeto plano
 function serializeSession(session: Stripe.Checkout.Session): SerializedSession {
+  // Manejar el tipo de payment_intent adecuadamente
+  let paymentIntent: string | null = null;
+  if (typeof session.payment_intent === "string") {
+    paymentIntent = session.payment_intent;
+  } else if (session.payment_intent && "id" in session.payment_intent) {
+    paymentIntent = session.payment_intent.id;
+  }
+
   return {
     id: session.id,
     customer: session.customer as string,
-    payment_intent: session.payment_intent,
+    payment_intent: paymentIntent,
     amount_total: session.amount_total as number,
     currency: session.currency as string,
     metadata: session.metadata,
@@ -25,19 +29,22 @@ function serializeSession(session: Stripe.Checkout.Session): SerializedSession {
   };
 }
 
-export default async function ConfirmedPage(props: PageProps) {
+export default async function ConfirmedPage({
+  searchParams,
+}: {
+  searchParams?: Promise<Record<string, unknown>>;
+}) {
   // Obtener el session_id de los parámetros de búsqueda (query parameters)
-  const searchParams = await props.searchParams;
-  const session_id = searchParams.session_id as string | undefined;
+  const session_id = (await searchParams)!.session_id as string | undefined;
 
   if (!session_id) {
     return (
       <div className="container mx-auto p-8">
         <h1 className="text-2xl font-bold text-red-600 mb-4">Error</h1>
         <p>Please provide a valid session_id.</p>
-        <a href="/" className="text-blue-500 underline">
+        <Link href="/" className="text-blue-500 underline">
           Return to homepage
-        </a>
+        </Link>
       </div>
     );
   }
@@ -78,9 +85,9 @@ export default async function ConfirmedPage(props: PageProps) {
       <div className="container mx-auto p-8">
         <h1 className="text-2xl font-bold text-yellow-600 mb-4">Session not complete</h1>
         <p>The payment session is not complete yet.</p>
-        <a href="/" className="text-blue-500 underline">
+        <Link href="/" className="text-blue-500 underline">
           Return to homepage
-        </a>
+        </Link>
       </div>
     );
   } catch (error) {

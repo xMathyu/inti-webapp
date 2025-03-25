@@ -42,7 +42,7 @@ export function ClientConfirmationPage({
           numPeople: reservationData.numPeople,
           attendees: reservationData.formData.attendees,
           paymentStatus: "completed",
-          paymentId: session.payment_intent["id"],
+          paymentId: session.payment_intent != null ? session.payment_intent : null,
           createdAt: new Date(),
           totalAmount: session.amount_total,
           currency: session.currency,
