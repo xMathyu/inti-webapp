@@ -1,9 +1,9 @@
-"use client";
+'use client'
 
-import React, { useState, useEffect } from "react";
-import { useSwipeable } from "react-swipeable";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
+import React, { useState, useEffect } from 'react'
+import { useSwipeable } from 'react-swipeable'
+import { motion } from 'framer-motion'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardHeader,
@@ -11,94 +11,94 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-} from "@/components/ui/card";
-import { Check, ChevronLeft, ChevronRight } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "@/app/[locale]/lib/firebase";
-import { Visit } from "../interfaces/interfaces";
+} from '@/components/ui/card'
+import { Check, ChevronLeft, ChevronRight } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { collection, getDocs } from 'firebase/firestore'
+import { db } from '@/app/[locale]/lib/firebase'
+import { Visit } from '../interfaces/interfaces'
 
 function useWindowSize() {
-  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
+  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 })
   useEffect(() => {
     const handleResize = () => {
-      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-  return windowSize;
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight })
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+  return windowSize
 }
 
 export function VisitsPricing() {
-  const { width } = useWindowSize();
-  const router = useRouter();
+  const { width } = useWindowSize()
+  const router = useRouter()
 
-  const [visibleCards, setVisibleCards] = useState(3);
-  const [cardWidth, setCardWidth] = useState(314);
-  const [arrowSize, setArrowSize] = useState(24);
-  const [gap, setGap] = useState(32);
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [visibleCards, setVisibleCards] = useState(3)
+  const [cardWidth, setCardWidth] = useState(314)
+  const [arrowSize, setArrowSize] = useState(24)
+  const [gap, setGap] = useState(32)
+  const [currentSlide, setCurrentSlide] = useState(0)
 
-  const [visits, setVisits] = useState<Visit[]>([]);
-  const [, setLoading] = useState(true);
+  const [visits, setVisits] = useState<Visit[]>([])
+  const [, setLoading] = useState(true)
 
   useEffect(() => {
     if (width < 768) {
-      setVisibleCards(1);
-      setArrowSize(16);
-      setGap(16);
-      setCardWidth(width - 120);
+      setVisibleCards(1)
+      setArrowSize(16)
+      setGap(16)
+      setCardWidth(width - 120)
     } else {
-      setVisibleCards(3);
-      setArrowSize(24);
-      setGap(32);
-      setCardWidth(314);
+      setVisibleCards(3)
+      setArrowSize(24)
+      setGap(32)
+      setCardWidth(314)
     }
-  }, [width]);
+  }, [width])
 
   useEffect(() => {
     const fetchVisits = async () => {
-      setLoading(true);
+      setLoading(true)
       try {
-        const querySnapshot = await getDocs(collection(db, "visitTypes"));
-        const data: Visit[] = [];
+        const querySnapshot = await getDocs(collection(db, 'visitTypes'))
+        const data: Visit[] = []
         querySnapshot.forEach((docSnap) => {
-          const visit = docSnap.data() as Omit<Visit, "id">;
+          const visit = docSnap.data() as Omit<Visit, 'id'>
           data.push({
             id: docSnap.id,
             ...visit,
-          });
-        });
-        setVisits(data);
+          })
+        })
+        setVisits(data)
       } catch (error) {
-        console.error("Error al cargar los tipos de visita:", error);
+        console.error('Error al cargar los tipos de visita:', error)
       }
-      setLoading(false);
-    };
-    fetchVisits();
-  }, []);
+      setLoading(false)
+    }
+    fetchVisits()
+  }, [])
 
-  const activeVisits = visits.filter((visit) => visit.active);
+  const activeVisits = visits.filter((visit) => visit.active)
 
-  const totalCards = activeVisits.length;
-  const visibleWidth = visibleCards * cardWidth + (visibleCards - 1) * gap;
-  const maxSlide = totalCards - visibleCards;
+  const totalCards = activeVisits.length
+  const visibleWidth = visibleCards * cardWidth + (visibleCards - 1) * gap
+  const maxSlide = totalCards - visibleCards
 
   const handlePrev = () => {
-    setCurrentSlide((prev) => Math.max(prev - 1, 0));
-  };
+    setCurrentSlide((prev) => Math.max(prev - 1, 0))
+  }
 
   const handleNext = () => {
-    setCurrentSlide((prev) => Math.min(prev + 1, maxSlide));
-  };
+    setCurrentSlide((prev) => Math.min(prev + 1, maxSlide))
+  }
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => handleNext(),
     onSwipedRight: () => handlePrev(),
     trackMouse: true,
-  });
+  })
 
   return (
     <section id="tariffe" className="py-20 bg-white">
@@ -120,15 +120,11 @@ export function VisitsPricing() {
           >
             <ChevronLeft size={arrowSize} className="text-green-600" />
           </button>
-          <div
-            className="overflow-hidden"
-            style={{ width: visibleWidth }}
-            {...swipeHandlers}
-          >
+          <div className="overflow-hidden" style={{ width: visibleWidth }} {...swipeHandlers}>
             <div
               style={{
                 transform: `translateX(-${currentSlide * (cardWidth + gap)}px)`,
-                transition: "transform 0.5s ease",
+                transition: 'transform 0.5s ease',
               }}
               className="flex"
             >
@@ -138,10 +134,7 @@ export function VisitsPricing() {
                   className="flex-shrink-0"
                   style={{
                     width: cardWidth,
-                    marginRight:
-                      visit.id === activeVisits[activeVisits.length - 1].id
-                        ? 0
-                        : gap,
+                    marginRight: visit.id === activeVisits[activeVisits.length - 1].id ? 0 : gap,
                   }}
                 >
                   <Card className="bg-white shadow-lg border border-gray-200 flex flex-col h-full rounded-lg overflow-hidden">
@@ -162,17 +155,9 @@ export function VisitsPricing() {
                       </div>
                       <ul className="space-y-2 mt-4">
                         {visit.features.map((feature: string, idx: number) => (
-                          <li
-                            key={idx}
-                            className="flex items-start text-gray-600 leading-relaxed"
-                          >
-                            <Check
-                              className="text-green-500 mr-2 mt-1"
-                              size={18}
-                            />
-                            <span className="text-sm md:text-base">
-                              {feature}
-                            </span>
+                          <li key={idx} className="flex items-start text-gray-600 leading-relaxed">
+                            <Check className="text-green-500 mr-2 mt-1" size={18} />
+                            <span className="text-sm md:text-base">{feature}</span>
                           </li>
                         ))}
                       </ul>
@@ -182,9 +167,7 @@ export function VisitsPricing() {
                         className="bg-green-600 hover:bg-green-700 w-full text-white text-lg"
                         onClick={() =>
                           // Redirects to /reservations with the query param ?type=...
-                          router.push(
-                            `/reservations?type=${encodeURIComponent(visit.id)}`
-                          )
+                          router.push(`/reservations?type=${encodeURIComponent(visit.id)}`)
                         }
                       >
                         Prenota
@@ -205,5 +188,5 @@ export function VisitsPricing() {
         </div>
       </div>
     </section>
-  );
+  )
 }

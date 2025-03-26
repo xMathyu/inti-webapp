@@ -1,46 +1,54 @@
-import { GoogleAuthProvider, signInWithPopup, User } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
-import { auth } from "./firebase";
-import { db } from "@/app/[locale]/lib/firebase";
+import { GoogleAuthProvider, signInWithPopup, User } from 'firebase/auth'
+import { doc, getDoc, setDoc } from 'firebase/firestore'
+import { auth } from './firebase'
+import { createStripeCustomer } from '@/app/[locale]/lib/stripe/customers'
+import { db } from '@/app/[locale]/lib/firebase'
 
 export async function signInWithGoogle(): Promise<User> {
-  const provider = new GoogleAuthProvider();
+  const provider = new GoogleAuthProvider()
   try {
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
+    const result = await signInWithPopup(auth, provider)
+    const user = result.user
 
     // Reference to the user's document in Firestore
-    const userRef = doc(db, "users", user.uid);
-    const userDoc = await getDoc(userRef);
+    const userRef = doc(db, 'users', user.uid)
+    const userDoc = await getDoc(userRef)
 
     if (!userDoc.exists()) {
-      // If the user does not exist in Firestore, create it with the default role "user"
+      // Si el usuario no existe, creamos el Customer en Stripe
+      const stripeCustomerId = await createStripeCustomer(user.email || '', user.uid || '')
+
+      // Guardamos el usuario en Firestore con su Stripe Customer ID
       await setDoc(userRef, {
         email: user.email,
         name: user.displayName,
-        role: "user",
-      });
+        role: 'user',
+        stripeCustomerId,
+      })
     }
 
-    return user;
+    return user
   } catch (error) {
-    console.error("Error al iniciar sesión con Google:", error);
-    throw error;
+    console.error('Error al iniciar sesión con Google:', error)
+    throw error
   }
 }
 
-export async function saveUserToFirestore(
-  user: User,
-  additionalData?: Record<string, unknown>
-) {
-  const userRef = doc(db, "users", user.uid);
-  const userDoc = await getDoc(userRef);
+export async function saveUserToFirestore(user: User, additionalData?: Record<string, unknown>) {
+  const userRef = doc(db, 'users', user.uid)
+  const userDoc = await getDoc(userRef)
+
   if (!userDoc.exists()) {
+    // Crear el Customer en Stripe
+    const stripeCustomerId = await createStripeCustomer(user.email || '', user.uid || '')
+
+    // Guardar el usuario en Firestore con su Stripe Customer ID
     await setDoc(userRef, {
       email: user.email,
-      name: user.displayName || "",
-      role: "user",
+      name: user.displayName || '',
+      role: 'user',
+      stripeCustomerId,
       ...additionalData,
-    });
+    })
   }
 }

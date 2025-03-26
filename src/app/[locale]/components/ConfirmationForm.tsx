@@ -1,9 +1,9 @@
-"use client";
+'use client'
 
-import React from "react";
-import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import React from 'react'
+import { useForm, FormProvider, SubmitHandler } from 'react-hook-form'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import {
   FormField,
   FormItem,
@@ -11,42 +11,42 @@ import {
   FormControl,
   FormDescription,
   FormMessage,
-} from "@/components/ui/form";
+} from '@/components/ui/form'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select'
 
-import { format } from "date-fns";
-import { DateTimePicker } from "@/components/ui/datetime-picker";
-import { Attendee } from "../interfaces/interfaces";
+import { format } from 'date-fns'
+import { DateTimePicker } from '@/components/ui/datetime-picker'
+import { Attendee } from '../interfaces/interfaces'
 
 export interface FormData {
-  attendees: Attendee[];
+  attendees: Attendee[]
 }
 
 export interface ConfirmationFormProps {
-  numPeople: number;
-  onSubmit: SubmitHandler<FormData>;
+  numPeople: number
+  onSubmit: SubmitHandler<FormData>
 }
 
 const ConfirmationForm = ({ numPeople, onSubmit }: ConfirmationFormProps) => {
   const form = useForm<FormData>({
     defaultValues: {
       attendees: Array.from({ length: numPeople }, () => ({
-        firstName: "",
-        lastName: "",
-        documentType: "CIE",
-        documentNumber: "",
-        phone: "",
-        email: "",
-        birthDate: "",
+        firstName: '',
+        lastName: '',
+        documentType: 'CIE',
+        documentNumber: '',
+        phone: '',
+        email: '',
+        birthDate: '',
       })),
     },
-  });
+  })
 
   return (
     <FormProvider {...form}>
@@ -55,12 +55,10 @@ const ConfirmationForm = ({ numPeople, onSubmit }: ConfirmationFormProps) => {
           <h1 className="text-2xl font-extrabold text-green-800 mb-2 text-center">
             Conferma della Prenotazione
           </h1>
-          <p className="text-green-700 text-center mb-6">
-            Inserisci i dati dei partecipanti
-          </p>
+          <p className="text-green-700 text-center mb-6">Inserisci i dati dei partecipanti</p>
 
           <div className="space-y-6">
-            {form.watch("attendees").map((_, index) => (
+            {form.watch('attendees').map((_, index) => (
               <div
                 key={index}
                 className="bg-white rounded-xl shadow p-6 border border-gray-200 transition-transform transform hover:scale-105"
@@ -78,9 +76,7 @@ const ConfirmationForm = ({ numPeople, onSubmit }: ConfirmationFormProps) => {
                         <FormControl>
                           <Input {...field} required placeholder="Es. Mario" />
                         </FormControl>
-                        <FormDescription>
-                          Inserisci il nome del partecipante.
-                        </FormDescription>
+                        <FormDescription>Inserisci il nome del partecipante.</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -94,9 +90,7 @@ const ConfirmationForm = ({ numPeople, onSubmit }: ConfirmationFormProps) => {
                         <FormControl>
                           <Input {...field} required placeholder="Es. Rossi" />
                         </FormControl>
-                        <FormDescription>
-                          Inserisci il cognome del partecipante.
-                        </FormDescription>
+                        <FormDescription>Inserisci il cognome del partecipante.</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -108,18 +102,13 @@ const ConfirmationForm = ({ numPeople, onSubmit }: ConfirmationFormProps) => {
                       <FormItem>
                         <FormLabel>Tipo di Documento</FormLabel>
                         <FormControl>
-                          <Select
-                            value={field.value}
-                            onValueChange={field.onChange}
-                          >
+                          <Select value={field.value} onValueChange={field.onChange}>
                             <SelectTrigger className="w-full">
                               <SelectValue placeholder="Seleziona..." />
                             </SelectTrigger>
                             <SelectContent>
                               <SelectItem value="CIE">CIE</SelectItem>
-                              <SelectItem value="Passaporto">
-                                Passaporto
-                              </SelectItem>
+                              <SelectItem value="Passaporto">Passaporto</SelectItem>
                             </SelectContent>
                           </Select>
                         </FormControl>
@@ -138,24 +127,21 @@ const ConfirmationForm = ({ numPeople, onSubmit }: ConfirmationFormProps) => {
                             {...field}
                             required
                             placeholder={
-                              form.watch(`attendees.${index}.documentType`) ===
-                              "CIE"
-                                ? "Es. A12345678"
-                                : "Es. 123456789"
+                              form.watch(`attendees.${index}.documentType`) === 'CIE'
+                                ? 'Es. A12345678'
+                                : 'Es. 123456789'
                             }
                             pattern={
-                              form.watch(`attendees.${index}.documentType`) ===
-                              "CIE"
-                                ? "[A-Z]\\d{8}"
+                              form.watch(`attendees.${index}.documentType`) === 'CIE'
+                                ? '[A-Z]\\d{8}'
                                 : undefined
                             }
                           />
                         </FormControl>
                         <FormDescription>
-                          {form.watch(`attendees.${index}.documentType`) ===
-                          "CIE"
-                            ? "Formato: Una lettera maiuscola seguita da 8 cifre."
-                            : "Inserisci il numero del passaporto."}
+                          {form.watch(`attendees.${index}.documentType`) === 'CIE'
+                            ? 'Formato: Una lettera maiuscola seguita da 8 cifre.'
+                            : 'Inserisci il numero del passaporto.'}
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -168,15 +154,10 @@ const ConfirmationForm = ({ numPeople, onSubmit }: ConfirmationFormProps) => {
                       <FormItem>
                         <FormLabel>Telefono</FormLabel>
                         <FormControl>
-                          <Input
-                            {...field}
-                            required
-                            placeholder="Es. +39 0123456789"
-                          />
+                          <Input {...field} required placeholder="Es. +39 0123456789" />
                         </FormControl>
                         <FormDescription>
-                          Inserisci il tuo numero di telefono, incluso il
-                          prefisso internazionale.
+                          Inserisci il tuo numero di telefono, incluso il prefisso internazionale.
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -186,25 +167,19 @@ const ConfirmationForm = ({ numPeople, onSubmit }: ConfirmationFormProps) => {
                     control={form.control}
                     name={`attendees.${index}.email`}
                     rules={{
-                      required: "El correo electrónico es obligatorio.",
+                      required: 'El correo electrónico es obligatorio.',
                       pattern: {
                         value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
-                        message: "Ingresa un correo electrónico válido.",
+                        message: 'Ingresa un correo electrónico válido.',
                       },
                     }}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Email</FormLabel>
                         <FormControl>
-                          <Input
-                            {...field}
-                            type="email"
-                            placeholder="esempio@mail.com"
-                          />
+                          <Input {...field} type="email" placeholder="esempio@mail.com" />
                         </FormControl>
-                        <FormDescription>
-                          Inserisci un indirizzo email valido.
-                        </FormDescription>
+                        <FormDescription>Inserisci un indirizzo email valido.</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -213,30 +188,24 @@ const ConfirmationForm = ({ numPeople, onSubmit }: ConfirmationFormProps) => {
                     control={form.control}
                     name={`attendees.${index}.birthDate`}
                     render={({ field }) => {
-                      const selectedDate = field.value
-                        ? new Date(field.value)
-                        : undefined;
+                      const selectedDate = field.value ? new Date(field.value) : undefined
                       return (
                         <FormItem>
                           <FormLabel>Data di Nascita</FormLabel>
                           <FormControl>
                             <DateTimePicker
                               onChange={(date) => {
-                                field.onChange(
-                                  date ? format(date, "yyyy-MM-dd") : ""
-                                );
+                                field.onChange(date ? format(date, 'yyyy-MM-dd') : '')
                               }}
                               value={selectedDate}
                               className="bg-white"
                               hideTime
                             />
                           </FormControl>
-                          <FormDescription>
-                            Seleziona la data di nascita.
-                          </FormDescription>
+                          <FormDescription>Seleziona la data di nascita.</FormDescription>
                           <FormMessage />
                         </FormItem>
-                      );
+                      )
                     }}
                   />
                 </div>
@@ -254,7 +223,7 @@ const ConfirmationForm = ({ numPeople, onSubmit }: ConfirmationFormProps) => {
         </div>
       </form>
     </FormProvider>
-  );
-};
+  )
+}
 
-export default ConfirmationForm;
+export default ConfirmationForm

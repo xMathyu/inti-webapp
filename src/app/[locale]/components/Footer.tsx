@@ -1,13 +1,13 @@
-"use client";
+'use client'
 
-import { Facebook, Instagram } from "lucide-react";
+import { Facebook, Instagram } from 'lucide-react'
 
-import { useTranslations } from "next-intl";
+import { useTranslations } from 'next-intl'
 
 export function Footer() {
-  const currentYear = new Date().getFullYear();
+  const currentYear = new Date().getFullYear()
 
-  const t = useTranslations("LandingPage.Section.Footer");
+  const t = useTranslations('LandingPage.Section.Footer')
 
   return (
     <footer className="relative overflow-hidden pt-12 bg-gradient-to-r from-green-600 to-green-700 text-white">
@@ -47,8 +47,8 @@ export function Footer() {
       <div className="relative z-10 max-w-6xl mx-auto px-6 pb-8 flex flex-col md:flex-row items-center md:justify-between space-y-4 md:space-y-0">
         {/* Logo / Name */}
         <div className="text-center md:text-left">
-          <h2 className="text-2xl font-bold">{t("Title")}</h2>
-          <p className="text-sm">{t("Subtitle")}</p>
+          <h2 className="text-2xl font-bold">{t('Title')}</h2>
+          <p className="text-sm">{t('Subtitle')}</p>
         </div>
 
         {/* Social */}
@@ -78,9 +78,9 @@ export function Footer() {
       {/* Copyright */}
       <div className="relative z-10 py-4 text-center text-sm">
         <p>
-          &copy; {currentYear} {t("Copyright")}
+          &copy; {currentYear} {t('Copyright')}
         </p>
       </div>
     </footer>
-  );
+  )
 }
