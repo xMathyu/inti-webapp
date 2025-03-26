@@ -16,26 +16,25 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
 } from '@/components/ui/navigation-menu'
-
-// const navLinks = [
-//   { href: "/#hero", label: "Inizio" },
-//   { href: "/#about", label: "Chi siamo" },
-//   { href: "/#gallery", label: "Galleria" },
-//   { href: "/#guides", label: "Guide" },
-//   { href: "/#tariffe", label: "Tariffe" },
-//   { href: "/#contact", label: "Contatti" },
-// ];
-
-//TRANSLATIONS
 import { useTranslations } from 'next-intl'
 import { LanguageSwitcher } from './LanguageSwitcher'
+import { useParams } from 'next/navigation'
 
 export function Navbar() {
   const t = useTranslations('LandingPage.Section.Navbar')
+  const params = useParams()
+  const locale = params.locale as string
+
   const navLinks: { href: string; label: string }[] = t.raw('NavItems') as {
     href: string
     label: string
   }[]
+
+  // Add locale to each link
+  const localizedNavLinks = navLinks.map((link) => ({
+    ...link,
+    href: `/${locale}${link.href}`,
+  }))
 
   const [user, setUser] = useState<User | null>(null)
   const [isAdmin, setIsAdmin] = useState(false)
@@ -67,7 +66,7 @@ export function Navbar() {
 
   // For mobile, the traditional function is used
   const renderMobileNavLinks = (className = '') =>
-    navLinks.map(({ href, label }) => (
+    localizedNavLinks.map(({ href, label }) => (
       <Link key={href} href={href} onClick={() => setMobileMenuOpen(false)} className={className}>
         {label}
       </Link>
@@ -82,7 +81,7 @@ export function Navbar() {
     >
       <div className="max-w-7xl mx-auto h-full flex items-center justify-between pr-4 pl-0 md:pr-2 md:pl-0 ">
         {/* Logo */}
-        <Link href="/#hero" className="h-full flex items-center">
+        <Link href={`/${locale}/#hero`} className="h-full flex items-center">
           <div className="relative h-full w-32">
             <Image
               className="p-1"
@@ -97,7 +96,7 @@ export function Navbar() {
         <div className="hidden md:flex items-center text-white space-x-4">
           <NavigationMenu>
             <NavigationMenuList className="flex space-x-2">
-              {navLinks.map(({ href, label }) => (
+              {localizedNavLinks.map(({ href, label }) => (
                 <NavigationMenuItem key={href}>
                   <NavigationMenuLink asChild>
                     <Link
