@@ -1,7 +1,17 @@
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import { Card } from '@/components/ui/card'
 import CardContentComponent from './card-content-component'
-import { Visit } from '@/app/[locale]/interfaces/interfaces'
+
+interface Visit {
+  id: string
+  name: string
+  shortDescription: string
+  price: number
+  frequency: string
+  features: string[]
+  active: boolean
+}
 
 interface CardItemProps {
   visit: Visit
@@ -37,13 +47,16 @@ export default function CardItem({ visit, showButton = true, setIsModalOpen }: C
         />
       </Card>
 
-      {showMore && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-          onClick={handleClose}
-        >
-          <div className="bg-a p-6 rounded-lg max-w-3xl" style={{ cursor: 'default' }}>
-            <Card className="px-6 bg-white shadow-lg border border-gray-200 flex flex-col h-full rounded-lg">
+      {showMore &&
+        createPortal(
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            onClick={handleClose}
+          >
+            <Card
+              className="bg-white shadow-lg rounded-lg p-6 max-w-lg w-full"
+              onClick={(e) => e.stopPropagation()} // Evita que el modal se cierre al hacer click dentro
+            >
               <CardContentComponent
                 visit={visit}
                 showButton={showButton}
@@ -53,9 +66,9 @@ export default function CardItem({ visit, showButton = true, setIsModalOpen }: C
                 }}
               />
             </Card>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body,
+        )}
     </>
   )
 }
