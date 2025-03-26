@@ -7,7 +7,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Check } from "@mynaui/icons-react";
 import { useRouter } from "next/navigation";
-import { Visit } from "@/app/interfaces/interfaces";
+import { Visit } from "@/app/[locale]/interfaces/interfaces";
 
 interface CardContentComponentProps {
   visit: Visit;

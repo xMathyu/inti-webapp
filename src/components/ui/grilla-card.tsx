@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "@/app/lib/firebase";
+import { db } from "@/app/[locale]/lib/firebase";
 import CardItem from "./card-item";
-import { VisitOrder } from "@/app/interfaces/interfaces";
+import { VisitOrder } from "@/app/[locale]/interfaces/interfaces";
 
 interface GrillaCardProps {
   showButton?: boolean;
