@@ -121,7 +121,7 @@ export function Navbar() {
               variant="outline"
               className="bg-transparent text-white border-white hover:bg-green-500/20 p-4   "
             >
-              <Link href="/auth">{t('AccessLogin')}</Link>
+              <Link href={`/${locale}/auth`}>{t('AccessLogin')}</Link>
             </Button>
           )}
         </div>
@@ -150,7 +150,7 @@ export function Navbar() {
             />
           ) : (
             <Link
-              href="/auth"
+              href={`/${locale}/auth`}
               onClick={() => setMobileMenuOpen(false)}
               className="text-green-700 hover:bg-green-50 w-full text-center py-2"
             >

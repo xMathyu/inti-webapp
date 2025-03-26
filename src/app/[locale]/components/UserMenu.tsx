@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
 import { useTranslations } from 'next-intl'
+import { useParams } from 'next/navigation'
 
 type UserMenuProps = {
   userDisplayName?: string
@@ -19,27 +20,36 @@ type UserMenuProps = {
 
 export function UserMenu({ userDisplayName, isAdmin, handleSignOut, mobile }: UserMenuProps) {
   const t = useTranslations('LandingPage.Section.Navbar')
+  const params = useParams()
+  const locale = params.locale as string
+
   const commonLinks = (
     <>
-      <Link href="/account" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+      <Link href={`/${locale}/account`} className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
         Il mio account
       </Link>
-      <Link href="/my-entries" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+      <Link
+        href={`/${locale}/my-entries`}
+        className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+      >
         Le mie voci
       </Link>
       {isAdmin && (
         <>
-          <Link href="/admin/schedules" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+          <Link
+            href={`/${locale}/admin/schedules`}
+            className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+          >
             Admin - Schedules
           </Link>
           <Link
-            href="/admin/visit-types"
+            href={`/${locale}/admin/visit-types`}
             className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
           >
             Admin - Visit Types
           </Link>
           <Link
-            href="/admin/visit-types-prices"
+            href={`/${locale}/admin/visit-types-prices`}
             className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
           >
             Admin - Prices Order
