@@ -160,7 +160,7 @@ export function VisitsPricing() {
                   <Card className="h-full flex items-center justify-center">
                     <div className="flex flex-col items-center justify-center text-center p-6 gap-6 w-full">
                       <p className="text-gray-700 text-base font-normal">
-                       Scopri tutte le opzioni e le tariffe disponibili.
+                        Scopri tutte le opzioni e le tariffe disponibili.
                       </p>
                       <Button
                         className="bg-green-600 hover:bg-green-700 w-full text-white text-lg"

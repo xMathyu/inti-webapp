@@ -22,7 +22,7 @@ export function Gallery() {
     <section id="gallery" className="py-20 bg-gray-50">
       <div className="max-w-6xl mx-auto px-4">
         <h2 className="text-3xl font-semibold text-center text-green-700 mb-8">
-          {t('About.Title')}
+          {t('Gallery.Title')}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {images.map((image, idx) => (
