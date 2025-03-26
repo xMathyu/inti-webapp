@@ -1,28 +1,24 @@
-"use client";
+'use client'
 
-import { usePathname, useRouter } from "next/navigation";
-import Image from "next/image";
+import { usePathname, useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 export function LanguageSwitcher() {
-  const pathname = usePathname();
-  const router = useRouter();
+  const pathname = usePathname()
+  const router = useRouter()
 
   const languages = [
-    { code: "en", label: "EN", flag: "/flags/america.svg" },
-    { code: "it", label: "IT", flag: "/flags/italy.svg" },
-  ];
+    { code: 'en', label: 'EN', flag: '/flags/america.svg' },
+    { code: 'it', label: 'IT', flag: '/flags/italy.svg' },
+  ]
 
-  const currentLocale = pathname.split("/")[1];
-  const nextLanguage =
-    languages.find((lang) => lang.code !== currentLocale) || languages[0];
+  const currentLocale = pathname.split('/')[1]
+  const nextLanguage = languages.find((lang) => lang.code !== currentLocale) || languages[0]
 
   const switchLanguage = () => {
-    const newPath = pathname.replace(
-      `/${currentLocale}`,
-      `/${nextLanguage.code}`
-    );
-    router.push(newPath);
-  };
+    const newPath = pathname.replace(`/${currentLocale}`, `/${nextLanguage.code}`)
+    router.push(newPath)
+  }
 
   return (
     <button
@@ -40,5 +36,5 @@ export function LanguageSwitcher() {
       </div>
       <span>{nextLanguage.label}</span>
     </button>
-  );
+  )
 }

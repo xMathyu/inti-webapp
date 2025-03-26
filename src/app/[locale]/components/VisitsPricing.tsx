@@ -1,209 +1,191 @@
-"use client";
+'use client'
 
-import React, { useState, useEffect } from "react";
-import { useSwipeable } from "react-swipeable";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
-import { Check, ChevronLeft, ChevronRight } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "@/app/[locale]/lib/firebase";
-import { Visit } from "../interfaces/interfaces";
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { collection, getDocs } from 'firebase/firestore'
+import { db } from '@/app/[locale]/lib/firebase'
+import { useSwipeable } from 'react-swipeable'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 
+import { Button } from '@/components/ui/button'
+import CardItem from '@/components/ui/card-item'
+import { Card } from '@/components/ui/card'
+
+interface Visit {
+  id: string
+  name: string
+  shortDescription: string
+  price: number
+  frequency: string
+  features: string[]
+  active: boolean
+  order: string
+}
+
+/* ------------------ Hook para tamaño de ventana ------------------ */
 function useWindowSize() {
-  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
+  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 })
   useEffect(() => {
     const handleResize = () => {
-      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-  return windowSize;
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      })
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+  return windowSize
 }
 
 export function VisitsPricing() {
-  const { width } = useWindowSize();
-  const router = useRouter();
+  const router = useRouter()
+  const { width } = useWindowSize()
 
-  const [visibleCards, setVisibleCards] = useState(3);
-  const [cardWidth, setCardWidth] = useState(314);
-  const [arrowSize, setArrowSize] = useState(24);
-  const [gap, setGap] = useState(32);
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [visits, setVisits] = useState<Visit[]>([])
+  const [currentSlide, setCurrentSlide] = useState(0)
 
-  const [visits, setVisits] = useState<Visit[]>([]);
-  const [, setLoading] = useState(true);
+  // --- Estados para lógica "responsive" y dimensiones
+  const [visibleCards, setVisibleCards] = useState(3)
+  const [cardWidth, setCardWidth] = useState(314)
+  const [arrowSize, setArrowSize] = useState(24)
+  const [gap, setGap] = useState(32)
 
+  /* Ajustar layout según ancho de ventana */
   useEffect(() => {
     if (width < 768) {
-      setVisibleCards(1);
-      setArrowSize(16);
-      setGap(16);
-      setCardWidth(width - 120);
+      setVisibleCards(1)
+      setArrowSize(16)
+      setGap(16)
+      // Aseguramos un ancho mínimo
+      const newWidth = width - 120 > 200 ? width - 120 : 200
+      setCardWidth(newWidth)
     } else {
-      setVisibleCards(3);
-      setArrowSize(24);
-      setGap(32);
-      setCardWidth(314);
+      setVisibleCards(3)
+      setArrowSize(24)
+      setGap(32)
+      setCardWidth(314)
     }
-  }, [width]);
+  }, [width])
 
+  /* Cargar visitas desde Firebase */
   useEffect(() => {
     const fetchVisits = async () => {
-      setLoading(true);
       try {
-        const querySnapshot = await getDocs(collection(db, "visitTypes"));
-        const data: Visit[] = [];
+        const querySnapshot = await getDocs(collection(db, 'visitTypes'))
+        const data: Visit[] = []
         querySnapshot.forEach((docSnap) => {
-          const visit = docSnap.data() as Omit<Visit, "id">;
-          data.push({
-            id: docSnap.id,
-            ...visit,
-          });
-        });
-        setVisits(data);
+          const visit = docSnap.data() as Omit<Visit, 'id'>
+          data.push({ id: docSnap.id, ...visit })
+        })
+        const activeVisits = data.filter((v) => v.active)
+        // Ordenar por 'order'
+        activeVisits.sort((a, b) => parseInt(a.order) - parseInt(b.order))
+        // Tomamos máximo 4 (3 + "Ver más")
+        setVisits(activeVisits.slice(0, 4))
       } catch (error) {
-        console.error("Error al cargar los tipos de visita:", error);
+        console.error('Error al cargar los tipos de visita:', error)
       }
-      setLoading(false);
-    };
-    fetchVisits();
-  }, []);
+    }
+    fetchVisits()
+  }, [])
 
-  const activeVisits = visits.filter((visit) => visit.active);
+  // Si hay >= 3 visitas, tendremos 4 "cards": 3 de visitas + 1 "Ver más"
+  const totalCards = visits.length >= 3 ? 4 : visits.length
+  const maxSlide = totalCards - visibleCards
 
-  const totalCards = activeVisits.length;
-  const visibleWidth = visibleCards * cardWidth + (visibleCards - 1) * gap;
-  const maxSlide = totalCards - visibleCards;
+  // Ancho total visible = tarjetas visibles * anchoTarjeta + espacio entre ellas
+  const visibleWidth = visibleCards * cardWidth + (visibleCards - 1) * gap
 
-  const handlePrev = () => {
-    setCurrentSlide((prev) => Math.max(prev - 1, 0));
-  };
+  // Funciones para moverse en el carrusel
+  const goPrev = () => setCurrentSlide((prev) => Math.max(prev - 1, 0))
+  const goNext = () => setCurrentSlide((prev) => Math.min(prev + 1, maxSlide))
 
-  const handleNext = () => {
-    setCurrentSlide((prev) => Math.min(prev + 1, maxSlide));
-  };
-
+  // Swipes táctiles / mouse
   const swipeHandlers = useSwipeable({
-    onSwipedLeft: () => handleNext(),
-    onSwipedRight: () => handlePrev(),
+    onSwipedLeft: goNext,
+    onSwipedRight: goPrev,
     trackMouse: true,
-  });
+  })
 
   return (
     <section id="tariffe" className="py-20 bg-white">
       <div className="max-w-6xl mx-auto px-4">
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          viewport={{ once: true }}
-          className="text-3xl md:text-4xl font-semibold text-center text-green-800 mb-12"
-        >
+        <h2 className="text-3xl md:text-4xl font-semibold text-center text-green-800 mb-12">
           Tipi di Visita e Tariffe
-        </motion.h2>
-        <div className="flex items-center justify-center">
+        </h2>
+
+        <div className="flex items-center justify-center relative">
+          {/* Flecha izquierda */}
           <button
-            onClick={handlePrev}
+            onClick={goPrev}
             disabled={currentSlide === 0}
-            className="mr-4 bg-white rounded-full shadow p-1 hover:bg-green-100 disabled:opacity-50"
+            className="bg-white rounded-full shadow p-1 hover:bg-green-100 disabled:opacity-50 absolute left-0"
+            style={{ top: '50%', transform: 'translateY(-50%)' }}
           >
             <ChevronLeft size={arrowSize} className="text-green-600" />
           </button>
-          <div
-            className="overflow-hidden"
-            style={{ width: visibleWidth }}
-            {...swipeHandlers}
-          >
+
+          {/* Contenedor visible del carrusel */}
+          <div className="overflow-hidden" style={{ width: visibleWidth }} {...swipeHandlers}>
+            {/* Interior desplazable */}
             <div
+              className="flex"
               style={{
                 transform: `translateX(-${currentSlide * (cardWidth + gap)}px)`,
-                transition: "transform 0.5s ease",
+                transition: 'transform 0.5s ease',
               }}
-              className="flex"
             >
-              {activeVisits.map((visit) => (
-                <div
-                  key={visit.id}
-                  className="flex-shrink-0"
-                  style={{
-                    width: cardWidth,
-                    marginRight:
-                      visit.id === activeVisits[activeVisits.length - 1].id
-                        ? 0
-                        : gap,
-                  }}
-                >
-                  <Card className="bg-white shadow-lg border border-gray-200 flex flex-col h-full rounded-lg overflow-hidden">
-                    <CardHeader className="p-6 pb-3">
-                      <CardTitle className="text-2xl font-bold text-gray-800">
-                        {visit.name}
-                      </CardTitle>
-                      <CardDescription className="text-lg text-gray-500 mt-2">
-                        {visit.shortDescription}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="px-6 flex-1">
-                      <div className="text-3xl font-bold text-green-800 mb-2">
-                        €{visit.price}
-                        <span className="ml-1 text-base font-normal text-gray-400">
-                          {visit.frequency}
-                        </span>
-                      </div>
-                      <ul className="space-y-2 mt-4">
-                        {visit.features.map((feature: string, idx: number) => (
-                          <li
-                            key={idx}
-                            className="flex items-start text-gray-600 leading-relaxed"
-                          >
-                            <Check
-                              className="text-green-500 mr-2 mt-1"
-                              size={18}
-                            />
-                            <span className="text-sm md:text-base">
-                              {feature}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    </CardContent>
-                    <CardFooter className="p-6 pt-0">
+              {/* Render de hasta 3 visitas */}
+              {visits.slice(0, 3).map((visit, index) => {
+                const isLast = index === visits.slice(0, 3).length - 1
+                return (
+                  <div
+                    key={visit.id}
+                    className="flex-shrink-0"
+                    style={{
+                      width: cardWidth,
+                      marginRight: isLast && visits.length < 3 ? 0 : gap,
+                    }}
+                  >
+                    <CardItem visit={visit} showButton={true} setIsModalOpen={() => {}} />
+                  </div>
+                )
+              })}
+
+              {/* 4ta tarjeta: "Ver más" si tenemos al menos 3 visitas */}
+              {visits.length >= 3 && (
+                <div className="flex-shrink-0" style={{ width: cardWidth, marginRight: 0 }}>
+                  <Card className="h-full flex items-center justify-center">
+                    <div className="flex flex-col items-center justify-center text-center p-6 gap-6 w-full">
+                      <p className="text-gray-700 text-base font-normal">
+                        Scopri tutte le opzioni e le tariffe disponibili.
+                      </p>
                       <Button
                         className="bg-green-600 hover:bg-green-700 w-full text-white text-lg"
-                        onClick={() =>
-                          // Redirects to /reservations with the query param ?type=...
-                          router.push(
-                            `/reservations?type=${encodeURIComponent(visit.id)}`
-                          )
-                        }
+                        onClick={() => router.push('/visits-prices')}
                       >
-                        Prenota
+                        Vedi di più
                       </Button>
-                    </CardFooter>
+                    </div>
                   </Card>
                 </div>
-              ))}
+              )}
             </div>
           </div>
+
+          {/* Flecha derecha */}
           <button
-            onClick={handleNext}
-            disabled={currentSlide === maxSlide}
-            className="ml-4 bg-white rounded-full shadow p-1 hover:bg-green-100 disabled:opacity-50"
+            onClick={goNext}
+            disabled={currentSlide >= maxSlide || maxSlide < 0}
+            className="bg-white rounded-full shadow p-1 hover:bg-green-100 disabled:opacity-50 absolute right-0"
+            style={{ top: '50%', transform: 'translateY(-50%)' }}
           >
             <ChevronRight size={arrowSize} className="text-green-600" />
           </button>
         </div>
       </div>
     </section>
-  );
+  )
 }

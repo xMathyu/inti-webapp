@@ -1,17 +1,17 @@
 // app/components/About.tsx
 
-"use client";
+'use client'
 
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { GiForestCamp, GiButterfly } from "react-icons/gi";
-import { AiOutlineCheck } from "react-icons/ai";
+import { motion } from 'framer-motion'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { GiForestCamp, GiButterfly } from 'react-icons/gi'
+import { AiOutlineCheck } from 'react-icons/ai'
 
-import { useTranslations } from "next-intl";
+import { useTranslations } from 'next-intl'
 
 export function About() {
-  const t = useTranslations("LandingPage.Section");
+  const t = useTranslations('LandingPage.Section')
   return (
     <section
       id="about"
@@ -60,12 +60,12 @@ export function About() {
         >
           {/* Main title */}
           <h2 className="text-3xl md:text-4xl font-semibold text-green-800 mb-6 text-center">
-            {t("About.Title")}
+            {t('About.Title')}
           </h2>
 
           <div className="flex justify-center mb-6">
             <Badge variant="secondary" className="bg-green-200 text-green-800">
-              {t("About.Visitors")}
+              {t('About.Visitors')}
             </Badge>
           </div>
 
@@ -82,7 +82,7 @@ export function About() {
               <div className="flex items-center mb-4">
                 <GiForestCamp className="w-6 h-6 mr-2 text-green-600" />
                 <h3 className="text-xl font-semibold text-green-800">
-                  {t("About.Park_History.Title")}
+                  {t('About.Park_History.Title')}
                 </h3>
               </div>
               <ul className="list-none space-y-2">
@@ -90,36 +90,36 @@ export function About() {
                   <AiOutlineCheck className="text-green-600 mt-1 mr-2 flex-shrink-0" />
                   <span
                     className="text-gray-700 text-sm md:text-base"
-                    style={{ textAlign: "justify" }}
+                    style={{ textAlign: 'justify' }}
                   >
-                    {t("About.Park_History.Paragraph_1")}
+                    {t('About.Park_History.Paragraph_1')}
                   </span>
                 </li>
                 <li className="flex items-start">
                   <AiOutlineCheck className="text-green-600 mt-1 mr-2 flex-shrink-0" />
                   <span
                     className="text-gray-700 text-sm md:text-base"
-                    style={{ textAlign: "justify" }}
+                    style={{ textAlign: 'justify' }}
                   >
-                    {t("About.Park_History.Paragraph_2")}
+                    {t('About.Park_History.Paragraph_2')}
                   </span>
                 </li>
                 <li className="flex items-start">
                   <AiOutlineCheck className="text-green-600 mt-1 mr-2 flex-shrink-0" />
                   <span
                     className="text-gray-700 text-sm md:text-base"
-                    style={{ textAlign: "justify" }}
+                    style={{ textAlign: 'justify' }}
                   >
-                    {t("About.Park_History.Paragraph_3")}
+                    {t('About.Park_History.Paragraph_3')}
                   </span>
                 </li>
                 <li className="flex items-start">
                   <AiOutlineCheck className="text-green-600 mt-1 mr-2 flex-shrink-0" />
                   <span
                     className="text-gray-700 text-sm md:text-base"
-                    style={{ textAlign: "justify" }}
+                    style={{ textAlign: 'justify' }}
                   >
-                    {t("About.Park_History.Paragraph_4")}
+                    {t('About.Park_History.Paragraph_4')}
                   </span>
                 </li>
               </ul>
@@ -136,7 +136,7 @@ export function About() {
               <div className="flex items-center mb-4">
                 <GiButterfly className="w-6 h-6 mr-2 text-green-600" />
                 <h3 className="text-xl font-semibold text-green-800">
-                  {t("About.Inty History.Title")}
+                  {t('About.Inty History.Title')}
                 </h3>
               </div>
               <ul className="list-none space-y-2">
@@ -144,45 +144,45 @@ export function About() {
                   <AiOutlineCheck className="text-green-600 mt-1 mr-2 flex-shrink-0" />
                   <span
                     className="text-gray-700 text-sm md:text-base"
-                    style={{ textAlign: "justify" }}
+                    style={{ textAlign: 'justify' }}
                   >
-                    {t("About.Inty History.Paragraph_1")}
+                    {t('About.Inty History.Paragraph_1')}
                   </span>
                 </li>
                 <li className="flex items-start">
                   <AiOutlineCheck className="text-green-600 mt-1 mr-2 flex-shrink-0" />
                   <span
                     className="text-gray-700 text-sm md:text-base"
-                    style={{ textAlign: "justify" }}
+                    style={{ textAlign: 'justify' }}
                   >
-                    {t("About.Inty History.Paragraph_2")}
+                    {t('About.Inty History.Paragraph_2')}
                   </span>
                 </li>
                 <li className="flex items-start">
                   <AiOutlineCheck className="text-green-600 mt-1 mr-2 flex-shrink-0" />
                   <span
                     className="text-gray-700 text-sm md:text-base"
-                    style={{ textAlign: "justify" }}
+                    style={{ textAlign: 'justify' }}
                   >
-                    {t("About.Inty History.Paragraph_3")}
+                    {t('About.Inty History.Paragraph_3')}
                   </span>
                 </li>
                 <li className="flex items-start">
                   <AiOutlineCheck className="text-green-600 mt-1 mr-2 flex-shrink-0" />
                   <span
                     className="text-gray-700 text-sm md:text-base"
-                    style={{ textAlign: "justify" }}
+                    style={{ textAlign: 'justify' }}
                   >
-                    {t("About.Inty History.Paragraph_4")}
+                    {t('About.Inty History.Paragraph_4')}
                   </span>
                 </li>
                 <li className="flex items-start">
                   <AiOutlineCheck className="text-green-600 mt-1 mr-2 flex-shrink-0" />
                   <span
                     className="text-gray-700 text-sm md:text-base"
-                    style={{ textAlign: "justify" }}
+                    style={{ textAlign: 'justify' }}
                   >
-                    {t("About.Inty History.Paragraph_5")}
+                    {t('About.Inty History.Paragraph_5')}
                   </span>
                 </li>
               </ul>
@@ -193,13 +193,13 @@ export function About() {
           <div className="mt-8 flex justify-center">
             <Button
               className="bg-green-600 hover:bg-green-700"
-              onClick={() => alert("Grazie per il tuo interesse in INTI!")}
+              onClick={() => alert('Grazie per il tuo interesse in INTI!')}
             >
-              {t("About.MoreButton")}
+              {t('About.MoreButton')}
             </Button>
           </div>
         </motion.div>
       </div>
     </section>
-  );
+  )
 }

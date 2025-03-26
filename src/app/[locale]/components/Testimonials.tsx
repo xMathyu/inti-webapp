@@ -1,21 +1,21 @@
 // app/components/Testimonials.tsx
-"use client";
+'use client'
 
 export function Testimonials() {
   const testimonials = [
     {
-      name: "Juan Pérez",
-      feedback: "Esta plataforma ha transformado mi negocio. ¡Increíble!",
+      name: 'Juan Pérez',
+      feedback: 'Esta plataforma ha transformado mi negocio. ¡Increíble!',
     },
     {
-      name: "María López",
-      feedback: "El soporte es excepcional y las características son fantásticas.",
+      name: 'María López',
+      feedback: 'El soporte es excepcional y las características son fantásticas.',
     },
     {
-      name: "Carlos García",
-      feedback: "Fácil de usar y muy eficiente. Recomiendo totalmente.",
+      name: 'Carlos García',
+      feedback: 'Fácil de usar y muy eficiente. Recomiendo totalmente.',
     },
-  ];
+  ]
 
   return (
     <section id="testimonials" className="py-20">
@@ -31,5 +31,5 @@ export function Testimonials() {
         </div>
       </div>
     </section>
-  );
+  )
 }

@@ -16,17 +16,6 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
 } from '@/components/ui/navigation-menu'
-
-// const navLinks = [
-//   { href: "/#hero", label: "Inizio" },
-//   { href: "/#about", label: "Chi siamo" },
-//   { href: "/#gallery", label: "Galleria" },
-//   { href: "/#guides", label: "Guide" },
-//   { href: "/#tariffe", label: "Tariffe" },
-//   { href: "/#contact", label: "Contatti" },
-// ];
-
-//TRANSLATIONS
 import { useTranslations } from 'next-intl'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { useParams } from 'next/navigation'

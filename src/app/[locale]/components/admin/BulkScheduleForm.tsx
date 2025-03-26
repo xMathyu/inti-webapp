@@ -1,101 +1,95 @@
-"use client";
+'use client'
 
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { db } from "@/app/[locale]/lib/firebase";
-import { collection, getDocs } from "firebase/firestore";
-import { BulkScheduleFormData } from "@/app/[locale]/interfaces/interfaces";
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { db } from '@/app/[locale]/lib/firebase'
+import { collection, getDocs } from 'firebase/firestore'
+import { BulkScheduleFormData } from '@/app/[locale]/interfaces/interfaces'
 
 interface BulkScheduleFormProps {
-  isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
-  onSave: (data: BulkScheduleFormData) => Promise<void>;
+  isOpen: boolean
+  onOpenChange: (open: boolean) => void
+  onSave: (data: BulkScheduleFormData) => Promise<void>
 }
 
 interface VisitTypeOption {
-  id: string;
-  name: string;
+  id: string
+  name: string
 }
 
-export default function BulkScheduleForm({
-  isOpen,
-  onOpenChange,
-  onSave,
-}: BulkScheduleFormProps) {
+export default function BulkScheduleForm({ isOpen, onOpenChange, onSave }: BulkScheduleFormProps) {
   // Form fields
-  const [visitType, setVisitType] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
-  const [availableSlots, setAvailableSlots] = useState("");
-  const [active, setActive] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [localError, setLocalError] = useState("");
+  const [visitType, setVisitType] = useState('')
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
+  const [startTime, setStartTime] = useState('')
+  const [endTime, setEndTime] = useState('')
+  const [availableSlots, setAvailableSlots] = useState('')
+  const [active, setActive] = useState(true)
+  const [loading, setLoading] = useState(false)
+  const [localError, setLocalError] = useState('')
 
   // Options for the "Visit Type" dropdown
-  const [visitTypesOptions, setVisitTypesOptions] = useState<VisitTypeOption[]>(
-    []
-  );
+  const [visitTypesOptions, setVisitTypesOptions] = useState<VisitTypeOption[]>([])
 
   useEffect(() => {
     // Firestore query to fetch visit types
     const fetchVisitTypesOptions = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "visitTypes"));
-        const options: VisitTypeOption[] = [];
+        const querySnapshot = await getDocs(collection(db, 'visitTypes'))
+        const options: VisitTypeOption[] = []
         querySnapshot.forEach((docSnap) => {
-          const data = docSnap.data();
+          const data = docSnap.data()
           options.push({
             id: docSnap.id,
             name: data.name,
-          });
-        });
-        setVisitTypesOptions(options);
+          })
+        })
+        setVisitTypesOptions(options)
       } catch (error) {
-        console.error("Error al cargar los tipos de visita:", error);
+        console.error('Error al cargar los tipos de visita:', error)
       }
-    };
-    fetchVisitTypesOptions();
-  }, []);
+    }
+    fetchVisitTypesOptions()
+  }, [])
 
   // Reset fields when opening the modal in "Add" mode
   useEffect(() => {
     if (isOpen) {
-      setVisitType("");
-      setStartDate("");
-      setEndDate("");
-      setStartTime("");
-      setEndTime("");
-      setAvailableSlots("");
-      setActive(true);
-      setLocalError("");
+      setVisitType('')
+      setStartDate('')
+      setEndDate('')
+      setStartTime('')
+      setEndTime('')
+      setAvailableSlots('')
+      setActive(true)
+      setLocalError('')
     }
-  }, [isOpen]);
+  }, [isOpen])
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLocalError("");
-    setLoading(true);
-    const slots = parseInt(availableSlots);
+    e.preventDefault()
+    setLocalError('')
+    setLoading(true)
+    const slots = parseInt(availableSlots)
     if (isNaN(slots)) {
-      setLocalError("La cantidad de cupos debe ser un número válido.");
-      setLoading(false);
-      return;
+      setLocalError('La cantidad de cupos debe ser un número válido.')
+      setLoading(false)
+      return
     }
     if (!visitType || !startDate || !endDate || !startTime || !endTime) {
-      setLocalError("Por favor, completa todos los campos.");
-      setLoading(false);
-      return;
+      setLocalError('Por favor, completa todos los campos.')
+      setLoading(false)
+      return
     }
     const formData: BulkScheduleFormData = {
       visitType,
@@ -105,19 +99,19 @@ export default function BulkScheduleForm({
       endTime,
       availableSlots: slots,
       active,
-    };
+    }
     try {
-      await onSave(formData);
-      onOpenChange(false);
+      await onSave(formData)
+      onOpenChange(false)
     } catch (err: unknown) {
       if (err instanceof Error) {
-        setLocalError(err.message || "Error al guardar.");
+        setLocalError(err.message || 'Error al guardar.')
       } else {
-        setLocalError("Error al guardar.");
+        setLocalError('Error al guardar.')
       }
     }
-    setLoading(false);
-  };
+    setLoading(false)
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -125,8 +119,8 @@ export default function BulkScheduleForm({
         <DialogHeader>
           <DialogTitle>Agregar Horarios en Bloque</DialogTitle>
           <DialogDescription>
-            Selecciona el tipo de visita y define el rango de fechas y horas,
-            así como la cantidad de cupos.
+            Selecciona el tipo de visita y define el rango de fechas y horas, así como la cantidad
+            de cupos.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -231,11 +225,11 @@ export default function BulkScheduleForm({
               disabled={loading}
               className="bg-green-600 hover:bg-green-700 text-white"
             >
-              {loading ? "Creando..." : "Crear Horarios"}
+              {loading ? 'Creando...' : 'Crear Horarios'}
             </Button>
           </div>
         </form>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

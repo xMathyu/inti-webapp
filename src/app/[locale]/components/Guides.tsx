@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion'
 import {
   Card,
   CardHeader,
@@ -8,12 +8,12 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-} from "@/components/ui/card";
-import { AiOutlineCheck } from "react-icons/ai";
-import Image from "next/image";
+} from '@/components/ui/card'
+import { AiOutlineCheck } from 'react-icons/ai'
+import Image from 'next/image'
 
-import { useTranslations } from "next-intl";
-import { Guide } from "../interfaces/interfaces";
+import { useTranslations } from 'next-intl'
+import { Guide } from '../interfaces/interfaces'
 
 // Guides data
 // const guides = [
@@ -34,8 +34,8 @@ import { Guide } from "../interfaces/interfaces";
 // ];
 
 export function Guides() {
-  const t = useTranslations("LandingPage.Section.Guides");
-  const guides = t.raw("GuidesList");
+  const t = useTranslations('LandingPage.Section.Guides')
+  const guides = t.raw('GuidesList')
   return (
     <section
       id="guides"
@@ -81,7 +81,7 @@ export function Guides() {
           viewport={{ once: true }}
           className="text-3xl md:text-4xl font-semibold text-center text-green-800 mb-12"
         >
-          {t("Title")}
+          {t('Title')}
         </motion.h2>
 
         {/* Guides grid */}
@@ -109,9 +109,7 @@ export function Guides() {
 
                 {/* Card header */}
                 <CardHeader className="pt-4 pb-2 text-center">
-                  <CardTitle className="text-2xl text-green-800 font-bold">
-                    {guide.name}
-                  </CardTitle>
+                  <CardTitle className="text-2xl text-green-800 font-bold">{guide.name}</CardTitle>
                   <CardDescription className="text-green-600 font-medium">
                     {guide.specialty}
                   </CardDescription>
@@ -121,17 +119,17 @@ export function Guides() {
                 <CardContent className="px-6 pb-6 flex-1">
                   <ul className="list-none space-y-2">
                     {guide.bio
-                      .split(". ")
+                      .split('. ')
                       .filter((sentence: string) => sentence.trim().length > 0)
                       .map((sentence: string, i: number) => (
                         <li key={i} className="flex items-start">
                           <AiOutlineCheck className="text-green-600 mt-1 mr-2 flex-shrink-0" />
                           <span
                             className="text-gray-700 text-sm md:text-base"
-                            style={{ textAlign: "justify" }}
+                            style={{ textAlign: 'justify' }}
                           >
                             {sentence.trim()}
-                            {!sentence.trim().endsWith(".") && "."}
+                            {!sentence.trim().endsWith('.') && '.'}
                           </span>
                         </li>
                       ))}
@@ -144,7 +142,7 @@ export function Guides() {
                     className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded shadow transition-colors"
                     onClick={() => alert(`Scopri di più su ${guide.name}`)}
                   >
-                    {t("MoreButton")}
+                    {t('MoreButton')}
                   </button>
                 </CardFooter>
               </Card>
@@ -153,5 +151,5 @@ export function Guides() {
         </div>
       </div>
     </section>
-  );
+  )
 }

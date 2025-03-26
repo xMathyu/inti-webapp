@@ -1,12 +1,12 @@
-"use client";
+'use client'
 
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
+import { motion } from 'framer-motion'
+import { Button } from '@/components/ui/button'
 
-import { useTranslations } from "next-intl";
+import { useTranslations } from 'next-intl'
 
 export function Hero() {
-  const t = useTranslations("LandingPage.Section");
+  const t = useTranslations('LandingPage.Section')
   return (
     <section
       id="hero"
@@ -20,7 +20,7 @@ export function Hero() {
         }}
         initial={{ scale: 1.2 }}
         animate={{ scale: 1 }}
-        transition={{ duration: 2, ease: "easeOut" }}
+        transition={{ duration: 2, ease: 'easeOut' }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-30" />
       </motion.div>
@@ -33,12 +33,12 @@ export function Hero() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1 }}
           style={{
-            background: "linear-gradient(to right, #ffffff, #b2f5ea)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
+            background: 'linear-gradient(to right, #ffffff, #b2f5ea)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
           }}
         >
-          {t("Hero.Title")}
+          {t('Hero.Title')}
         </motion.h1>
         <motion.p
           className="text-lg sm:text-xl md:text-2xl mt-2 sm:mt-4 drop-shadow"
@@ -46,7 +46,7 @@ export function Hero() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1, delay: 0.3 }}
         >
-          {t("Hero.Description")}
+          {t('Hero.Description')}
         </motion.p>
         <motion.p
           className="text-base sm:text-lg md:text-xl mt-2 italic drop-shadow"
@@ -54,7 +54,7 @@ export function Hero() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1, delay: 0.5 }}
         >
-          # {t("Hero.Phrase")}
+          # {t('Hero.Phrase')}
         </motion.p>
 
         <motion.div
@@ -66,13 +66,13 @@ export function Hero() {
           <Button
             className="w-full sm:w-auto px-6 py-3 text-base sm:text-lg font-semibold bg-green-600 hover:bg-green-700 border-none"
             onClick={() => {
-              const aboutSection = document.getElementById("about");
+              const aboutSection = document.getElementById('about')
               if (aboutSection) {
-                aboutSection.scrollIntoView({ behavior: "smooth" });
+                aboutSection.scrollIntoView({ behavior: 'smooth' })
               }
             }}
           >
-            {t("Hero.Button1")}
+            {t('Hero.Button1')}
           </Button>
           <Button
             variant="outline"
@@ -91,16 +91,16 @@ export function Hero() {
         hover:text-green-700
         "
             onClick={() => {
-              const tariffeSection = document.getElementById("tariffe");
+              const tariffeSection = document.getElementById('tariffe')
               if (tariffeSection) {
-                tariffeSection.scrollIntoView({ behavior: "smooth" });
+                tariffeSection.scrollIntoView({ behavior: 'smooth' })
               }
             }}
           >
-            {t("Hero.Button2")}
+            {t('Hero.Button2')}
           </Button>
         </motion.div>
       </div>
     </section>
-  );
+  )
 }

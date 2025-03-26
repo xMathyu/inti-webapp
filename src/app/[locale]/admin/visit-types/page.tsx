@@ -10,7 +10,11 @@ import { db } from '@/app/[locale]/lib/firebase'
 import { VisitType, VisitTypeFormData } from '@/app/[locale]/interfaces/interfaces'
 import VisitTypeForm from '@/app/[locale]/components/admin/VisitTypeForm'
 import VisitTypeCard from '@/app/[locale]/components/admin/VisitTypeCard'
-
+import {
+  createStripeProduct,
+  updateStripeProduct,
+  deleteStripeProduct,
+} from '@/app/[locale]/lib/stripe/products'
 import { useTranslations } from 'next-intl'
 
 export default function AdminVisitTypesPanel() {
@@ -28,7 +32,10 @@ export default function AdminVisitTypesPanel() {
       const querySnapshot = await getDocs(collection(db, 'visitTypes'))
       const types: VisitType[] = []
       querySnapshot.forEach((docSnap) => {
-        types.push({ id: docSnap.id, ...(docSnap.data() as Omit<VisitType, 'id'>) })
+        types.push({
+          id: docSnap.id,
+          ...(docSnap.data() as Omit<VisitType, 'id'>),
+        })
       })
       setVisitTypes(types)
     } catch {
@@ -44,6 +51,43 @@ export default function AdminVisitTypesPanel() {
   const handleSave = async (data: VisitTypeFormData) => {
     try {
       const docId = selectedVisit ? selectedVisit.id : data.name
+
+      // Si es una actualización
+      if (selectedVisit) {
+        const updatedStripeData = await updateStripeProduct({
+          id: data.stripeProductId || '',
+          name: data.name,
+          shortDescription: data.shortDescription,
+          price: data.price,
+          features: data.features,
+          frequency: data.frequency,
+        })
+
+        // Si hay un nuevo priceId, actualizamos los datos
+        if (updatedStripeData?.priceId) {
+          data = {
+            ...data,
+            stripePriceId: updatedStripeData.priceId,
+          }
+        }
+      } else {
+        // Si es una nueva visita
+        const stripeProduct = await createStripeProduct({
+          name: data.name,
+          shortDescription: data.shortDescription,
+          price: data.price,
+          features: data.features,
+          frequency: data.frequency,
+        })
+
+        // Guardar los IDs de Stripe en Firestore junto con los datos de la visita
+        data = {
+          ...data,
+          stripeProductId: stripeProduct.productId,
+          stripePriceId: stripeProduct.priceId,
+        }
+      }
+
       await setDoc(doc(db, 'visitTypes', docId), { ...data }, { merge: true })
       toast.success(t('ToastMessages.SaveSuccess'))
       setModalOpen(false)
@@ -69,6 +113,10 @@ export default function AdminVisitTypesPanel() {
 
   const handleDelete = async (visit: VisitType) => {
     try {
+      // Primero desactivar el producto en Stripe
+      await deleteStripeProduct(visit.stripeProductId!)
+
+      // Luego eliminar de Firestore
       await deleteDoc(doc(db, 'visitTypes', visit.id))
       toast.success(t('ToastMessages.DeleteSuccess'))
       // Remove the item from the local state
@@ -126,6 +174,8 @@ export default function AdminVisitTypesPanel() {
                 shortDescription: selectedVisit.shortDescription,
                 features: selectedVisit.features,
                 active: selectedVisit.active,
+                stripeProductId: selectedVisit.stripeProductId,
+                stripePriceId: selectedVisit.stripePriceId,
               }
             : undefined
         }

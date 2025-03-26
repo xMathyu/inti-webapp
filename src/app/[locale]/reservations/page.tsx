@@ -1,154 +1,151 @@
-"use client";
+'use client'
 
-import React, { Suspense, useState, useEffect, useCallback } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { toast } from "sonner";
-import { db } from "@/app/[locale]/lib/firebase";
-import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
-import FormsReservation from "../components/FormsReservation";
-import AvailableSchedules from "../components/AvailableSchedules";
-import { Schedule, VisitTypeOption } from "../interfaces/interfaces";
+import React, { Suspense, useState, useEffect, useCallback } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { collection, getDocs, query, where } from 'firebase/firestore'
+import { toast } from 'sonner'
+import { db } from '@/app/[locale]/lib/firebase'
+import { useForm, FormProvider, SubmitHandler } from 'react-hook-form'
+import FormsReservation from '../components/FormsReservation'
+import AvailableSchedules from '../components/AvailableSchedules'
+import { Schedule, VisitTypeOption } from '../interfaces/interfaces'
 
 const ReservationsPage = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const methods = useForm();
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const methods = useForm()
 
-  const [visitType, setVisitType] = useState("");
-  const [date, setDate] = useState("");
-  const [numPeople, setNumPeople] = useState(1);
-  const [visitId, setVisitId] = useState("");
+  const [visitType, setVisitType] = useState('')
+  const [date, setDate] = useState('')
+  const [numPeople, setNumPeople] = useState(1)
+  const [visitId, setVisitId] = useState('')
 
-  const [visitTypesOptions, setVisitTypesOptions] = useState<VisitTypeOption[]>(
-    []
-  );
-  const [availableSchedules, setAvailableSchedules] = useState<Schedule[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [visitTypesOptions, setVisitTypesOptions] = useState<VisitTypeOption[]>([])
+  const [availableSchedules, setAvailableSchedules] = useState<Schedule[]>([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const fetchVisitTypes = useCallback(async () => {
     try {
-      const querySnapshot = await getDocs(collection(db, "visitTypes"));
-      const options: VisitTypeOption[] = [];
+      const querySnapshot = await getDocs(collection(db, 'visitTypes'))
+      const options: VisitTypeOption[] = []
       querySnapshot.forEach((docSnap) => {
-        const data = docSnap.data();
-        options.push({ id: docSnap.id, name: data.name });
-      });
-      setVisitTypesOptions(options);
+        const data = docSnap.data()
+        options.push({ id: docSnap.id, name: data.name })
+      })
+      setVisitTypesOptions(options)
     } catch (err) {
-      console.error("Errore durante il caricamento dei tipi di visita:", err);
+      console.error('Errore durante il caricamento dei tipi di visita:', err)
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
-    fetchVisitTypes();
-  }, [fetchVisitTypes]);
+    fetchVisitTypes()
+  }, [fetchVisitTypes])
 
   useEffect(() => {
-    const preselectedType = searchParams.get("type");
+    const preselectedType = searchParams.get('type')
     if (preselectedType) {
-      setVisitType(preselectedType);
-      setVisitId(preselectedType);
+      setVisitType(preselectedType)
+      setVisitId(preselectedType)
     }
-  }, [searchParams]);
+  }, [searchParams])
 
   const searchSchedules = useCallback(
     async (requireAllFields = true) => {
-      setError("");
-      setAvailableSchedules([]);
+      setError('')
+      setAvailableSchedules([])
 
       if (requireAllFields && (!visitType || !date || numPeople < 1)) {
-        setError("Si prega di completare tutti i campi.");
-        return;
+        setError('Si prega di completare tutti i campi.')
+        return
       }
 
-      setLoading(true);
+      setLoading(true)
 
       try {
-        const schedulesRef = collection(db, "schedules");
+        const schedulesRef = collection(db, 'schedules')
         const q = query(
           schedulesRef,
-          where("visitType", "==", visitType),
-          ...(date ? [where("date", "==", date)] : [])
-        );
-        const querySnapshot = await getDocs(q);
-        const schedules: Schedule[] = [];
+          where('visitType', '==', visitType),
+          ...(date ? [where('date', '==', date)] : []),
+        )
+        const querySnapshot = await getDocs(q)
+        const schedules: Schedule[] = []
 
         querySnapshot.forEach((docSnap) => {
-          const data = docSnap.data() as Omit<Schedule, "id">;
+          const data = docSnap.data() as Omit<Schedule, 'id'>
           if (data.active && data.availableSlots >= numPeople) {
-            if (data.mode === "bulk") {
+            if (data.mode === 'bulk') {
               schedules.push({
                 id: docSnap.id,
                 visitType: data.visitType,
-                mode: "individual",
+                mode: 'individual',
                 date: data.date,
                 time: data.startTime,
                 availableSlots: data.availableSlots,
                 active: data.active,
-              });
+              })
             } else {
-              schedules.push({ id: docSnap.id, ...data });
+              schedules.push({ id: docSnap.id, ...data })
             }
           }
-        });
+        })
 
         if (schedules.length === 0) {
-          toast.error(
-            "Non ci sono orari disponibili per la data e gli spazi richiesti."
-          );
+          toast.error('Non ci sono orari disponibili per la data e gli spazi richiesti.')
         } else {
-          setAvailableSchedules(schedules);
-          toast.success("Orari disponibili trovati.");
+          setAvailableSchedules(schedules)
+          toast.success('Orari disponibili trovati.')
         }
       } catch (err: unknown) {
-        console.error(err);
+        console.error(err)
         if (err instanceof Error) {
-          toast.error(err.message || "Errore durante la ricerca degli orari.");
+          toast.error(err.message || 'Errore durante la ricerca degli orari.')
         } else {
-          toast.error("Errore durante la ricerca degli orari.");
+          toast.error('Errore durante la ricerca degli orari.')
         }
       }
-      setLoading(false);
+      setLoading(false)
     },
-    [visitType, date, numPeople]
-  );
+    [visitType, date, numPeople],
+  )
 
   useEffect(() => {
     if (visitType) {
-      searchSchedules(false);
+      searchSchedules(false)
     }
-  }, [visitType, searchSchedules]);
+  }, [visitType, searchSchedules])
 
   useEffect(() => {
     if (date) {
-      searchSchedules(false);
+      searchSchedules(false)
     }
-  }, [date, searchSchedules]);
+  }, [date, searchSchedules])
 
   const handleSearch: SubmitHandler<{
-    visitType: string;
-    date: string;
-    numPeople: number;
+    visitType: string
+    date: string
+    numPeople: number
   }> = async () => {
-    await searchSchedules();
-  };
+    await searchSchedules()
+  }
 
   const handleSelectSchedule = (schedule: Schedule) => {
+    if (!schedule.id || !numPeople) {
+      toast.error('Por favor, seleccione un horario válido y el número de personas')
+      return
+    }
+
     router.push(
-      `/reservations/confirm?scheduleId=${encodeURIComponent(
-        schedule.id
-      )}&numPeople=${numPeople}`
-    );
-  };
+      `/reservations/confirm?scheduleId=${encodeURIComponent(schedule.id)}&numPeople=${numPeople}`,
+    )
+  }
 
   return (
     <FormProvider {...methods}>
       <div className="max-w-full mx-auto p-4 bg-green-50 rounded shadow">
-        <h1 className="text-xl font-bold text-green-800 mb-4">
-          Effettua la tua prenotazione
-        </h1>
+        <h1 className="text-xl font-bold text-green-800 mb-4">Effettua la tua prenotazione</h1>
 
         <FormsReservation
           visitType={visitType}
@@ -175,13 +172,13 @@ const ReservationsPage = () => {
         </div>
       )}
     </FormProvider>
-  );
-};
+  )
+}
 
 const ReservationsPageWrapper = () => (
   <Suspense fallback={<div>Caricamento...</div>}>
     <ReservationsPage />
   </Suspense>
-);
+)
 
-export default ReservationsPageWrapper;
+export default ReservationsPageWrapper

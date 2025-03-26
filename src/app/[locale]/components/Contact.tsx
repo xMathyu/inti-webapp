@@ -1,40 +1,38 @@
-"use client";
+'use client'
 
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Facebook, Instagram, PhoneCall, Mail } from "lucide-react";
-import { useState } from "react";
-import emailjs from "@emailjs/browser";
-import { toast } from "sonner";
+import { motion } from 'framer-motion'
+import { Button } from '@/components/ui/button'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { Facebook, Instagram, PhoneCall, Mail } from 'lucide-react'
+import { useState } from 'react'
+import emailjs from '@emailjs/browser'
+import { toast } from 'sonner'
 
-import { useTranslations } from "next-intl";
+import { useTranslations } from 'next-intl'
 
 export function Contact() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    phone: "",
-    message: "",
-  });
+    name: '',
+    email: '',
+    subject: '',
+    phone: '',
+    message: '',
+  })
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }));
-  };
+    }))
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+    e.preventDefault()
+    setIsSubmitting(true)
 
     try {
       await emailjs.send(
@@ -47,27 +45,25 @@ export function Contact() {
           phone: formData.phone,
           message: formData.message,
         },
-        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
-      );
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
+      )
 
-      toast.success("Messaggio inviato con successo!");
+      toast.success('Messaggio inviato con successo!')
       setFormData({
-        name: "",
-        email: "",
-        subject: "",
-        phone: "",
-        message: "",
-      });
+        name: '',
+        email: '',
+        subject: '',
+        phone: '',
+        message: '',
+      })
     } catch (error) {
-      toast.error(
-        "Errore nell'invio del messaggio. Per favore riprova più tardi."
-      );
-      console.error("EmailJS Error:", error);
+      toast.error("Errore nell'invio del messaggio. Per favore riprova più tardi.")
+      console.error('EmailJS Error:', error)
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
-  };
-  const t = useTranslations("LandingPage.Section.Contact");
+  }
+  const t = useTranslations('LandingPage.Section.Contact')
   return (
     <section
       id="contact"
@@ -112,12 +108,8 @@ export function Contact() {
       >
         {/* Title and Subtitle */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-semibold text-green-800">
-            {t("Title")}
-          </h2>
-          <p className="text-lg md:text-xl text-gray-700 mt-2">
-            {t("Subtitle")}
-          </p>
+          <h2 className="text-3xl md:text-4xl font-semibold text-green-800">{t('Title')}</h2>
+          <p className="text-lg md:text-xl text-gray-700 mt-2">{t('Subtitle')}</p>
         </div>
 
         {/* "Glass" container in 2 columns */}
@@ -125,12 +117,8 @@ export function Contact() {
           {/* Left Column: Contact Information */}
           <div className="flex flex-col justify-center space-y-6">
             <div>
-              <h3 className="text-2xl font-semibold text-green-800 mb-2">
-                {t("Information")}
-              </h3>
-              <p className="text-sm text-gray-700 leading-relaxed">
-                {t("Description")}
-              </p>
+              <h3 className="text-2xl font-semibold text-green-800 mb-2">{t('Information')}</h3>
+              <p className="text-sm text-gray-700 leading-relaxed">{t('Description')}</p>
             </div>
 
             {/* Phone / Email */}
@@ -145,7 +133,7 @@ export function Contact() {
 
             {/* Social */}
             <div>
-              <p className="text-gray-700 mb-1">{t("Social")}</p>
+              <p className="text-gray-700 mb-1">{t('Social')}</p>
               <div className="flex space-x-6 text-gray-600">
                 <a
                   href="https://facebook.com"
@@ -169,15 +157,13 @@ export function Contact() {
 
           {/* Right Column: Form */}
           <div className="bg-white rounded-lg shadow p-4 md:p-6 lg:p-8">
-            <h3 className="text-xl font-semibold text-green-800 mb-4">
-              {t("Form.Title")}
-            </h3>
+            <h3 className="text-xl font-semibold text-green-800 mb-4">{t('Form.Title')}</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Name and Email in 2 columns */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="name" className="font-medium text-gray-700">
-                    {t("Form.Name")}
+                    {t('Form.Name')}
                   </Label>
                   <Input
                     id="name"
@@ -185,14 +171,14 @@ export function Contact() {
                     type="text"
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder={t("Form.Name_PH")}
+                    placeholder={t('Form.Name_PH')}
                     required
                     className="mt-1"
                   />
                 </div>
                 <div>
                   <Label htmlFor="email" className="font-medium text-gray-700">
-                    {t("Form.Email")}
+                    {t('Form.Email')}
                   </Label>
                   <Input
                     id="email"
@@ -200,7 +186,7 @@ export function Contact() {
                     type="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder={t("Form.Email_PH")}
+                    placeholder={t('Form.Email_PH')}
                     required
                     className="mt-1"
                   />
@@ -210,7 +196,7 @@ export function Contact() {
               {/* Subject */}
               <div>
                 <Label htmlFor="subject" className="font-medium text-gray-700">
-                  {t("Form.Subject")}
+                  {t('Form.Subject')}
                 </Label>
                 <Input
                   id="subject"
@@ -218,7 +204,7 @@ export function Contact() {
                   type="text"
                   value={formData.subject}
                   onChange={handleChange}
-                  placeholder={t("Form.Subject_PH")}
+                  placeholder={t('Form.Subject_PH')}
                   required
                   className="mt-1"
                 />
@@ -227,7 +213,7 @@ export function Contact() {
               {/* Phone (Optional) */}
               <div>
                 <Label htmlFor="phone" className="font-medium text-gray-700">
-                  {t("Form.Telephone")}
+                  {t('Form.Telephone')}
                 </Label>
                 <Input
                   id="phone"
@@ -235,7 +221,7 @@ export function Contact() {
                   type="tel"
                   value={formData.phone}
                   onChange={handleChange}
-                  placeholder={t("Form.Telephone_PH")}
+                  placeholder={t('Form.Telephone_PH')}
                   className="mt-1"
                 />
               </div>
@@ -243,7 +229,7 @@ export function Contact() {
               {/* Message */}
               <div>
                 <Label htmlFor="message" className="font-medium text-gray-700">
-                  {t("Form.Message")}
+                  {t('Form.Message')}
                 </Label>
                 <Textarea
                   id="message"
@@ -251,7 +237,7 @@ export function Contact() {
                   rows={5}
                   value={formData.message}
                   onChange={handleChange}
-                  placeholder={t("Form.Message_PH")}
+                  placeholder={t('Form.Message_PH')}
                   className="mt-1"
                   required
                 />
@@ -263,12 +249,12 @@ export function Contact() {
                 type="submit"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? t("Form.Submitting") : t("Form.Submit")}
+                {isSubmitting ? t('Form.Submitting') : t('Form.Submit')}
               </Button>
             </form>
           </div>
         </div>
       </motion.div>
     </section>
-  );
+  )
 }
