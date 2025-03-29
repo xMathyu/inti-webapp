@@ -75,6 +75,7 @@ function ConfirmPageContent() {
           userId,
           scheduleId,
           numPeople,
+          visitTypeId: scheduleData.visitType,
           createdAt: new Date().toISOString(),
         }),
       )
