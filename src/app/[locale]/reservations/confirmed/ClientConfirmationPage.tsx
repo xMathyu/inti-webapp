@@ -46,6 +46,7 @@ export function ClientConfirmationPage({
 
         // Crear la reservación en Firestore
         const finalReservationData = {
+          visitTypeId: reservationData.visitTypeId,
           userId: reservationData.userId,
           scheduleId: reservationData.scheduleId,
           numPeople: reservationData.numPeople,
