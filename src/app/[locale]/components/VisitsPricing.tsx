@@ -10,6 +10,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import CardItem from '@/components/ui/card-item'
 import { Card } from '@/components/ui/card'
+import { useTranslations } from 'next-intl'
 
 interface Visit {
   id: string
@@ -40,6 +41,7 @@ function useWindowSize() {
 }
 
 export function VisitsPricing() {
+  const t = useTranslations('Rates')
   const router = useRouter()
   const { width } = useWindowSize()
 
@@ -113,7 +115,7 @@ export function VisitsPricing() {
     <section id="tariffe" className="py-20 bg-white">
       <div className="max-w-6xl mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-semibold text-center text-green-800 mb-12">
-          Tipi di Visita e Tariffe
+          {t('Title')}
         </h2>
 
         <div className="flex items-center justify-center relative">
@@ -159,14 +161,12 @@ export function VisitsPricing() {
                 <div className="flex-shrink-0" style={{ width: cardWidth, marginRight: 0 }}>
                   <Card className="h-full flex items-center justify-center">
                     <div className="flex flex-col items-center justify-center text-center p-6 gap-6 w-full">
-                      <p className="text-gray-700 text-base font-normal">
-                        Scopri tutte le opzioni e le tariffe disponibili.
-                      </p>
+                      <p className="text-gray-700 text-base font-normal">{t('MoreText')}</p>
                       <Button
                         className="bg-green-600 hover:bg-green-700 w-full text-white text-lg"
                         onClick={() => router.push('/visits-prices')}
                       >
-                        Vedi di più
+                        {t('MoreButton')}
                       </Button>
                     </div>
                   </Card>

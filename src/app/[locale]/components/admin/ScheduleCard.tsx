@@ -47,7 +47,7 @@ export default function ScheduleCard({
         )}
         <h3 className="text-2xl font-bold text-green-800 mt-4">{schedule.visitType}</h3>
         <p className="text-black text-sm flex items-center mt-2">
-          <Calendar className="mr-2 w-4 h-4" /> Data: {formatDate(schedule.date)}
+          <Calendar className="mr-2 w-4 h-4" /> {t('Date')} {formatDate(schedule.date)}
         </p>
         {schedule.mode === 'bulk' ? (
           <p className="text-black text-sm flex items-center mt-2">
@@ -60,7 +60,7 @@ export default function ScheduleCard({
           </p>
         )}
         <p className="text-black text-sm flex items-center mt-2">
-          <User className="mr-2 w-4 h-4" /> Posti: {schedule.availableSlots}
+          <User className="mr-2 w-4 h-4" /> {t('Post')} {schedule.availableSlots}
         </p>
       </div>
       {!hideBulkAndActions && (

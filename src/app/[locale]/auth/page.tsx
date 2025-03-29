@@ -66,16 +66,16 @@ function AuthForm() {
         case 'auth/invalid-credential':
         case 'auth/user-not-found':
         case 'auth/wrong-password':
-          setError('Email o password errata.')
+          setError(t('WrongEmailorPassword'))
           break
         case 'auth/email-already-in-use':
-          setError('Questa e-mail è già registrata.')
+          setError(t('RegisteredEmail'))
           break
         case 'auth/invalid-email':
-          setError("L'e-mail non è valida.")
+          setError(t('NotValidEmail'))
           break
         default:
-          setError('Si è verificato un errore. Si prega di riprovare.')
+          setError(t('TryAgain'))
           break
       }
     } finally {
@@ -90,7 +90,7 @@ function AuthForm() {
       router.push(redirect || '/')
     } catch (err) {
       const errorTyped = err as FirebaseError | AuthError
-      setError(errorTyped.message || 'Si è verificato un errore con Google.')
+      setError(errorTyped.message || t('GoogleError'))
     } finally {
       setIsLoading(false)
     }

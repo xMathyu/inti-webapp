@@ -28,12 +28,12 @@ export default function AdminPanel() {
       const scheduleDocId = `${visitType}_${date}_${time}`
       const scheduleRef = doc(db, 'schedules', scheduleDocId)
       await setDoc(scheduleRef, { availableSlots }, { merge: true })
-      setMessage('Cupos actualizados con éxito.')
+      setMessage(t('Message'))
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message)
       } else {
-        setError('Unexpected error')
+        setError(t('Error'))
       }
     }
   }

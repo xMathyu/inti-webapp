@@ -29,7 +29,13 @@
           }
         ],
         "AccessLogin": "Accedi / Registratti",
-        "Greeting": "Ciao"
+        "Greeting": "Ciao",
+        "Account": "Il mio account",
+        "MyVoices": " Le mie voci",
+        "Admin-Schedules": "Amministrazione - Orari",
+        "Admin-VisitTypes": "Admin - Tipi di visita",
+        "Admin-VisitTypePrices": "Amministrazione - Ordine dei prezzi",
+        "Logout": "Esci"
       },
 
       "Hero": {
@@ -78,9 +84,14 @@
             "bio": "Passione per la cucina e profondo rispetto per la terra, una figura capace di raccontarvi e preparare piatti che testimoniano un legame profondo con la natura e il ciclo delle stagioni."
           }
         ],
+        "MoreInfo": "Scopri di più su",
         "MoreButton": "Scopri di più"
       },
-      "Rates": {},
+      "Rates": {
+        "Book": "Prenota ora",
+        "More": "Vedi di più",
+        "Close": "Chiudi"
+      },
       "Contact": {
         "Title": "Contattaci",
         "Subtitle": "Dubbi o commenti? Siamo qui per aiutarti!",
@@ -100,7 +111,9 @@
           "Message": "Message",
           "Message_PH": "Scrivi il tuo messaggio...",
           "Submit": "Invia",
-          "Submitting": "Invio in corso..."
+          "Submitting": "Invio in corso...",
+          "ToastSuccess": "Messaggio inviato con successo!",
+          "ToastError": "Errore nell'invio del messaggio. Per favore riprova più tardi."
         }
       },
       "Footer": {
@@ -110,7 +123,73 @@
       }
     }
   },
+  "Rates": {
+    "Title": "Tipi di Visita e Tariffe",
+    "MoreText": "Scopri tutte le opzioni e le tariffe disponibili.",
+    "MoreButton": "Vedi di più",
+    "ToastMessages": {
+      "ScheduleError": "Non ci sono orari disponibili per la data e gli spazi richiesti.",
+      "ScheduleSuccess": "Orari disponibili trovati.",
+      "LoadingError": "Errore durante la ricerca degli orari.",
+      "SelectError": "Selezionare un orario valido e il numero di persone."
+    },
+    "Form": {
+      "Title": "Effettua la tua prenotazione",
+      "Loading": "Caricamento...",
+      "VisitType": "Tipo di visita",
+      "VisitType_PH": "Seleziona un tipo di visita",
+      "VisitDescription": "Seleziona il tipo di visita che desideri effettuare.",
+      "Date": "Data",
+      "Date_PH": "Seleziona una data",
+      "DateDescription": "Seleziona la data della tua visita.",
+      "PeopleNumber": "Numero di persone",
+      "PeopleDescription": "Indicare il numero di persone che parteciperanno.",
+      "ResearveButton": "Ricerca....",
+      "SearchSchedulesButton": "Cerca orari",
+      "UncompleteFields": "Si prega di completare tutti i campi."
+    },
+    "BookingForm": {
+      "Title": "Conferma della Prenotazione",
+      "Subtitle": "Inserisci i dati dei partecipanti",
+      "Participant": "Partecipante",
+      "Name": "Nome",
+      "Name_PH": "Es. Mario",
+      "NameDescription": "Inserisci il nome del partecipante.",
+      "LastName": "Cognome",
+      "LastName_PH": "Es. Rossi",
+      "LastNameDescription": "Inserisci il cognome del partecipante.",
+      "DocumentType": "Tipo di documento",
+      "Document_PH": "Seleziona...",
+      "Passport": "Passaporto",
+      "DocumentNumber": "Numero del documento",
+      "DocumentNumber_PH_1": "Es. A123456789",
+      "DocumentNumber_PH_2": "Es. 123456789",
+      "DocumentNumberDescription1": "Formato: Una lettera maiuscola seguita da 8 cifre.",
+      "DocumentNumberDescription2": "Inserisci il numero del passaporto.",
+      "Telephone": "Telefono",
+      "Telephone_PH": "Es. +39 3477930530",
+      "TelephoneDescription": "Inserisci il tuo numero di telefono, incluso il prefisso internazionale.",
+      "RequiredEmail": "L'indirizzo e-mail è obbligatorio.",
+      "Email_PH": "esempio@mail.com",
+      "EmailDescription": "Inserisci un indirizzo email valido.",
+      "Birthdate": "Data di Nascita",
+      "Birthdate_PH": "Es. 01/01/2000",
+      "Button": "Conferma Prenotazione",
+      "LoginRedirection": "Per confermare la prenotazione è necessario aver effettuato il login.",
+      "UserError": "Errore nel recupero dei dati dell'utente o della prenotazione.",
+      "ScheduleError": "L'orario selezionato non esiste.",
+      "NoPlaces": "Non ci sono abbastanza posti disponibili.",
+      "VisitDontExist": "Il tipo di visita non esiste.",
+      "PaymentError": "Si è verificato un errore durante la preparazione del pagamento.",
+      "Loading": "Caricamento..."
+    }
+  },
   "SignIn/Register": {
+    "WrongEmailorPassword": "Email o password errata.",
+    "RegisteredEmail": "Questa e-mail è già registrata.",
+    "NotValidEmail": "L'e-mail non è valida.",
+    "TryAgain": "Si è verificato un errore. Si prega di riprovare.",
+    "GoogleError": "Si è verificato un errore con Google.",
     "SignIn": "Accedi",
     "Register": "Registrati",
     "Name": "Nome",
@@ -137,19 +216,28 @@
     "Date": "Data",
     "Time": "Ora",
     "QuoteAvailable": "Quote disponibili:",
-    "Update": "Aggiornamento delle quote"
+    "Update": "Aggiornamento delle quote",
+    "Message": "Quote aggiornate con successo",
+    "Error": "Errore imprevisto"
   },
   "Admin/Schedules": {
     "Title": "Pannello di amministrazione del programma di prenotazione",
     "Subtitle": "Seleziona data di inizio e fine e tipologia di visita:",
     "ByDate": "Per date",
+    "Date": "Data",
+    "Post": "Posti",
     "ByVisit": "Per tipo di visita",
     "NoReservationMade": "Non è previsto un programma di prenotazione per questo periodo.",
     "NoReservationType": "Non è previsto un programma di prenotazione per questo tipo di visita.",
     "Loading": "Caricamento...",
+    "QuotaError": "Il numero di quote deve essere un numero valido.",
+    "VIsitTypeSelect": "Selezionare un tipo di visita.",
+    "DateHour": "Compilare la data e l'ora",
+    "CompleteDateHour": "Completare l'intervallo di date e orari.",
+    "SaveError": "Error al guardar.",
     "ToastMessages": {
       "UploadError": "Errore durante il caricamento degli orari di prenotazione.",
-      "TimeTalbe": "Orario salvato con successo.",
+      "TimeTable": "Orario salvato con successo.",
       "CreationSuccess": "Orari creati con successo.",
       "Error": "Errore durante la creazione degli orari.",
       "UnexpectedError": "Errore inaspettato.",
@@ -185,6 +273,8 @@
   "Admin/VisitTypes": {
     "Title": "Pannello di gestione del tipo di visita",
     "Loading": "Caricamento...",
+    "InvalidPrice": "Il prezzo deve essere un numero valido.",
+    "SaveError": "Errore durante il salvataggio.",
     "ToastMessages": {
       "Error": "Errore nel caricamento dei tipi di visita.",
       "SaveSuccess": "Tipo di visita salvato con successo.",
@@ -227,8 +317,52 @@
       "SaveError": "Errore durante il salvataggio del nuovo ordine"
     }
   },
+  "Admin/Component": {
+    "InvalidQuotaNumber": "Il numero di quote deve essere un numero valido.",
+    "UncompletedFields": "Si prega di compilare tutti i campi.",
+    "SaveError": "Errore durante il salvataggio.",
+    "AddBlockShedule": "Agregar Horarios en Bloque",
+    "SelectVisit_Date_Quota": "Selezionare il tipo di visita e definire l'intervallo di date e orari, nonché il numero di quote.",
+    "VisitType": "Tipi di visita",
+    "VIsitTypeSelect": "Selezionare un tipo di visita",
+    "StartDate": "Data di inizio:",
+    "EndDate": "Data di fine:",
+    "StartTime": "Ora di inizio:",
+    "EndTime": "Ora di fine:",
+    "AvailableQuotas": "Quote disponibili:",
+    "Active": "Attivo",
+    "Creating": "Creare...",
+    "CreateSchedule": "Creare orario"
+  },
   "Pagination": {
     "Previous": "Precedente",
     "Next": "Successivo"
+  },
+  "Payment": {
+    "ErrorIDMessage": "ID sessione di pagamento non trovato",
+    "ErrorPaymentMessage": "Errore nel caricamento delle informazioni di pagamento",
+    "MessageError": "Errore nel caricamento del pagamento",
+    "ReturnToReservation": "Prenota la tua prenotazione",
+    "EndReservation": "Completare la prenotazione"
+  },
+  "Reservations": {
+    "InvalidId": "Fornire un ID sessione valido",
+    "Return": "Torna alla pagina iniziale",
+    "SesionUncompleted": "Sessione non completata",
+    "PaymentUncompleted": "La sessione di pagamento non è ancora completa."
+  },
+  "DatePicker": {
+    "Title": "Pick a date"
+  },
+  "AllVisits": {
+    "Title": "Tutti i tipi di visita"
+  },
+  "ClientConfirmationPage": {
+    "Title": "Prenotazione Confermata!",
+    "Description": "Grazie per la tua prenotazione. Abbiamo inviato una email di conferma con tutti idettagli.",
+    "ReservationNumber": "Numero di prenotazione:",
+    "ReturnHome": "Torna alla Home",
+    "TextScan": "Scansionare il codice QR per visualizzare il numero di revisione",
+    "Download": "Scarica il PDF con QR"
   }
 }

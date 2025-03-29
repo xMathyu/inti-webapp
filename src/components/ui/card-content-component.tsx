@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Check } from '@mynaui/icons-react'
 import { useRouter } from 'next/navigation'
 import { Visit } from '@/app/[locale]/interfaces/interfaces'
+import { useTranslations } from 'next-intl'
 
 interface CardContentComponentProps {
   visit: Visit
@@ -17,6 +18,7 @@ export default function CardContentComponent({
   handleShowMore,
   handleClose,
 }: CardContentComponentProps) {
+  const t = useTranslations('LandingPage.Section.Rates')
   const router = useRouter()
 
   return (
@@ -42,7 +44,7 @@ export default function CardContentComponent({
             className="bg-green-600 hover:bg-green-700 w-full text-white text-lg py-2 rounded-md max-w-xs"
             onClick={() => router.push(`/reservations?type=${encodeURIComponent(visit.id)}`)}
           >
-            Prenota ora
+            {t('Book')}
           </Button>
         )}
 
@@ -55,14 +57,14 @@ export default function CardContentComponent({
           ))}
           {visit.features.length > 3 && handleShowMore && (
             <li className="flex items-center text-gray-500 cursor-pointer" onClick={handleShowMore}>
-              <span className="text-sm pl-6 md:text-base text-blue-500">Vedi di più</span>
+              <span className="text-sm pl-6 md:text-base text-blue-500">{t('More')}</span>
             </li>
           )}
         </ul>
 
         {handleClose && (
           <span className="text-sm pl-6 md:text-base text-blue-500" onClick={handleClose}>
-            Chiudi
+            {t('Close')}
           </span>
         )}
       </CardContent>

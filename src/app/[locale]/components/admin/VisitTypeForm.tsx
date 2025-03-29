@@ -65,7 +65,7 @@ export default function VisitTypeForm({
     setLoading(true)
     const priceNumber = parseFloat(price)
     if (isNaN(priceNumber)) {
-      setLocalError('El precio debe ser un número válido.')
+      setLocalError(t('InvalidPrice'))
       setLoading(false)
       return
     }
@@ -85,9 +85,9 @@ export default function VisitTypeForm({
       onOpenChange(false)
     } catch (err: unknown) {
       if (err instanceof Error) {
-        setLocalError(err.message || 'Error al guardar.')
+        setLocalError(err.message || t('SaveError'))
       } else {
-        setLocalError('Error al guardar.')
+        setLocalError(t('SaveError'))
       }
     }
     setLoading(false)

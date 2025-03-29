@@ -9,8 +9,10 @@ import { useForm, FormProvider, SubmitHandler } from 'react-hook-form'
 import FormsReservation from '../components/FormsReservation'
 import AvailableSchedules from '../components/AvailableSchedules'
 import { Schedule, VisitTypeOption } from '../interfaces/interfaces'
+import { useTranslations } from 'next-intl'
 
 const ReservationsPage = () => {
+  const t = useTranslations('Rates')
   const router = useRouter()
   const searchParams = useSearchParams()
   const methods = useForm()
@@ -57,7 +59,7 @@ const ReservationsPage = () => {
       setAvailableSchedules([])
 
       if (requireAllFields && (!visitType || !date || numPeople < 1)) {
-        setError('Si prega di completare tutti i campi.')
+        setError(t('Form.UncompleteFields'))
         return
       }
 
@@ -93,22 +95,22 @@ const ReservationsPage = () => {
         })
 
         if (schedules.length === 0) {
-          toast.error('Non ci sono orari disponibili per la data e gli spazi richiesti.')
+          toast.error(t('ToastMessages.ScheduleError'))
         } else {
           setAvailableSchedules(schedules)
-          toast.success('Orari disponibili trovati.')
+          toast.success(t('ToastMessages.ScheduleSuccess'))
         }
       } catch (err: unknown) {
         console.error(err)
         if (err instanceof Error) {
-          toast.error(err.message || 'Errore durante la ricerca degli orari.')
+          toast.error(err.message || t('ToastMessages.LoadingError'))
         } else {
-          toast.error('Errore durante la ricerca degli orari.')
+          toast.error(t('ToastMessages.LoadingError'))
         }
       }
       setLoading(false)
     },
-    [visitType, date, numPeople],
+    [visitType, date, numPeople, t],
   )
 
   useEffect(() => {
@@ -133,7 +135,7 @@ const ReservationsPage = () => {
 
   const handleSelectSchedule = (schedule: Schedule) => {
     if (!schedule.id || !numPeople) {
-      toast.error('Por favor, seleccione un horario válido y el número de personas')
+      toast.error(t('ToastMessages.SelectError'))
       return
     }
 
@@ -145,7 +147,7 @@ const ReservationsPage = () => {
   return (
     <FormProvider {...methods}>
       <div className="max-w-full mx-auto p-4 bg-green-50 rounded shadow">
-        <h1 className="text-xl font-bold text-green-800 mb-4">Effettua la tua prenotazione</h1>
+        <h1 className="text-xl font-bold text-green-800 mb-4">{t('Form.Title')}</h1>
 
         <FormsReservation
           visitType={visitType}
@@ -175,10 +177,13 @@ const ReservationsPage = () => {
   )
 }
 
-const ReservationsPageWrapper = () => (
-  <Suspense fallback={<div>Caricamento...</div>}>
-    <ReservationsPage />
-  </Suspense>
-)
+const ReservationsPageWrapper = () => {
+  const t = useTranslations('Rates')
+  return (
+    <Suspense fallback={<div>{t('Form.Loading')}</div>}>
+      <ReservationsPage />
+    </Suspense>
+  )
+}
 
 export default ReservationsPageWrapper
