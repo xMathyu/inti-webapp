@@ -26,13 +26,13 @@ export function UserMenu({ userDisplayName, isAdmin, handleSignOut, mobile }: Us
   const commonLinks = (
     <>
       <Link href={`/${locale}/account`} className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
-        Il mio account
+        {t('Account')}
       </Link>
       <Link
         href={`/${locale}/my-entries`}
         className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
       >
-        Le mie voci
+        {t('MyVoices')}
       </Link>
       {isAdmin && (
         <>
@@ -40,19 +40,19 @@ export function UserMenu({ userDisplayName, isAdmin, handleSignOut, mobile }: Us
             href={`/${locale}/admin/schedules`}
             className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
           >
-            Admin - Schedules
+            {t('Admin-Schedules')}
           </Link>
           <Link
             href={`/${locale}/admin/visit-types`}
             className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
           >
-            Admin - Visit Types
+            {t('Admin-VisitTypes')}
           </Link>
           <Link
             href={`/${locale}/admin/visit-types-prices`}
             className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
           >
-            Admin - Prices Order
+            {t('Admin-VisitTypePrices')}
           </Link>
         </>
       )}
@@ -60,7 +60,7 @@ export function UserMenu({ userDisplayName, isAdmin, handleSignOut, mobile }: Us
         onClick={handleSignOut}
         className="w-full text-left px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300 transition duration-150 ease-in-out"
       >
-        Esci
+        {t('Logout')}
       </button>
     </>
   )

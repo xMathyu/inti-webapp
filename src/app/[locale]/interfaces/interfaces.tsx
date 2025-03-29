@@ -130,3 +130,11 @@ export interface Guide {
   image: string
   bio: string
 }
+
+export interface ReservationDetails {
+  type?: string
+  numPeople?: number
+  createdAt?: { toDate: () => Date }
+  totalAmount?: number
+  currency?: string
+}

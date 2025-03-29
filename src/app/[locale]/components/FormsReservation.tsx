@@ -23,6 +23,7 @@ import { format } from 'date-fns'
 import { it } from 'date-fns/locale'
 import { cn } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
+import { useTranslations } from 'next-intl'
 
 export interface FormsReservationProps {
   visitType: string
@@ -55,6 +56,7 @@ const FormsReservation: React.FC<FormsReservationProps> = ({
   handleSearch,
   visitId,
 }) => {
+  const t = useTranslations('Rates.Form')
   const form = useForm<FormData>()
   const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(
     date ? new Date(date) : undefined,
@@ -73,12 +75,12 @@ const FormsReservation: React.FC<FormsReservationProps> = ({
           name="visitType"
           render={() => (
             <FormItem className="flex-1 min-w-[200px]">
-              <FormLabel>Visita Tipo</FormLabel>
+              <FormLabel>{t('VisitType')}</FormLabel>
               <FormControl>
                 <Select value={visitType} onValueChange={(value) => setVisitType(value)}>
                   <SelectTrigger className="w-full bg-white border">
-                    <SelectValue placeholder="Seleziona una tipologia di visita">
-                      {visitType || 'Seleziona una tipologia di visita'}
+                    <SelectValue placeholder={t('VisitType_PH')}>
+                      {visitType || t('VisitType_PH')}
                     </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
@@ -90,9 +92,7 @@ const FormsReservation: React.FC<FormsReservationProps> = ({
                   </SelectContent>
                 </Select>
               </FormControl>
-              <FormDescription>
-                Seleziona il tipo di visita che desideri effettuare.
-              </FormDescription>
+              <FormDescription>{t('VisitDescription')}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -103,7 +103,7 @@ const FormsReservation: React.FC<FormsReservationProps> = ({
           name="date"
           render={() => (
             <FormItem className="flex-1 min-w-[200px]">
-              <FormLabel>Data</FormLabel>
+              <FormLabel>{t('Date')}</FormLabel>
               <FormControl>
                 <Popover>
                   <PopoverTrigger asChild>
@@ -118,7 +118,7 @@ const FormsReservation: React.FC<FormsReservationProps> = ({
                       {selectedDate ? (
                         format(selectedDate, 'PPP', { locale: it })
                       ) : (
-                        <span>Seleziona una data</span>
+                        <span>{t('Date_PH')}</span>
                       )}
                     </Button>
                   </PopoverTrigger>
@@ -136,7 +136,7 @@ const FormsReservation: React.FC<FormsReservationProps> = ({
                   </PopoverContent>
                 </Popover>
               </FormControl>
-              <FormDescription>Seleziona la data della tua visita.</FormDescription>
+              <FormDescription>{t('DateDescription')}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -147,7 +147,7 @@ const FormsReservation: React.FC<FormsReservationProps> = ({
           name="numPeople"
           render={({ field }) => (
             <FormItem className="flex-1 min-w-[200px]">
-              <FormLabel>Numero di persone</FormLabel>
+              <FormLabel>{t('PeopleNumber')}</FormLabel>
               <FormControl>
                 <Input
                   {...field}
@@ -159,7 +159,7 @@ const FormsReservation: React.FC<FormsReservationProps> = ({
                   className="bg-white border"
                 />
               </FormControl>
-              <FormDescription>Indicare il numero di persone che parteciperanno.</FormDescription>
+              <FormDescription>{t('PeopleDescription')}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -167,7 +167,7 @@ const FormsReservation: React.FC<FormsReservationProps> = ({
 
         <div className="w-full flex justify-center mt-4">
           <Button type="submit" className="w-auto bg-green-600 hover:bg-green-700 text-white">
-            {loading ? 'Ricerca...' : 'Cerca orari'}
+            {loading ? t('ReserveButton') : t('SearchSchedulesButton')}
           </Button>
         </div>
       </form>

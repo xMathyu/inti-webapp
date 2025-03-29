@@ -140,7 +140,7 @@ export function Guides() {
                 <CardFooter className="flex justify-center pb-6">
                   <button
                     className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded shadow transition-colors"
-                    onClick={() => alert(`Scopri di più su ${guide.name}`)}
+                    onClick={() => alert(`${t('MoreInfo')} ${guide.name}`)}
                   >
                     {t('MoreButton')}
                   </button>

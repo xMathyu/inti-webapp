@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { useTranslations } from 'next-intl'
 
 export function DatePickerWithRange({
   className,
@@ -16,6 +17,8 @@ export function DatePickerWithRange({
 }: React.HTMLAttributes<HTMLDivElement> & {
   onDateChange: (range: DateRange | undefined) => void
 }) {
+  const t = useTranslations('DatePicker')
+
   const [date, setDate] = React.useState<DateRange | undefined>({
     from: new Date(),
     to: addDays(new Date(), 7),
@@ -49,7 +52,7 @@ export function DatePickerWithRange({
                 format(date.from, 'LLL dd, y', { locale: it })
               )
             ) : (
-              <span>Pick a date</span>
+              <span>{t('Title')}</span>
             )}
           </Button>
         </PopoverTrigger>

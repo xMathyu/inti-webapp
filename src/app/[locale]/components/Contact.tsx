@@ -13,6 +13,7 @@ import { toast } from 'sonner'
 import { useTranslations } from 'next-intl'
 
 export function Contact() {
+  const t = useTranslations('LandingPage.Section.Contact')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
@@ -48,7 +49,7 @@ export function Contact() {
         process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
       )
 
-      toast.success('Messaggio inviato con successo!')
+      toast.success(t('Form.ToastSuccess'))
       setFormData({
         name: '',
         email: '',
@@ -57,13 +58,13 @@ export function Contact() {
         message: '',
       })
     } catch (error) {
-      toast.error("Errore nell'invio del messaggio. Per favore riprova più tardi.")
+      toast.error(t('Form.ToastError'))
       console.error('EmailJS Error:', error)
     } finally {
       setIsSubmitting(false)
     }
   }
-  const t = useTranslations('LandingPage.Section.Contact')
+
   return (
     <section
       id="contact"

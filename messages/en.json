@@ -30,7 +30,12 @@
         ],
         "AccessLogin": "Sign In / Register",
         "Greeting": "Hi",
-        "Account": "Your Account"
+        "Account": "My Account",
+        "MyVoices": "My Voices",
+        "Admin-Schedules": "Administration - Schedules",
+        "Admin-VisitTypes": "Admin - Visit Types",
+        "Admin-VisitTypePrices": "Admin - Prices Order",
+        "Logout": "Sign out "
       },
       "Hero": {
         "Title": "Park of Colors",
@@ -78,9 +83,14 @@
             "bio": "Passionate about cooking and with deep respect for the land, he is a figure capable of telling and preparing dishes that testify to a deep connection with nature and the cycle of the seasons."
           }
         ],
+        "MoreInfo": "Learn more about",
         "MoreButton": "Learn more"
       },
-      "Rates": {},
+      "Rates": {
+        "Book": "Book Now",
+        "More": "See More",
+        "Close": "Close"
+      },
       "Contact": {
         "Title": "Contact Us",
         "Subtitle": "Doubts or comments? We are here to help you!",
@@ -100,7 +110,9 @@
           "Message": "Message",
           "Message_PH": "Write your message...",
           "Submit": "Submit",
-          "Submitting": "Sending in progress..."
+          "Submitting": "Sending in progress...",
+          "ToastSuccess": "Message sent successfully!",
+          "ToastError": "Error sending message. Please try again later."
         }
       },
       "Footer": {
@@ -110,7 +122,73 @@
       }
     }
   },
+  "Rates": {
+    "Title": "Visit Types and Rates",
+    "MoreText": "Discover all available options and rates.",
+    "MoreButton": "See More",
+    "ToastMessages": {
+      "ScheduleError": "No available schedules for the selected date and slots.",
+      "ScheduleSuccess": "Available schedules found.",
+      "LoadingError": "Error while searching for schedules.",
+      "SelectError": "Please select a valid time and number of people."
+    },
+    "Form": {
+      "Title": "Make Your Reservation",
+      "Loading": "Loading...",
+      "VisitType": "Visit Type",
+      "VisitType_PH": "Select a visit type",
+      "VisitDescription": "Select the type of visit you want to book.",
+      "Date": "Date",
+      "Date_PH": "Select a date",
+      "DateDescription": "Select the date of your visit.",
+      "PeopleNumber": "Number of People",
+      "PeopleDescription": "Enter the number of participants.",
+      "ReserveButton": "Search...",
+      "SearchSchedulesButton": "Find Schedules",
+      "UncompleteFields": "Please complete all fields."
+    },
+    "BookingForm": {
+      "Title": "Booking Confirmation",
+      "Subtitle": "Enter Participant Details",
+      "Participant": "Participant",
+      "Name": "First Name",
+      "Name_PH": "E.g. Mario",
+      "NameDescription": "Enter the participant's first name.",
+      "LastName": "Last Name",
+      "LastName_PH": "E.g. Rossi",
+      "LastNameDescription": "Enter the participant's last name.",
+      "DocumentType": "Document Type",
+      "Document_PH": "Select...",
+      "Passport": "Passport",
+      "DocumentNumber": "Document Number",
+      "DocumentNumber_PH_1": "E.g. A123456789",
+      "DocumentNumber_PH_2": "E.g. 123456789",
+      "DocumentNumberDescription1": "Format: One uppercase letter followed by 8 digits.",
+      "DocumentNumberDescription2": "Enter the passport number.",
+      "Telephone": "Phone Number",
+      "Telephone_PH": "E.g. +39 3477930530",
+      "TelephoneDescription": "Enter your phone number, including the international prefix.",
+      "RequiredEmail": "Email address is required.",
+      "Email_PH": "example@mail.com",
+      "EmailDescription": "Enter a valid email address.",
+      "Birthdate": "Date of Birth",
+      "Birthdate_PH": "E.g. 01/01/2000",
+      "Button": "Confirm Booking",
+      "LoginRedirection": "You must be logged in to confirm your reservation.",
+      "UserError": "Error retrieving user or booking data.",
+      "ScheduleError": "The selected schedule does not exist.",
+      "NoPlaces": "There are not enough available spots.",
+      "VisitDontExist": "The visit type does not exist.",
+      "PaymentError": "An error occurred while processing the payment.",
+      "Loading": "Loading..."
+    }
+  },
   "SignIn/Register": {
+    "WrongEmailorPassword": "Wrong email or password.",
+    "RegisteredEmail": "This email is already registered.",
+    "NotValidEmail": "The email is not valid.",
+    "TryAgain": "An error occurred. Please try again.",
+    "GoogleError": "An error occurred with Google.",
     "SignIn": "Sign In",
     "Register": "Register",
     "Name": "Name",
@@ -137,16 +215,25 @@
     "Date": "Date",
     "Time": "Time",
     "QuoteAvailable": "Available Slots:",
-    "Update": "Update Slots"
+    "Update": "Update Slots",
+    "Message": "Quotas successfully updated",
+    "Error": "Unexpected error"
   },
   "Admin/Schedules": {
     "Title": "Booking Schedule Administration Panel",
     "Subtitle": "Select start and end date and type of visit:",
     "ByDate": "By dates",
+    "Date": "Date",
+    "Post": "Posts",
     "ByVisit": "By visit type",
     "NoReservationMade": "There is no reservation program for this period.",
     "NoReservationType": "There is no reservation program for this type of visit.",
     "Loading": "Loading...",
+    "QuotaError": "The number of quotas must be a valid number.",
+    "VIsitTypeSelect": "Select a visit type.",
+    "DateHour": "Fill in the date and time.",
+    "CompleteDateHour": "Complete the date and time range.",
+    "SaveError": "Error while saving.",
     "ToastMessages": {
       "UploadError": "Error while uploading booking schedules.",
       "TimeTable": "Schedule saved successfully.",
@@ -185,6 +272,8 @@
   "Admin/VisitTypes": {
     "Title": "Visit Type Management Panel",
     "Loading": "Loading...",
+    "InvalidPrice": "The price must be a valid number.",
+    "SaveError": "Error while saving.",
     "ToastMessages": {
       "Error": "Error loading visit types.",
       "SaveSuccess": "Visit type saved successfully.",
@@ -228,8 +317,52 @@
       "SaveError": "Error while saving the new order."
     }
   },
+  "Admin/Component": {
+    "InvalidQuotaNumber": "The number of quotas must be a valid number.",
+    "UncompletedFields": "Please fill in all fields.",
+    "SaveError": "Error while saving.",
+    "AddBlockShedule": "Add Block Schedules",
+    "SelectVisit_Date_Quota": "Select the visit type and define the date and time range, as well as the number of quotas.",
+    "VisitType": "Visit Types",
+    "VIsitTypeSelect": "Select a visit type",
+    "StartDate": "Start date:",
+    "EndDate": "End date:",
+    "StartTime": "Start time:",
+    "EndTime": "End time:",
+    "AvailableQuotas": "Available quotas:",
+    "Active": "Active",
+    "Creating": "Creating...",
+    "CreateSchedule": "Create schedule"
+  },
   "Pagination": {
     "Previous": "Previous",
     "Next": "Next"
+  },
+  "Payment": {
+    "ErrorIDMessage": "Payment session ID not found",
+    "ErrorPaymentMessage": "Error loading payment information",
+    "MessageError": "Error processing the payment",
+    "ReturnToReservation": "Book your reservation",
+    "EndReservation": "Complete the reservation"
+  },
+  "Reservations": {
+    "InvalidId": "Provide a valid session ID",
+    "Return": "Return to the homepage",
+    "SesionUncompleted": "Session not completed",
+    "PaymentUncompleted": "The payment session is not yet complete."
+  },
+  "DatePicker": {
+    "Title": "Pick a date"
+  },
+  "AllVisits": {
+    "Title": "All Visit Types"
+  },
+  "ClientConfirmationPage": {
+    "Title": "Booking Confirmed!",
+    "Description": "Thank you for your booking. We have sent a confirmation email with all the details.",
+    "ReservationNumber": "Reservation Number:",
+    "ReturnHome": "Return to Home",
+    "TextScan": "Scan the QR code to see the revisation number",
+    "Download": "Download PDF with QR"
   }
 }
