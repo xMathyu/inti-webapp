@@ -14,6 +14,7 @@ import { Label } from '@/components/ui/label'
 import { db } from '@/app/[locale]/lib/firebase'
 import { collection, getDocs } from 'firebase/firestore'
 import { BulkScheduleFormData } from '@/app/[locale]/interfaces/interfaces'
+import { useTranslations } from 'next-intl'
 
 interface BulkScheduleFormProps {
   isOpen: boolean
@@ -27,6 +28,7 @@ interface VisitTypeOption {
 }
 
 export default function BulkScheduleForm({ isOpen, onOpenChange, onSave }: BulkScheduleFormProps) {
+  const t = useTranslations('Admin/Component')
   // Form fields
   const [visitType, setVisitType] = useState('')
   const [startDate, setStartDate] = useState('')
@@ -82,12 +84,12 @@ export default function BulkScheduleForm({ isOpen, onOpenChange, onSave }: BulkS
     setLoading(true)
     const slots = parseInt(availableSlots)
     if (isNaN(slots)) {
-      setLocalError('La cantidad de cupos debe ser un número válido.')
+      setLocalError(t('InvalidQuotaNumber'))
       setLoading(false)
       return
     }
     if (!visitType || !startDate || !endDate || !startTime || !endTime) {
-      setLocalError('Por favor, completa todos los campos.')
+      setLocalError(t('UncompletedFields'))
       setLoading(false)
       return
     }
@@ -105,9 +107,9 @@ export default function BulkScheduleForm({ isOpen, onOpenChange, onSave }: BulkS
       onOpenChange(false)
     } catch (err: unknown) {
       if (err instanceof Error) {
-        setLocalError(err.message || 'Error al guardar.')
+        setLocalError(err.message || t('SaveError'))
       } else {
-        setLocalError('Error al guardar.')
+        setLocalError(t('SaveError'))
       }
     }
     setLoading(false)
@@ -117,16 +119,13 @@ export default function BulkScheduleForm({ isOpen, onOpenChange, onSave }: BulkS
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Agregar Horarios en Bloque</DialogTitle>
-          <DialogDescription>
-            Selecciona el tipo de visita y define el rango de fechas y horas, así como la cantidad
-            de cupos.
-          </DialogDescription>
+          <DialogTitle>{t('AddBlockShedule')}</DialogTitle>
+          <DialogDescription>{t('SelectVisit_Date_Quota')}</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <Label htmlFor="visitType" className="block text-green-800">
-              Tipo de Visita:
+              {t('VisitType')}
             </Label>
             <select
               id="visitType"
@@ -135,7 +134,7 @@ export default function BulkScheduleForm({ isOpen, onOpenChange, onSave }: BulkS
               className="border rounded p-2 w-full"
               required
             >
-              <option value="">Seleccione un tipo de visita</option>
+              <option value=""> {t('VIsitTypeSelect')}</option>
               {visitTypesOptions.map((option) => (
                 <option key={option.id} value={option.name}>
                   {option.name}
@@ -145,7 +144,7 @@ export default function BulkScheduleForm({ isOpen, onOpenChange, onSave }: BulkS
           </div>
           <div>
             <Label htmlFor="startDate" className="block text-green-800">
-              Fecha de Inicio:
+              {t('StartDate')}
             </Label>
             <Input
               id="startDate"
@@ -157,7 +156,7 @@ export default function BulkScheduleForm({ isOpen, onOpenChange, onSave }: BulkS
           </div>
           <div>
             <Label htmlFor="endDate" className="block text-green-800">
-              Fecha de Fin:
+              {t('EndDate')}
             </Label>
             <Input
               id="endDate"
@@ -170,7 +169,7 @@ export default function BulkScheduleForm({ isOpen, onOpenChange, onSave }: BulkS
           <div className="grid grid-cols-2 gap-4">
             <div>
               <Label htmlFor="startTime" className="block text-green-800">
-                Hora de Inicio:
+                {t('StartTime')}
               </Label>
               <Input
                 id="startTime"
@@ -182,7 +181,7 @@ export default function BulkScheduleForm({ isOpen, onOpenChange, onSave }: BulkS
             </div>
             <div>
               <Label htmlFor="endTime" className="block text-green-800">
-                Hora de Fin:
+                {t('EndTime')}
               </Label>
               <Input
                 id="endTime"
@@ -195,7 +194,7 @@ export default function BulkScheduleForm({ isOpen, onOpenChange, onSave }: BulkS
           </div>
           <div>
             <Label htmlFor="availableSlots" className="block text-green-800">
-              Cupos Disponibles:
+              {t('AvailableQuotas')}
             </Label>
             <Input
               id="availableSlots"
@@ -208,7 +207,7 @@ export default function BulkScheduleForm({ isOpen, onOpenChange, onSave }: BulkS
           </div>
           <div className="flex items-center">
             <Label htmlFor="active" className="text-green-800 mr-2">
-              Activo:
+              {t('Active')}
             </Label>
             <input
               id="active"
@@ -225,7 +224,7 @@ export default function BulkScheduleForm({ isOpen, onOpenChange, onSave }: BulkS
               disabled={loading}
               className="bg-green-600 hover:bg-green-700 text-white"
             >
-              {loading ? 'Creando...' : 'Crear Horarios'}
+              {loading ? t('Creating') : t('CreateSchedule')}
             </Button>
           </div>
         </form>

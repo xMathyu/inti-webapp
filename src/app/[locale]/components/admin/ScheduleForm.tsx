@@ -133,24 +133,24 @@ export default function ScheduleForm({
     setLoading(true)
     const slots = parseInt(availableSlots)
     if (isNaN(slots)) {
-      setLocalError('La cantidad de cupos debe ser un número válido.')
+      setLocalError(t('QuotaError'))
       setLoading(false)
       return
     }
     if (!visitType) {
-      setLocalError('Seleccione un tipo de visita.')
+      setLocalError(t('VIsitTypeSelect'))
       setLoading(false)
       return
     }
     if (mode === 'individual') {
       if (!date || !time) {
-        setLocalError('Complete la fecha y la hora.')
+        setLocalError(t('CompleteDateHour'))
         setLoading(false)
         return
       }
     } else {
       if (!startDate || !endDate || !startTime || !endTime) {
-        setLocalError('Complete el rango de fechas y horas.')
+        setLocalError(t('CompleteDateHour'))
         setLoading(false)
         return
       }
@@ -167,9 +167,9 @@ export default function ScheduleForm({
       onOpenChange(false)
     } catch (err: unknown) {
       if (err instanceof Error) {
-        setLocalError(err.message || 'Error al guardar.')
+        setLocalError(err.message || t('SaveError'))
       } else {
-        setLocalError('Error al guardar.')
+        setLocalError(t('SaveError'))
       }
     }
     setLoading(false)

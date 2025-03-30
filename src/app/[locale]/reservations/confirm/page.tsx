@@ -8,8 +8,10 @@ import { onAuthStateChanged } from 'firebase/auth'
 import { db, auth } from '@/app/[locale]/lib/firebase'
 import ConfirmationForm, { FormData } from '@/app/[locale]/components/ConfirmationForm'
 import { createCheckoutSession } from '@/app/[locale]/lib/stripe/checkout'
+import { useTranslations } from 'next-intl'
 
 function ConfirmPageContent() {
+  const t = useTranslations('Rates.BookingForm')
   const searchParams = useSearchParams()
   const router = useRouter()
 
@@ -30,18 +32,18 @@ function ConfirmPageContent() {
           }
         })
       } else {
-        toast.error('Per confermare la prenotazione è necessario aver effettuato il login.')
+        toast.error(t('LoginRedirection'))
         router.push(
           `/auth?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`,
         )
       }
     })
     return () => unsubscribe()
-  }, [router])
+  }, [router, t])
 
   const handleReservationSubmit = async (data: FormData) => {
     if (!userId || !scheduleId || !stripeCustomerId) {
-      toast.error("Errore nel recupero dei dati dell'utente o della prenotazione.")
+      toast.error(t('UserError'))
       return
     }
 
@@ -49,12 +51,12 @@ function ConfirmPageContent() {
       const scheduleRef = doc(db, 'schedules', scheduleId)
       const scheduleSnap = await getDoc(scheduleRef)
       if (!scheduleSnap.exists()) {
-        toast.error("L'orario selezionato non esiste.")
+        toast.error(t('ScheduleError'))
         return
       }
       const scheduleData = scheduleSnap.data()
       if (scheduleData.availableSlots < numPeople) {
-        toast.error('Non ci sono abbastanza posti disponibili.')
+        toast.error(t('NoPlaces'))
         return
       }
 
@@ -62,7 +64,7 @@ function ConfirmPageContent() {
       const visitTypeRef = doc(db, 'visitTypes', scheduleData.visitType)
       const visitTypeSnap = await getDoc(visitTypeRef)
       if (!visitTypeSnap.exists()) {
-        toast.error('Il tipo di visita non esiste.')
+        toast.error('VisitDontExist')
         return
       }
       const visitTypeData = visitTypeSnap.data()
@@ -94,7 +96,7 @@ function ConfirmPageContent() {
       router.push(`/reservations/payment?session_id=${sessionId}`)
     } catch (error) {
       console.error('Error creating checkout session:', error)
-      toast.error('Si è verificato un errore durante la preparazione del pagamento.')
+      toast.error(t('PaymentError'))
     }
   }
 
@@ -102,8 +104,9 @@ function ConfirmPageContent() {
 }
 
 export default function ConfirmPage() {
+  const t = useTranslations('Rates.BookingForm')
   return (
-    <Suspense fallback={<div>Caricamento...</div>}>
+    <Suspense fallback={<div>{t('Loading')}</div>}>
       <ConfirmPageContent />
     </Suspense>
   )

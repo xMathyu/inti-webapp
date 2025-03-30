@@ -5,6 +5,7 @@ import { db } from '@/app/[locale]/lib/firebase'
 import { ClientConfirmationPage } from './ClientConfirmationPage'
 import { SerializedSession } from '@/app/[locale]/lib/stripe/types'
 import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -37,13 +38,15 @@ export default async function ConfirmedPage({
   // Obtener el session_id de los parámetros de búsqueda (query parameters)
   const session_id = (await searchParams)!.session_id as string | undefined
 
+  const t = await getTranslations('Reservations')
+
   if (!session_id) {
     return (
       <div className="container mx-auto p-8">
         <h1 className="text-2xl font-bold text-red-600 mb-4">Error</h1>
-        <p>Please provide a valid session_id.</p>
+        <p>{t('InvalidId')}</p>
         <Link href="/" className="text-blue-500 underline">
-          Return to homepage
+          {t('Return')}
         </Link>
       </div>
     )
@@ -83,10 +86,10 @@ export default async function ConfirmedPage({
 
     return (
       <div className="container mx-auto p-8">
-        <h1 className="text-2xl font-bold text-yellow-600 mb-4">Session not complete</h1>
-        <p>The payment session is not complete yet.</p>
+        <h1 className="text-2xl font-bold text-yellow-600 mb-4"> {t('SesionUncompleted')}</h1>
+        <p>{t('PaymentUncompleted')}</p>
         <Link href="/" className="text-blue-500 underline">
-          Return to homepage
+          {t('Return')}
         </Link>
       </div>
     )

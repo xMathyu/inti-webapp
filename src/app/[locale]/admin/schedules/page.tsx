@@ -97,7 +97,7 @@ export default function AdminSchedulesPanel() {
           ? selectedSchedule.id
           : `${data.visitType}_${data.date}_${data.time}`
         await setDoc(doc(db, 'schedules', docId), { ...data }, { merge: true })
-        toast.success(t('ToastMessages.TimeTalbe'))
+        toast.success(t('ToastMessages.TimeTable'))
         setModalOpen(false)
         setSchedules((prev) => {
           const newItem = { id: docId, ...data } as Schedule
