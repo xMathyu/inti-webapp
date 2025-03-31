@@ -132,7 +132,7 @@ export interface Guide {
 }
 
 export interface ReservationDetails {
-  type?: string
+  visitTypeId?: string
   numPeople?: number
   createdAt?: { toDate: () => Date }
   totalAmount?: number

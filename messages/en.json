@@ -360,9 +360,13 @@
   "ClientConfirmationPage": {
     "Title": "Booking Confirmed!",
     "Description": "Thank you for your booking. We have sent a confirmation email with all the details.",
+    "ReservationType": "Reservation Type:",
+    "TicketNumber": "Number of Tickets",
+    "Date": "Date:",
+    "TotalPrice": "Total Price:",
     "ReservationNumber": "Reservation Number:",
     "ReturnHome": "Return to Home",
-    "TextScan": "Scan the QR code to see the revisation number",
+    "TextScan": "Scan the QR code to display the reservation number",
     "Download": "Download PDF with QR"
   }
 }

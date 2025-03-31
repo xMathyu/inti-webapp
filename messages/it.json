@@ -144,7 +144,7 @@
       "DateDescription": "Seleziona la data della tua visita.",
       "PeopleNumber": "Numero di persone",
       "PeopleDescription": "Indicare il numero di persone che parteciperanno.",
-      "ResearveButton": "Ricerca....",
+      "ReserveButton": "Ricerca....",
       "SearchSchedulesButton": "Cerca orari",
       "UncompleteFields": "Si prega di completare tutti i campi."
     },
@@ -360,9 +360,13 @@
   "ClientConfirmationPage": {
     "Title": "Prenotazione Confermata!",
     "Description": "Grazie per la tua prenotazione. Abbiamo inviato una email di conferma con tutti idettagli.",
+    "ReservationType": "Tipo di prenotazione:",
+    "TicketNumber": "Numero di biglietti:",
+    "Date": "Data:",
+    "TotalPrice": "Prezzo totale:",
     "ReservationNumber": "Numero di prenotazione:",
     "ReturnHome": "Torna alla Home",
-    "TextScan": "Scansionare il codice QR per visualizzare il numero di revisione",
+    "TextScan": "Scansionare il codice QR per visualizzare il numero di prenotazione",
     "Download": "Scarica il PDF con QR"
   }
 }
