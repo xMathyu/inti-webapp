@@ -106,7 +106,16 @@ export function ClientConfirmationPage({
     if (!reservationDetails) return
 
     // Crear QR con la información
-    const qrData = `${t('ReservationNumber')} ${reservationId}`
+    const qrData = `
+    ${t('ReservationDetails')} \n
+    ${t('ReservationType')} ${reservationDetails?.visitTypeId || 'N/A'}\n
+    ${t('TicketNumber')} ${reservationDetails?.numPeople || 0} \n
+    ${t('Date')} ${reservationDetails?.createdAt?.toDate().toLocaleDateString() || 'N/A'}\n
+    ${t('TotalPrice')} ${
+      reservationDetails?.totalAmount ? reservationDetails.totalAmount / 100 : '0.00'
+    } \n
+    ${t('ReservationNumber')} ${reservationId}\n
+    `
     const qrImage = await QRCode.toDataURL(qrData)
 
     // Crear documento PDF
@@ -181,22 +190,24 @@ export function ClientConfirmationPage({
             </p>
           )} */}
 
-          <div className="space-y-4 text-center">
-            <button
-              onClick={() => generatePDF(reservationDetails)}
-              className="inline-block px-6 py-3 mb-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-            >
-              {t('Download')}
-            </button>
-          </div>
+          <div className="flex flex-col md:flex-row justify-center items-center md:gap-2 gap-4">
+            <div className="space-y-4 text-center">
+              <button
+                onClick={() => generatePDF(reservationDetails)}
+                className="inline-block px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+              >
+                {t('Download')}
+              </button>
+            </div>
 
-          <div className="space-y-4 text-center">
-            <Link
-              href="/"
-              className="inline-block px-6 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
-            >
-              {t('ReturnHome')}
-            </Link>
+            <div className="space-y-4 text-center">
+              <Link
+                href="/"
+                className="inline-block px-6 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+              >
+                {t('ReturnHome')}
+              </Link>
+            </div>
           </div>
         </div>
       </div>
