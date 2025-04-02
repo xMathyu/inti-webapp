@@ -24,6 +24,10 @@
             "label": "Rates"
           },
           {
+            "href": "/subscription",
+            "label": "Subscribe"
+          },
+          {
             "href": "/#contact",
             "label": "Contact"
           }
@@ -57,8 +61,8 @@
         "Inty History": {
           "Title": "History of Inti",
           "Paragraph_1": "The association was founded in 2020 with the aim of restoring life to the Park of Colors, which was in a state of neglect at the time, and promoting the preservation of Lucanian biodiversity.",
-          "Paragraph_2": "The name “Inti,” of Quechua origin, means “light bearers,” a concept that reflects the association's mission: to bring light and hope to the Lucanian Apennines.",
-          "Paragraph_3": "Since 2020, art gardeners Valentina Di Carlo and Lorenzo Staderini have been designing and “playing” with the flowering cycles of native plants and introduced species, ensuring consistent blooms and alternating colors.",
+          "Paragraph_2": "The name \"Inti,\" of Quechua origin, means \"light bearers,\" a concept that reflects the association's mission: to bring light and hope to the Lucanian Apennines.",
+          "Paragraph_3": "Since 2020, art gardeners Valentina Di Carlo and Lorenzo Staderini have been designing and \"playing\" with the flowering cycles of native plants and introduced species, ensuring consistent blooms and alternating colors.",
           "Paragraph_4": "The association's main activity is breeding native butterflies and raising awareness of pollinator protection.",
           "Paragraph_5": "Currently, the association is involved in the planning, maintenance and management of the park, also organizing guided tours and workshops."
         },
@@ -368,5 +372,42 @@
     "ReturnHome": "Return to Home",
     "TextScan": "Scan the QR code to display the reservation number",
     "Download": "Download PDF with QR"
+  },
+  "SubscriptionForm": {
+    "Title": "Annual Subscription",
+    "Description": "Fill out the form to join the association",
+    "Form": {
+      "Name": "Name",
+      "Name_Placeholder": "Enter your full name",
+      "Email": "Email",
+      "Email_Placeholder": "Enter your email",
+      "Phone": "Phone",
+      "Phone_Placeholder": "Enter your phone number",
+      "DownloadForm": "Download the form to fill out",
+      "Submit": "Send Request",
+      "Submitting": "Sending..."
+    },
+    "Success": {
+      "Title": "Request sent successfully!",
+      "Instructions": {
+        "Title": "Important instructions:",
+        "Step1": "WhatsApp will open on your device",
+        "Step2": "Send the pre-filled message first",
+        "Step3": "Tap the 📎 icon (mobile) or 📎 icon (PC) to attach file",
+        "Step4": "Select \"Document\" and find the PDF you just uploaded",
+        "Step5": "Send the PDF document as a separate message"
+      },
+      "Continue": "Continue on WhatsApp",
+      "NewForm": "Send new form"
+    },
+    "Validation": {
+      "NameRequired": "Name is required",
+      "EmailRequired": "Please enter a valid email address",
+      "PhoneRequired": "Please enter a valid phone number"
+    },
+    "Toast": {
+      "Success": "Request sent successfully!",
+      "Error": "An error occurred while sending the request. Please try again later."
+    }
   }
 }
