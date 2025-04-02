@@ -383,7 +383,9 @@
       "Email_Placeholder": "Inserisci la tua email",
       "Phone": "Telefono",
       "Phone_Placeholder": "Inserisci il tuo numero di telefono",
-      "DownloadForm": "Scarica il Modulo da compilare",
+      "DownloadForm": "Scarica Modulo",
+      "DownloadFormTitle": "Importante: Scarica il Modulo di Iscrizione",
+      "DownloadFormDescription": "Prima di procedere, scarica e compila il modulo di iscrizione. Dovrai inviarlo successivamente via WhatsApp.",
       "Submit": "Invia Richiesta",
       "Submitting": "Inviando..."
     },

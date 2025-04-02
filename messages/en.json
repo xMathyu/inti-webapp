@@ -383,7 +383,9 @@
       "Email_Placeholder": "Enter your email",
       "Phone": "Phone",
       "Phone_Placeholder": "Enter your phone number",
-      "DownloadForm": "Download the form to fill out",
+      "DownloadForm": "Download Form",
+      "DownloadFormTitle": "Important: Download the Registration Form",
+      "DownloadFormDescription": "Before proceeding, please download and fill out the registration form. You will need to send it later via WhatsApp.",
       "Submit": "Send Request",
       "Submitting": "Sending..."
     },

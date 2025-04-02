@@ -17,7 +17,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { toast } from 'sonner'
-import { User, Mail, Phone, FileText, Send, ArrowRight } from 'lucide-react'
+import { User, Mail, Phone, FileText, Send } from 'lucide-react'
 
 export default function SubscriptionForm() {
   const t = useTranslations('SubscriptionForm')
@@ -94,10 +94,23 @@ export default function SubscriptionForm() {
                 </div>
               </div>
               <h3 className="text-2xl font-bold text-green-800">{t('Success.Title')}</h3>
-
+              <div className="rounded-lg bg-green-50 p-5 border border-green-200 mb-6">
+                <h4 className="font-bold text-green-800 mb-3 text-lg">
+                  {t('Form.DownloadFormTitle')}
+                </h4>
+                <p className="text-green-700 mb-4">{t('Form.DownloadFormDescription')}</p>
+                <a
+                  href="https://github.com/user-attachments/files/19410790/Modulo.tesseramento.%2B.tessera.associativa.pdf"
+                  download
+                  className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-md transition-colors duration-300 flex items-center justify-center"
+                >
+                  <FileText className="h-5 w-5 mr-2" />
+                  {t('Form.DownloadForm')}
+                </a>
+              </div>
               <div className="rounded-lg bg-amber-50 p-5 border border-amber-200 mt-4">
                 <h4 className="font-bold text-amber-800 mb-3 text-lg">
-                  {t('Success.Instructions.Title')}
+                  2. {t('Success.Instructions.Title')}
                 </h4>
                 <ol className="text-left text-amber-700 space-y-3 pl-1">
                   <li className="flex items-start">
@@ -132,11 +145,8 @@ export default function SubscriptionForm() {
                   </li>
                 </ol>
               </div>
-
-              <p className="text-gray-600 mt-5 font-medium">{t('Success.Continue')}:</p>
-
               <a
-                href={`https://wa.me/+39XXXXXXXXX?text=Ciao! Ho appeno compilato il modulo di iscrizione.%0A%0ANome: ${userData?.name}%0AEmail: ${userData?.email}%0ATelefono: ${userData?.phone}%0A%0ASto per inviarti il modulo PDF compilato come allegato.`}
+                href={`https://wa.me/51984300217?text=Ciao! Ho appena compilato il modulo di iscrizione.%0A%0ANome: ${userData?.name}%0AEmail: ${userData?.email}%0ATelefono: ${userData?.phone}%0A%0ASto per inviarti il modulo PDF compilato come allegato.`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full bg-[#25D366] hover:bg-[#128C7E] mt-5 flex items-center justify-center text-white font-medium py-3 px-4 rounded-md transition-colors duration-300"
@@ -149,9 +159,8 @@ export default function SubscriptionForm() {
                 >
                   <path d="M17.498 14.382c-.301-.15-1.767-.867-2.04-.966-.273-.101-.473-.15-.673.15-.197.295-.771.964-.944 1.162-.175.195-.349.21-.646.075-.3-.15-1.263-.465-2.403-1.485-.888-.795-1.484-1.77-1.66-2.07-.174-.3-.019-.465.13-.615.136-.135.301-.345.451-.523.146-.181.194-.301.297-.496.1-.21.049-.375-.025-.524-.075-.15-.672-1.62-.922-2.206-.24-.584-.487-.51-.672-.51-.172-.015-.371-.015-.571-.015-.2 0-.523.074-.797.359-.273.3-1.045 1.02-1.045 2.475s1.07 2.865 1.219 3.075c.149.195 2.105 3.195 5.1 4.485.714.3 1.27.48 1.704.629.714.227 1.365.195 1.88.121.574-.091 1.767-.721 2.016-1.426.255-.705.255-1.29.18-1.425-.074-.135-.27-.21-.57-.345m-5.446 7.443h-.016c-1.77 0-3.524-.48-5.055-1.38l-.36-.214-3.75.975 1.005-3.645-.239-.375a9.869 9.869 0 0 1-1.516-5.26c0-5.445 4.455-9.885 9.942-9.885a9.865 9.865 0 0 1 7.022 2.91 9.788 9.788 0 0 1 2.914 6.93c-.004 5.445-4.455 9.885-9.935 9.885M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652a12.062 12.062 0 0 0 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.495-8.411" />
                 </svg>
-                {t('Success.Continue')} <ArrowRight className="ml-2 h-4 w-4" />
+                {t('Success.Continue')}
               </a>
-
               <Button
                 variant="outline"
                 onClick={() => setIsSubmitted(false)}
@@ -163,6 +172,21 @@ export default function SubscriptionForm() {
           ) : (
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+                <div className="rounded-lg bg-green-50 p-5 border border-green-200 mb-6">
+                  <h4 className="font-bold text-green-800 mb-3 text-lg">
+                    {t('Form.DownloadFormTitle')}
+                  </h4>
+                  <p className="text-green-700 mb-4">{t('Form.DownloadFormDescription')}</p>
+                  <a
+                    href="https://github.com/user-attachments/files/19410790/Modulo.tesseramento.%2B.tessera.associativa.pdf"
+                    download
+                    className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-md transition-colors duration-300 flex items-center justify-center"
+                  >
+                    <FileText className="h-5 w-5 mr-2" />
+                    {t('Form.DownloadForm')}
+                  </a>
+                </div>
+
                 <div className="w-full bg-gray-200 h-1 rounded-full mb-5">
                   <div className="h-1 bg-green-600 rounded-full" style={{ width: '0%' }}></div>
                 </div>
@@ -229,18 +253,6 @@ export default function SubscriptionForm() {
                     </FormItem>
                   )}
                 />
-
-                <div className="mt-5 pt-3 border-t border-gray-200">
-                  <div className="mt-3 text-sm text-gray-600 flex items-center">
-                    <a
-                      href="https://github.com/user-attachments/files/19410790/Modulo.tesseramento.%2B.tessera.associativa.pdf"
-                      download
-                      className="text-green-600 hover:text-green-700 hover:underline flex items-center"
-                    >
-                      <FileText className="h-4 w-4 mr-1" /> {t('Form.DownloadForm')}
-                    </a>
-                  </div>
-                </div>
 
                 <Button
                   type="submit"
