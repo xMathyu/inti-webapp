@@ -136,8 +136,7 @@ export default function SubscriptionForm() {
               <p className="text-gray-600 mt-5 font-medium">{t('Success.Continue')}:</p>
 
               <a
-                // TODO: Replace with the actual phone number
-                href={`https://wa.me/39XXXXXXXXX?text=Ciao! Ho appena compilato il modulo di iscrizione.%0A%0ANome: ${userData?.name}%0AEmail: ${userData?.email}%0ATelefono: ${userData?.phone}%0A%0ASto per inviarti il modulo PDF compilato come allegato.`}
+                href={`https://wa.me/+39XXXXXXXXX?text=Ciao! Ho appeno compilato il modulo di iscrizione.%0A%0ANome: ${userData?.name}%0AEmail: ${userData?.email}%0ATelefono: ${userData?.phone}%0A%0ASto per inviarti il modulo PDF compilato come allegato.`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full bg-[#25D366] hover:bg-[#128C7E] mt-5 flex items-center justify-center text-white font-medium py-3 px-4 rounded-md transition-colors duration-300"
