@@ -19,12 +19,6 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { toast } from 'sonner'
 import { User, Mail, Phone, FileText, Send, ArrowRight } from 'lucide-react'
 
-const formSchema = z.object({
-  name: z.string().min(2),
-  email: z.string().email(),
-  phone: z.string().min(7),
-})
-
 export default function SubscriptionForm() {
   const t = useTranslations('SubscriptionForm')
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -32,16 +26,24 @@ export default function SubscriptionForm() {
   const [file, setFile] = useState<File | null>(null)
   const [userData, setUserData] = useState<{ name: string; email: string; phone: string }>()
 
-  const form = useForm({
+  const formSchema = z.object({
+    name: z.string().min(2, t('Validation.NameRequired')),
+    email: z.string().email(t('Validation.EmailRequired')),
+    phone: z.string().min(7, t('Validation.PhoneRequired')),
+  })
+
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
       email: '',
       phone: '',
     },
+    mode: 'onTouched',
+    criteriaMode: 'firstError',
   })
 
-  const onSubmit = async (data: { name: string; email: string; phone: string }) => {
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsSubmitting(true)
     try {
       setUserData({
@@ -162,7 +164,6 @@ export default function SubscriptionForm() {
           ) : (
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-                {/* Progress bar */}
                 <div className="w-full bg-gray-200 h-1 rounded-full mb-5">
                   <div className="h-1 bg-green-600 rounded-full" style={{ width: '0%' }}></div>
                 </div>
@@ -170,7 +171,7 @@ export default function SubscriptionForm() {
                 <FormField
                   name="name"
                   control={form.control}
-                  render={({ field }) => (
+                  render={({ field, fieldState }) => (
                     <FormItem>
                       <FormLabel className="flex items-center text-gray-700">
                         <User className="h-4 w-4 mr-2 text-green-600" />
@@ -183,14 +184,14 @@ export default function SubscriptionForm() {
                           placeholder={t('Form.Name_Placeholder')}
                         />
                       </FormControl>
-                      <FormMessage>{t('Validation.NameRequired')}</FormMessage>
+                      {fieldState.error && <FormMessage />}
                     </FormItem>
                   )}
                 />
                 <FormField
                   name="email"
                   control={form.control}
-                  render={({ field }) => (
+                  render={({ field, fieldState }) => (
                     <FormItem>
                       <FormLabel className="flex items-center text-gray-700">
                         <Mail className="h-4 w-4 mr-2 text-green-600" />
@@ -204,14 +205,14 @@ export default function SubscriptionForm() {
                           placeholder={t('Form.Email_Placeholder')}
                         />
                       </FormControl>
-                      <FormMessage>{t('Validation.EmailRequired')}</FormMessage>
+                      {fieldState.error && <FormMessage />}
                     </FormItem>
                   )}
                 />
                 <FormField
                   name="phone"
                   control={form.control}
-                  render={({ field }) => (
+                  render={({ field, fieldState }) => (
                     <FormItem>
                       <FormLabel className="flex items-center text-gray-700">
                         <Phone className="h-4 w-4 mr-2 text-green-600" />
@@ -225,7 +226,7 @@ export default function SubscriptionForm() {
                           placeholder={t('Form.Phone_Placeholder')}
                         />
                       </FormControl>
-                      <FormMessage>{t('Validation.PhoneRequired')}</FormMessage>
+                      {fieldState.error && <FormMessage />}
                     </FormItem>
                   )}
                 />
