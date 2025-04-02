@@ -131,15 +131,17 @@ export function ClientConfirmationPage({
                 <Type className="w-6 h-6 text-green-600" />
                 <div>
                   {/*FIXING PENDING */}
-                  <p className="text-sm text-green-600 font-medium">Type of Reservation</p>
-                  <p className="text-lg text-gray-800">{reservationDetails?.type || 'N/A'}</p>
+                  <p className="text-sm text-green-600 font-medium">{t('ReservationType')}</p>
+                  <p className="text-lg text-gray-800">
+                    {reservationDetails?.visitTypeId || 'N/A'}
+                  </p>
                 </div>
               </div>
 
               <div className="flex items-center space-x-4 p-4 bg-green-50 rounded-lg">
                 <Ticket className="w-6 h-6 text-green-600" />
                 <div>
-                  <p className="text-sm text-green-600 font-medium">Number of Tickets</p>
+                  <p className="text-sm text-green-600 font-medium">{t('TicketNumber')}</p>
                   <p className="text-lg text-gray-800">{reservationDetails?.numPeople || 0}</p>
                 </div>
               </div>
@@ -147,7 +149,7 @@ export function ClientConfirmationPage({
               <div className="flex items-center space-x-4 p-4 bg-green-50 rounded-lg">
                 <Calendar className="w-6 h-6 text-green-600" />
                 <div>
-                  <p className="text-sm text-green-600 font-medium">Date</p>
+                  <p className="text-sm text-green-600 font-medium">{t('Date')}</p>
                   <p className="text-lg text-gray-800">
                     {reservationDetails?.createdAt?.toDate().toLocaleDateString() || 'N/A'}
                   </p>
@@ -157,9 +159,11 @@ export function ClientConfirmationPage({
               <div className="flex items-center space-x-4 p-4 bg-green-50 rounded-lg">
                 <DollarSign className="w-6 h-6 text-green-600" />
                 <div>
-                  <p className="text-sm text-green-600 font-medium">Total Price</p>
+                  <p className="text-sm text-green-600 font-medium">{t('TotalPrice')}</p>
                   <p className="text-lg text-gray-800">
-                    {reservationDetails?.totalAmount || '0.00'}{' '}
+                    {reservationDetails?.totalAmount
+                      ? reservationDetails.totalAmount / 100
+                      : '0.00'}{' '}
                     {reservationDetails?.currency?.toUpperCase()}
                   </p>
                 </div>
