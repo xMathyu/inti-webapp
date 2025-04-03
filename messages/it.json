@@ -369,5 +369,32 @@
     "TextScan": "Scansionare il codice QR per visualizzare i dettagli della prenotazione.",
     "Download": "Scarica il PDF con QR",
     "ReservationDetails": "Dettagli della prenotazione:"
+  },
+  "MyReservations": {
+    "Title": "Le mie prenotazioni",
+    "NoReservations": "Non hai ancora effettuato prenotazioni",
+    "MakeReservation": "Effettua una prenotazione",
+    "Status": {
+      "completed": "Confermata",
+      "pending": "In attesa",
+      "cancelled": "Annullata"
+    },
+    "Date": "Data",
+    "Time": "Ora",
+    "People": "Persone",
+    "Total": "Totale",
+    "ViewDetails": "Visualizza dettagli",
+    "ReservationDetails": "Dettagli della prenotazione",
+    "Back": "Indietro",
+    "Location": "Posizione",
+    "LocationNotSpecified": "Posizione non specificata",
+    "Participants": "Partecipanti",
+    "Participant": "Partecipante",
+    "Name": "Nome",
+    "Document": "Documento",
+    "Email": "Email",
+    "Phone": "Telefono",
+    "ReservationNotFound": "Prenotazione non trovata",
+    "ErrorFetchingReservation": "Errore nel recupero dei dettagli della prenotazione"
   }
 }

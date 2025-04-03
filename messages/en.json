@@ -369,5 +369,32 @@
     "TextScan": "Scan the QR code to display the reservation details.",
     "Download": "Download PDF with QR",
     "ReservationDetails": "Reservation details:"
+  },
+  "MyReservations": {
+    "Title": "My Reservations",
+    "NoReservations": "You haven't made any reservations yet",
+    "MakeReservation": "Make a Reservation",
+    "Status": {
+      "completed": "Confirmed",
+      "pending": "Pending",
+      "cancelled": "Cancelled"
+    },
+    "Date": "Date",
+    "Time": "Time",
+    "People": "People",
+    "Total": "Total",
+    "ViewDetails": "View Details",
+    "ReservationDetails": "Reservation Details",
+    "Back": "Back",
+    "Location": "Location",
+    "LocationNotSpecified": "Location not specified",
+    "Participants": "Participants",
+    "Participant": "Participant",
+    "Name": "Name",
+    "Document": "Document",
+    "Email": "Email",
+    "Phone": "Phone",
+    "ReservationNotFound": "Reservation not found",
+    "ErrorFetchingReservation": "Error fetching reservation details"
   }
 }
