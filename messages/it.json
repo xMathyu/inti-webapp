@@ -366,8 +366,9 @@
     "TotalPrice": "Prezzo totale:",
     "ReservationNumber": "Numero di prenotazione:",
     "ReturnHome": "Torna alla Home",
-    "TextScan": "Scansionare il codice QR per visualizzare il numero di prenotazione",
-    "Download": "Scarica il PDF con QR"
+    "TextScan": "Scansionare il codice QR per visualizzare i dettagli della prenotazione.",
+    "Download": "Scarica il PDF con QR",
+    "ReservationDetails": "Dettagli della prenotazione:"
   },
   "MyReservations": {
     "Title": "Le mie prenotazioni",

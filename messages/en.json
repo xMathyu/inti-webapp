@@ -366,8 +366,9 @@
     "TotalPrice": "Total Price:",
     "ReservationNumber": "Reservation Number:",
     "ReturnHome": "Return to Home",
-    "TextScan": "Scan the QR code to display the reservation number",
-    "Download": "Download PDF with QR"
+    "TextScan": "Scan the QR code to display the reservation details.",
+    "Download": "Download PDF with QR",
+    "ReservationDetails": "Reservation details:"
   },
   "MyReservations": {
     "Title": "My Reservations",
