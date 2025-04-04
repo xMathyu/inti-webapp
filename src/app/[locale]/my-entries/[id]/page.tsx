@@ -9,8 +9,9 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { format } from 'date-fns'
 import CustomLoader from '@/components/CustomLoader'
-import { CalendarDays, Users, CreditCard, Clock, MapPin } from 'lucide-react'
+import { CalendarDays, Users, CreditCard, Clock, ArrowLeft } from 'lucide-react'
 import { formatPrice } from '@/lib/utils'
+import { QRCodePDFGenerator } from '../../components/QRCodePDFGenerator'
 
 interface ReservationDetails {
   id: string
@@ -105,120 +106,134 @@ export default function ReservationDetails() {
     }
   }
 
+  const formatFirestoreTime = (date: Timestamp | undefined) => {
+    if (!date) return 'N/A'
+    if (date instanceof Timestamp) {
+      return format(date.toDate(), 'h:mm a')
+    }
+    return 'N/A'
+  }
+
   return (
     <div className="container mx-auto p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">{t('ReservationDetails')}</h1>
-        <Button variant="outline" onClick={() => router.back()}>
+      <div className="flex items-center gap-4 mb-6">
+        <Button
+          variant="outline"
+          onClick={() => router.back()}
+          className="px-6 py-3 h-auto flex items-center gap-2 hover:bg-gray-100 transition-colors"
+        >
+          <ArrowLeft className="w-5 h-5" />
           {t('Back')}
         </Button>
+        <h1 className="text-2xl font-bold">{t('ReservationDetails')}</h1>
       </div>
 
-      <Card>
-        <CardContent className="p-6">
-          {/* Estado de la reservación */}
-          <div className="mb-6">
-            <span
-              className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                reservation.paymentStatus === 'completed'
-                  ? 'bg-green-100 text-green-800'
-                  : reservation.paymentStatus === 'pending'
-                    ? 'bg-yellow-100 text-yellow-800'
-                    : 'bg-red-100 text-red-800'
-              }`}
-            >
-              {t(`Status.${reservation.paymentStatus}`)}
-            </span>
-          </div>
-
-          {/* Detalles principales */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <CalendarDays className="w-5 h-5 text-gray-500" />
-                <div>
-                  <p className="text-sm text-gray-500">{t('Date')}</p>
-                  <p className="font-medium">
-                    {reservation.scheduleDetails?.date ||
-                      formatFirestoreDate(reservation.createdAt)}
-                  </p>
-                </div>
+      <Card className="overflow-hidden">
+        <CardContent className="p-0">
+          {/* Encabezado */}
+          <div className="border-b bg-gray-50 p-6">
+            <div className="flex justify-between items-center">
+              <div className="flex space-x-2">
+                <h2 className="text-xl font-semibold">{reservation.visitTypeId}</h2>
+                <span
+                  className={`inline-block  px-3 py-1 rounded-full text-sm font-semibold ${
+                    reservation.paymentStatus === 'completed'
+                      ? 'bg-green-100 text-green-800'
+                      : reservation.paymentStatus === 'pending'
+                        ? 'bg-yellow-100 text-yellow-800'
+                        : 'bg-red-100 text-red-800'
+                  }`}
+                >
+                  {t(`Status.${reservation.paymentStatus}`)}
+                </span>
               </div>
-
-              <div className="flex items-center gap-3">
-                <Clock className="w-5 h-5 text-gray-500" />
-                <div>
-                  <p className="text-sm text-gray-500">{t('Time')}</p>
-                  <p className="font-medium">
-                    {reservation.scheduleDetails?.startTime} -{' '}
-                    {reservation.scheduleDetails?.endTime}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <Users className="w-5 h-5 text-gray-500" />
-                <div>
-                  <p className="text-sm text-gray-500">{t('People')}</p>
-                  <p className="font-medium">{reservation.numPeople}</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <MapPin className="w-5 h-5 text-gray-500" />
-                <div>
-                  <p className="text-sm text-gray-500">{t('Location')}</p>
-                  <p className="font-medium">
-                    {reservation.scheduleDetails?.location || t('LocationNotSpecified')}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <CreditCard className="w-5 h-5 text-gray-500" />
-                <div>
-                  <p className="text-sm text-gray-500">{t('Total')}</p>
-                  <p className="font-medium">
-                    {formatPrice(reservation.totalAmount, reservation.currency)}
-                  </p>
-                </div>
-              </div>
+              <QRCodePDFGenerator
+                reservationId={params.id as string}
+                reservationDetails={reservation}
+              />
             </div>
           </div>
 
-          <Separator className="my-6" />
-
-          {/* Detalles de los participantes */}
-          <div>
-            <h2 className="text-xl font-semibold mb-4">{t('Participants')}</h2>
-            <div className="space-y-4">
-              {reservation.attendees.map((attendee, index) => (
-                <div key={index} className="p-4 bg-gray-50 rounded-lg">
-                  <p className="font-medium mb-2">
-                    {t('Participant')} {index + 1}
-                  </p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-sm text-gray-500">{t('Name')}</p>
-                      <p className="font-medium">{`${attendee.firstName} ${attendee.lastName}`}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">{t('Document')}</p>
-                      <p className="font-medium">{`${attendee.documentType}: ${attendee.documentNumber}`}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">{t('Email')}</p>
-                      <p className="font-medium">{attendee.email}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">{t('Phone')}</p>
-                      <p className="font-medium">{attendee.phone}</p>
-                    </div>
+          <div className="p-6">
+            {/* Detalles principales */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <CalendarDays className="w-5 h-5 text-gray-500" />
+                  <div>
+                    <p className="text-sm text-gray-500">{t('Date')}</p>
+                    <p className="font-medium">
+                      {reservation.scheduleDetails?.date ||
+                        formatFirestoreDate(reservation.createdAt)}
+                    </p>
                   </div>
                 </div>
-              ))}
+
+                <div className="flex items-center gap-3">
+                  <Clock className="w-5 h-5 text-gray-500" />
+                  <div>
+                    <p className="text-sm text-gray-500">{t('Time')}</p>
+                    <p className="font-medium">{formatFirestoreTime(reservation.createdAt)}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <Users className="w-5 h-5 text-gray-500" />
+                  <div>
+                    <p className="text-sm text-gray-500">{t('People')}</p>
+                    <p className="font-medium">{reservation.numPeople}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <CreditCard className="w-5 h-5 text-gray-500" />
+                  <div>
+                    <p className="text-sm text-gray-500">{t('Total')}</p>
+                    <p className="font-medium">
+                      {formatPrice(reservation.totalAmount, reservation.currency)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <Separator className="my-6" />
+
+            {/* Detalles de los participantes */}
+            <div>
+              <h2 className="text-xl font-semibold mb-4">{t('Participants')}</h2>
+              <div className="space-y-4">
+                {reservation.attendees.map((attendee, index) => (
+                  <div
+                    key={index}
+                    className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                  >
+                    <p className="font-medium mb-2">
+                      {t('Participant')} {index + 1}
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <p className="text-sm text-gray-500">{t('Name')}</p>
+                        <p className="font-medium">{`${attendee.firstName} ${attendee.lastName}`}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">{t('Document')}</p>
+                        <p className="font-medium">{`${attendee.documentType}: ${attendee.documentNumber}`}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">{t('Email')}</p>
+                        <p className="font-medium">{attendee.email}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">{t('Phone')}</p>
+                        <p className="font-medium">{attendee.phone}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </CardContent>
