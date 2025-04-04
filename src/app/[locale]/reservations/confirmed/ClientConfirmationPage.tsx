@@ -8,8 +8,9 @@ import { SerializedSession } from '@/app/[locale]/lib/stripe/types'
 import { Calendar, Ticket, Type, DollarSign } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
+import { jsPDF } from 'jspdf'
+import QRCode from 'qrcode'
 import { ReservationDetails } from '../../interfaces/interfaces'
-import { QRCodePDFGenerator } from '../../components/QRCodePDFGenerator'
 
 interface ClientConfirmationPageProps {
   reservationId?: string | null
@@ -100,6 +101,24 @@ export function ClientConfirmationPage({
     fetchReservationDetails()
   }, [reservationId])
 
+  //PDF GENERATOR
+  const generatePDF = async (reservationDetails: ReservationDetails | null) => {
+    if (!reservationDetails) return
+
+    // Crear QR con la información
+    const qrData = `${t('ReservationNumber')} ${reservationId}`
+    const qrImage = await QRCode.toDataURL(qrData)
+
+    // Crear documento PDF
+    const doc = new jsPDF()
+    doc.setFontSize(16)
+    doc.text(`${t('TextScan')}`, 20, 20)
+    doc.addImage(qrImage, 'PNG', 20, 30, 100, 100) // Agregar el QR
+
+    // Descargar el PDF
+    doc.save('reservation.pdf')
+  }
+
   return (
     <div className="container mx-auto py-10 px-4">
       <div className="max-w-2xl mx-auto  ">
@@ -162,19 +181,22 @@ export function ClientConfirmationPage({
             </p>
           )} */}
 
-          <div className="flex flex-col md:flex-row justify-center items-center md:gap-2 gap-4">
-            <QRCodePDFGenerator
-              reservationId={reservationId}
-              reservationDetails={reservationDetails}
-            />
-            <div className="space-y-4 text-center inline-flex w-full">
-              <Link
-                href="/"
-                className="px-6 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors w-full min-w-[168px]"
-              >
-                {t('ReturnHome')}
-              </Link>
-            </div>
+          <div className="space-y-4 text-center">
+            <button
+              onClick={() => generatePDF(reservationDetails)}
+              className="inline-block px-6 py-3 mb-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+            >
+              {t('Download')}
+            </button>
+          </div>
+
+          <div className="space-y-4 text-center">
+            <Link
+              href="/"
+              className="inline-block px-6 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+            >
+              {t('ReturnHome')}
+            </Link>
           </div>
         </div>
       </div>

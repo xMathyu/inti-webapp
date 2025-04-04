@@ -202,11 +202,11 @@ export default function AdminSchedulesPanel() {
     const scheduleDate = schedule.date ? new Date(schedule.date) : new Date()
     const matchesDateRange = filterByDate && scheduleDate >= startDate && scheduleDate <= endDate
     const matchesType = !filterByDate && selectedType ? schedule.visitType === selectedType : false
-  
+
     const isValidVisitType = visitTypesOptions.some(
-      (option) => option.name.trim().toLowerCase() === schedule.visitType.trim().toLowerCase()
+      (option) => option.name.trim().toLowerCase() === schedule.visitType.trim().toLowerCase(),
     )
-  
+
     return (matchesDateRange || matchesType) && isValidVisitType
   })
 
