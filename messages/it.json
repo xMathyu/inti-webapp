@@ -342,6 +342,7 @@
     "ErrorIDMessage": "ID sessione di pagamento non trovato",
     "ErrorPaymentMessage": "Errore nel caricamento delle informazioni di pagamento",
     "MessageError": "Errore nel caricamento del pagamento",
+    "PaymentError": "Impossibile creare una sessione di pagamento",
     "ReturnToReservation": "Prenota la tua prenotazione",
     "EndReservation": "Completare la prenotazione"
   },

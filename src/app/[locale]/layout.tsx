@@ -1,14 +1,12 @@
 import type { Metadata } from 'next'
 import { poppins } from './fonts'
 import './globals.css'
-import { Navbar } from './components/Navbar'
-import { Toaster } from 'sonner'
-import { ScrollToTop } from '@/components/ScrollToTop'
 
 // NEXT-INTL SETUP
 import { NextIntlClientProvider, hasLocale } from 'next-intl'
 import { notFound } from 'next/navigation'
 import { routing } from '@/i18n/routing'
+import { AppShell } from './components/AppShell'
 
 export const metadata: Metadata = {
   title: 'Parco dei Colori',
@@ -30,13 +28,9 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body className={`${poppins.variable} bg-gray-50`}>
-        <NextIntlClientProvider>
-          <Navbar />
+        <NextIntlClientProvider locale={locale}>
+          <AppShell>{children}</AppShell>
         </NextIntlClientProvider>
-
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
-        <ScrollToTop />
-        <Toaster position="bottom-right" />
       </body>
     </html>
   )

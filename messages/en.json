@@ -342,6 +342,7 @@
     "ErrorIDMessage": "Payment session ID not found",
     "ErrorPaymentMessage": "Error loading payment information",
     "MessageError": "Error processing the payment",
+    "PaymentError": "Unable to create payment session",
     "ReturnToReservation": "Book your reservation",
     "EndReservation": "Complete the reservation"
   },

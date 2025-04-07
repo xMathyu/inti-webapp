@@ -57,7 +57,7 @@ export default function PaymentPageContent() {
       <div className="container mx-auto py-10 px-4">
         <div className="max-w-md mx-auto p-6 bg-red-50 rounded-md text-center">
           <h2 className="text-xl font-semibold text-red-700 mb-4">{t('MessageError')}</h2>
-          <p className="text-red-600 mb-6">{error || 'No se pudo crear la sesión de pago'}</p>
+          <p className="text-red-600 mb-6">{error || t('PaymentError')}</p>
           <Link
             href="/reservations"
             className="inline-block px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
