@@ -62,7 +62,7 @@ export function QRCodePDFGenerator({ reservationId, reservationDetails }: QRCode
   return (
     <button
       onClick={generatePDF}
-      className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors w-full"
+      className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
     >
       {t('Download')}
     </button>

@@ -24,6 +24,10 @@
             "label": "Tariffe"
           },
           {
+            "href": "/subscription",
+            "label": "Abbonamento"
+          },
+          {
             "href": "/#contact",
             "label": "Contatti"
           }
@@ -50,16 +54,16 @@
         "Visitors": "Più di 1.000 visitatori soddisfatti",
         "Park_History": {
           "Title": "Storia del Parco",
-          "Paragraph_1": "Il Parco all’inglese, situato a Castelgrande in Basilicata, a circa 1000 m.s.l.d.m si estende su una superficie di due ettari nella località Coppolo.",
+          "Paragraph_1": "Il Parco all'inglese, situato a Castelgrande in Basilicata, a circa 1000 m.s.l.d.m si estende su una superficie di due ettari nella località Coppolo.",
           "Paragraph_2": "Progettato dal professor Spicciarelli e dedicato al celebre botanico Guglielmo Gasparrini, il parco è stato realizzato nel 2012 grazie a fondi europei.",
-          "Paragraph_3": "Inizialmente gestito dall’Associazione Gasparrini, è poi passato sotto la gestione dell’associazione Aphelion e, dal 2020, è amministrato dall’associazione Inti Aps.",
+          "Paragraph_3": "Inizialmente gestito dall'Associazione Gasparrini, è poi passato sotto la gestione dell'associazione Aphelion e, dal 2020, è amministrato dall'associazione Inti Aps.",
           "Paragraph_4": "Il parco è circondato da un antico bosco di querce attraversato da un piccolo ruscello. Al suo interno si trovano numerose varietà di alberi, arbusti, rampicanti e alberi da frutto che si integrano con la flora autoctona."
         },
         "Inty History": {
           "Title": "Storia di Inti",
           "Paragraph_1": "L'associazione nasce nel 2020 con l'obbiettivo di restituire vita al Parco dei Colori, che all'epoca versava in stato di abbandono, e di promuovere la salvaguardia della biodiversità lucana.",
-          "Paragraph_2": "Il nome “Inti”, di origine quechua, significa “portatori di luce”, un concetto che rispecchia la missione dell'associazione: portare luce e speranza nell'Appennino Lucano.",
-          "Paragraph_3": "Dal 2020, i giardinieri d'arte Valentina Di Carlo e Lorenzo Staderini hanno iniziato a progettare e “giocare” con i cicli di fioritura delle piante autoctone e delle specie introdotte, garantendo fioriture costanti e alternanza di colori.",
+          "Paragraph_2": "Il nome \"Inti\", di origine quechua, significa \"portatori di luce\", un concetto che rispecchia la missione dell'associazione: portare luce e speranza nell'Appennino Lucano.",
+          "Paragraph_3": "Dal 2020, i giardinieri d'arte Valentina Di Carlo e Lorenzo Staderini hanno iniziato a progettare e \"giocare\" con i cicli di fioritura delle piante autoctone e delle specie introdotte, garantendo fioriture costanti e alternanza di colori.",
           "Paragraph_4": "L'attività principale dell'associazione è l'allevamento di farfalle autoctone e la sensibilizzazione sulla protezione degli impollinatori.",
           "Paragraph_5": "Attualmente l'associazione si occupa della progettazione, manutenzione e gestione del parco, organizzando anche visite guidate e laboratori."
         },
@@ -367,35 +371,46 @@
     "TotalPrice": "Prezzo totale:",
     "ReservationNumber": "Numero di prenotazione:",
     "ReturnHome": "Torna alla Home",
-    "TextScan": "Scansionare il codice QR per visualizzare i dettagli della prenotazione.",
-    "Download": "Scarica il PDF con QR",
-    "ReservationDetails": "Dettagli della prenotazione:"
+    "TextScan": "Scansionare il codice QR per visualizzare il numero di prenotazione",
+    "Download": "Scarica il PDF con QR"
   },
-  "MyReservations": {
-    "Title": "Le mie prenotazioni",
-    "NoReservations": "Non hai ancora effettuato prenotazioni",
-    "MakeReservation": "Effettua una prenotazione",
-    "Status": {
-      "completed": "Confermata",
-      "pending": "In attesa",
-      "cancelled": "Annullata"
+  "SubscriptionForm": {
+    "Title": "Iscrizione Annuale",
+    "Description": "Compila il modulo per iscriverti all'associazione",
+    "Form": {
+      "Name": "Nome",
+      "Name_Placeholder": "Inserisci il tuo nome completo",
+      "Email": "Email",
+      "Email_Placeholder": "Inserisci la tua email",
+      "Phone": "Telefono",
+      "Phone_Placeholder": "Inserisci il tuo numero di telefono",
+      "DownloadForm": "Scarica Modulo",
+      "DownloadFormTitle": "Importante: Scarica il Modulo di Iscrizione",
+      "DownloadFormDescription": "Prima di procedere, scarica e compila il modulo di iscrizione. Dovrai inviarlo successivamente via WhatsApp.",
+      "Submit": "Invia Richiesta",
+      "Submitting": "Inviando..."
     },
-    "Date": "Data",
-    "Time": "Ora",
-    "People": "Persone",
-    "Total": "Totale",
-    "ViewDetails": "Visualizza dettagli",
-    "ReservationDetails": "Dettagli della prenotazione",
-    "Back": "Indietro",
-    "Location": "Posizione",
-    "LocationNotSpecified": "Posizione non specificata",
-    "Participants": "Partecipanti",
-    "Participant": "Partecipante",
-    "Name": "Nome",
-    "Document": "Documento",
-    "Email": "Email",
-    "Phone": "Telefono",
-    "ReservationNotFound": "Prenotazione non trovata",
-    "ErrorFetchingReservation": "Errore nel recupero dei dettagli della prenotazione"
+    "Success": {
+      "Title": "Richiesta inviata con successo!",
+      "Instructions": {
+        "Title": "Istruzioni importanti:",
+        "Step1": "Si aprirà WhatsApp nel tuo dispositivo",
+        "Step2": "Invia prima il messaggio precompilato",
+        "Step3": "Tocca l'icona 📎 (mobile) o icona 📎 (PC) per allegare file",
+        "Step4": "Seleziona \"Documento\" e cerca il PDF che hai appena caricato",
+        "Step5": "Invia il documento PDF come messaggio separato"
+      },
+      "Continue": "Continua su WhatsApp",
+      "NewForm": "Invia nuovo modulo"
+    },
+    "Validation": {
+      "NameRequired": "Il nome è obbligatorio",
+      "EmailRequired": "Inserisci un indirizzo email valido",
+      "PhoneRequired": "Inserisci un numero di telefono valido"
+    },
+    "Toast": {
+      "Success": "Richiesta inviata con successo!",
+      "Error": "Si è verificato un problema durante l'invio della richiesta. Riprova più tardi."
+    }
   }
 }
